@@ -6,14 +6,13 @@ using UnityEngine.XR;
 
 public class GameDebug : MonoBehaviour
 {
-    [SerializeField] private GameObject monitorPlayerModel;
-    [SerializeField] private GameObject monitorEnemyModel;
+    [SerializeField] private GameObject monitorModel;
 
-    [SerializeField] private TextMeshProUGUI xText;
-    [SerializeField] private TextMeshProUGUI yText;
-    [SerializeField] private TextMeshProUGUI zText;
-    [SerializeField] private TextMeshProUGUI losText;
-    [SerializeField] private TextMeshProUGUI visibilityText;
+    [SerializeField] private TextMeshPro xText;
+    [SerializeField] private TextMeshPro yText;
+    [SerializeField] private TextMeshPro zText;
+    [SerializeField] private TextMeshPro losText;
+    [SerializeField] private TextMeshPro visibilityText;
 
     // Start is called before the first frame update
     void Start()
@@ -25,13 +24,9 @@ public class GameDebug : MonoBehaviour
     void Update()
     {
         // If not assigned in the inspector, try to find GameObjects by name in the scene.
-        if (monitorPlayerModel == null)
+        if (monitorModel == null)
         {
-            monitorPlayerModel = GameObject.Find("Player Model");
-        }
-        if (monitorEnemyModel == null)
-        {
-            monitorEnemyModel = GameObject.Find("Enemy Model");
+            monitorModel = this.gameObject;
         }
 
         //var monitorPlayerModelComponent = monitorPlayerModel.GetComponent<Model>();

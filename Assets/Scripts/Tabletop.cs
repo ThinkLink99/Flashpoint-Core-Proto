@@ -37,8 +37,9 @@ public class Tabletop : MonoBehaviour
         model.name = "Player Model";
         model.transform.localPosition = new Vector3(0, 1, 0);
 
-        //var enemyModel = Instantiate(testModel);
-        //enemyModel.transform.localPosition = (grid[BOARD_SIZE_X - 1, 0, BOARD_SIZE_Z - 1] as Cube).worldPosition;
+        var enemyModel = Instantiate(testModel);
+        enemyModel.name = "Enemy Model";
+        enemyModel.transform.localPosition = (grid[BOARD_SIZE_X - 1, 0, BOARD_SIZE_Z - 1] as Cube).worldPosition;
 
         mainCamera.transform.LookAt(model.transform);
     }
