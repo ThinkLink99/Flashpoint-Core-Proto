@@ -34,6 +34,7 @@ public class Tabletop : MonoBehaviour
         }
 
         var model = Instantiate(testModel);
+        model.name = "Player Model";
         model.transform.localPosition = new Vector3(0, 1, 0);
 
         //var enemyModel = Instantiate(testModel);
@@ -59,6 +60,8 @@ public class Tabletop : MonoBehaviour
     }
 
 
+
+
     public Cube GetCube(Vector3 position)
     {
         for (int x = 0; x < BOARD_SIZE_X; x++)
@@ -81,44 +84,5 @@ public class Tabletop : MonoBehaviour
         // We found nothing
         Debug.LogError ("GetCube: No cube found at position " + position.ToString());
         return null;
-    }
-}
-public class Cube : MonoBehaviour
-{
-    public Vector3 worldPosition;
-    public Vector3 worldSize;
-
-    public bool PositionIsInCube (Vector3 position)
-    {
-        // X_min <= X <= X_max and Y_min <= Y <= Y_max  and Z_min <= Z <= Z_max
-        float x = position.x;
-        float y = position.y;
-        float z = position.z;
-
-        float xMin = worldPosition.x;
-        float xMax = worldPosition.x + worldSize.x;
-        float yMin = worldPosition.y;
-        float yMax = worldPosition.y + worldSize.y;
-        float zMin = worldPosition.z;
-        float zMax = worldPosition.z + worldSize.z;
-
-        bool inX = (x <= xMax && x >= xMin);
-        bool inY = (y <= yMax && y >= yMin);
-        bool inZ = (z <= zMax && z >= zMin);
-
-        if (inX && inY && inZ)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
-
-    private void OnDrawGizmosSelected()
-    {
-        Gizmos.color = Color.green;
-        Gizmos.DrawWireCube(worldPosition, worldSize);
     }
 }

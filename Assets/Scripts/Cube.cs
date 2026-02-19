@@ -1,0 +1,70 @@
+using UnityEngine;
+
+[RequireComponent(typeof(BoxCollider))]
+public class Cube : MonoBehaviour
+{
+    public Vector3 worldPosition;
+    public Vector3 worldSize;
+
+    public BoxCollider boxCollider;
+
+    public void Start()
+    {
+        boxCollider = GetComponent<BoxCollider>();
+        // Use trigger so that OnTriggerEnter/Exit fire reliably when the Model (with Rigidbody) moves through
+        boxCollider.isTrigger = true;
+    }
+
+    public bool ColliderIntersectsCube(Collider collider)
+    {
+        return collider.bounds.Intersects(boxCollider.bounds);
+    }
+
+    public bool PositionIsInCube(Vector3 position)
+    {
+        // X_min <= X <= X_max and Y_min <= Y <= Y_max and Z_min <= Z <= Z_max
+        float x = position.x;
+        float y = position.y;
+        float z = position.z;
+
+        float xMin = worldPosition.x - worldSize.x / 2f;
+        float xMax = worldPosition.x + worldSize.x / 2f;
+        float yMin = worldPosition.y - worldSize.y / 2f;
+        float yMax = worldPosition.y + worldSize.y / 2f; // fixed - use /2
+        float zMin = worldPosition.z - worldSize.z / 2f;
+        float zMax = worldPosition.z + worldSize.z / 2f;
+
+        bool inX = (x <= xMax && x >= xMin);
+        bool inY = (y <= yMax && y >= yMin);
+        bool inZ = (z <= zMax && z >= zMin);
+
+        Debug.Log("inX: " + inX + " inY: " + inY + " inZ: " + inZ);
+
+        return inX && inY && inZ;
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.TryGetComponent<Model>(out Model model))
+        {
+            //model.ChangeCube(this);
+        }
+    }
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.TryGetComponent<Model>(out Model model))
+        {
+            // only clear if this cube is currently set on the model
+            //if (model.CurrentCube == this)
+            //{
+            //    model.ChangeCube(null);
+            //}
+        }
+    }
+
+    private void OnDrawGizmos()
+    {
+        //Gizmos.color = Color.green;
+        //Gizmos.DrawWireCube(worldPosition, worldSize);
+    }
+}

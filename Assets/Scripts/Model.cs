@@ -5,6 +5,10 @@ using UnityEngine;
 
 public class Model : MonoBehaviour
 {
+    [Header("Events")]
+    public GameEvent onModelMoved;
+
+    [Header("Model Details")]
     public Tabletop tabletop;
 
     public Unit unit;
@@ -12,6 +16,8 @@ public class Model : MonoBehaviour
     private GameObject hitBox;
 
     private Cube cubeIn;
+
+    private Vector3 lastPosition = Vector3.zero;
 
     // Start is called before the first frame update
     void Start()
@@ -28,10 +34,12 @@ public class Model : MonoBehaviour
         if (tabletop == null) return;
         if (unit == null) return;
 
-        this.transform.localScale = new Vector3(unit.baseSizeMM, 1, unit.baseSizeMM);
-
-        // get tabletop tile based on world position
-        cubeIn = tabletop.GetCube(this.transform.position);
+        if (lastPosition != this.transform.localPosition)
+        {
+            Debug.Log("Model moved to: " + this.transform.localPosition);
+            onModelMoved.Raise(this, this.transform.localPosition);
+            lastPosition = this.transform.localPosition;
+        }
     }
 
     private void OnDrawGizmos()
