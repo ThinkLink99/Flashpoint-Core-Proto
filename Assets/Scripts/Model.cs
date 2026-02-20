@@ -11,7 +11,7 @@ public class Model : MonoBehaviour
     [Header("Model Details")]
     public Tabletop tabletop;
 
-    public Unit unit;
+    public Unit unit; 
     private GameObject basePrefab;
     private GameObject hitBox;
 

@@ -30,15 +30,6 @@ public class GameDebug : MonoBehaviour
         distanceToPlayer = Chain<Vector3, float>.Start(new DistanceFromPlayer(monitorModel.transform))
             .Then(new DistanceScorer())
             .Compile();
-
-        //if (monitorPlayerModelComponent.HasLineOfSight(monitorEnemyModelComponent))
-        //{
-        //    visibilityText.text = monitorPlayerModelComponent.PercentageOfModelSeen(monitorEnemyModelComponent).ToString("F2") + "%";
-        //}
-        //else
-        //{
-        //    visibilityText.text = "0%";
-        //}
     }
 
     private void OnDestroy()
