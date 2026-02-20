@@ -40,6 +40,7 @@ namespace Assets.Scripts
                         if (showDebugLogs) Debug.Log($"Placing {terrain.name}");
                         terrain.transform.localPosition = new Vector3((x * terrain.transform.lossyScale.x), (y * terrain.transform.lossyScale.y) + (terrain.transform.lossyScale.y / 2), (z * terrain.transform.lossyScale.z));
                         grid[x, y, z] = terrain.AddComponent<Cube>();
+                        (grid[x, y, z] as Cube).mapPosition = new Vector3(x, y, z);
                         (grid[x, y, z] as Cube).worldPosition = terrain.transform.localPosition;
                         (grid[x, y, z] as Cube).worldSize = terrain.transform.lossyScale;
                     }

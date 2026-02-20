@@ -1,12 +1,8 @@
 using Assets.Scripts;
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.XR;
 
-public class GameDebug : MonoBehaviour
+public class ModelDebug : MonoBehaviour
 {
     [SerializeField] private GameObject monitorModel;
 
@@ -41,15 +37,12 @@ public class GameDebug : MonoBehaviour
     {
         //// draw sight line
         //Gizmos.color = Color.red;
-        //Gizmos.DrawLine(eyes.transform.position, eyes.transform.position + eyes.transform.forward * 100);
+        //Gizmos.DrawLine(eyes.transform.position, eyes.transform.position + eyes.transform.forward * 100);                                              
     }
 
     public void modelMovedHandler (Component sender, object data)
     {
         if (sender is not Model model) return;
-        Debug.Log("Model moved event received in GameDebug.");
-
-        Debug.Log($"Distance to model from Camera: {distanceToPlayer(Camera.main.transform.position)}");
 
         Vector3 modelPosition = (Vector3)data;
         xText.text = $"X: {modelPosition.x.ToString("F2")}";

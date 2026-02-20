@@ -3,10 +3,12 @@ using UnityEngine;
 [RequireComponent(typeof(BoxCollider))]
 public class Cube : MonoBehaviour
 {
-    public Vector3 worldPosition;
-    public Vector3 worldSize;
+    public Vector3 worldPosition; // center position in world space
+    public Vector3 worldSize; // size in world units (e.g. 1 unit = 1 millimeter)
+    public Vector3 mapPosition; // position on the map grid, e.g. (0,0,0) for the first cube, (1,0,0) for the cube to the right of it, etc.
 
     public BoxCollider boxCollider;
+
 
     public void Start()
     {
@@ -19,7 +21,6 @@ public class Cube : MonoBehaviour
     {
         return collider.bounds.Intersects(boxCollider.bounds);
     }
-
     public bool PositionIsInCube(Vector3 position)
     {
         // X_min <= X <= X_max and Y_min <= Y <= Y_max and Z_min <= Z <= Z_max
@@ -47,7 +48,7 @@ public class Cube : MonoBehaviour
     {
         if (other.gameObject.TryGetComponent<Model>(out Model model))
         {
-            //model.ChangeCube(this);
+            model.ChangeCube(this);
         }
     }
     private void OnTriggerExit(Collider other)
@@ -55,10 +56,10 @@ public class Cube : MonoBehaviour
         if (other.gameObject.TryGetComponent<Model>(out Model model))
         {
             // only clear if this cube is currently set on the model
-            //if (model.CurrentCube == this)
-            //{
-            //    model.ChangeCube(null);
-            //}
+            if (model.CurrentCube == this)
+            {
+                model.ChangeCube(null);
+            }
         }
     }
 

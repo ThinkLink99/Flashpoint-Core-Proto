@@ -1,8 +1,3 @@
-using Assets.Scripts;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class Tabletop : MonoBehaviour
@@ -195,6 +190,22 @@ public class Tabletop : MonoBehaviour
         ghostInstance.transform.position = ghostPos;
         ghostInstance.transform.rotation = selectedModel.transform.rotation;
         ghostInstance.transform.localScale = selectedModel.transform.localScale;
+    }
+
+    private void GetMovementRange (Model model)
+    {
+        // Optionally, calculate and visualize the valid movement range for the selected model based on its current position, unit stats, and any obstacles on the tabletop.
+        // This can help players understand where they can move the piece before selecting a target point.
+
+        // Get the world position of the models current cube
+        var currentPos = model.CurrentCube.worldPosition;
+
+        // Use the model's unit stats to determine movement range (e.g., how many tiles it can move)
+
+        // Perform a breadth-first search or similar algorithm to find all reachable tiles within the movement range, taking into account obstacles and other pieces
+
+        // Visualize the valid movement range, for example by highlighting the reachable tiles or showing a radius around the piece.
+
     }
 
     private void OnDrawGizmos()

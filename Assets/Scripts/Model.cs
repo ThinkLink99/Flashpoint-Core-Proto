@@ -41,6 +41,11 @@ public class Model : MonoBehaviour
         }
     }
 
+    public void ChangeCube (Cube cube)
+    {
+        currentCube = cube;
+    }
+
     private void OnDrawGizmos()
     {
         if (unit != null && basePrefab != null)
