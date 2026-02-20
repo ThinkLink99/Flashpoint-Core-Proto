@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Model : MonoBehaviour
@@ -10,14 +7,16 @@ public class Model : MonoBehaviour
 
     [Header("Model Details")]
     public Tabletop tabletop;
-
     public Unit unit; 
+
     private GameObject basePrefab;
     private GameObject hitBox;
 
-    private Cube cubeIn;
+    private Cube currentCube;
 
     private Vector3 lastPosition = Vector3.zero;
+
+    public Cube CurrentCube { get => currentCube; }
 
     // Start is called before the first frame update
     void Start()
@@ -50,10 +49,10 @@ public class Model : MonoBehaviour
             Gizmos.DrawWireSphere(this.transform.position, unit.baseSizeMM / 2);
         }
 
-        if (cubeIn != null)
+        if (currentCube != null)
         {
             Gizmos.color = Color.yellow;
-            Gizmos.DrawWireCube(cubeIn.worldPosition, cubeIn.worldSize);
+            Gizmos.DrawWireCube(currentCube.worldPosition, currentCube.worldSize);
         }
     }
 }
