@@ -1,3 +1,5 @@
+using Assets.Scripts;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -14,14 +16,10 @@ public class GameDebug : MonoBehaviour
     [SerializeField] private TextMeshPro losText;
     [SerializeField] private TextMeshPro visibilityText;
 
+
+    private ProcessorDelegate<Vector3, float> distanceToPlayer;
     // Start is called before the first frame update
     void Start()
-    {
-       
-    }
-
-    // Update is called once per frame
-    void Update()
     {
         // If not assigned in the inspector, try to find GameObjects by name in the scene.
         if (monitorModel == null)
@@ -29,17 +27,9 @@ public class GameDebug : MonoBehaviour
             monitorModel = this.gameObject;
         }
 
-        //var monitorPlayerModelComponent = monitorPlayerModel.GetComponent<Model>();
-        //var monitorEnemyModelComponent = monitorEnemyModel.GetComponent<Model>();
-
-        //if (monitorPlayerModelComponent.HasLineOfSight(monitorEnemyModelComponent))
-        //{
-        //    losText.text = "YES";
-        //}
-        //else
-        //{
-        //    losText.text = "NO";
-        //}
+        distanceToPlayer = Chain<Vector3, float>.Start(new DistanceFromPlayer(monitorModel.transform))
+            .Then(new DistanceScorer())
+            .Compile();
 
         //if (monitorPlayerModelComponent.HasLineOfSight(monitorEnemyModelComponent))
         //{
@@ -65,9 +55,10 @@ public class GameDebug : MonoBehaviour
 
     public void modelMovedHandler (Component sender, object data)
     {
+        if (sender is not Model model) return;
         Debug.Log("Model moved event received in GameDebug.");
 
-        if (sender is not Model model) return;
+        Debug.Log($"Distance to model from Camera: {distanceToPlayer(Camera.main.transform.position)}");
 
         Vector3 modelPosition = (Vector3)data;
         xText.text = $"X: {modelPosition.x.ToString("F2")}";
