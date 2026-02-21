@@ -6,16 +6,18 @@ namespace Assets.Scripts
     {
         [SerializeField] private TextAsset mapJson;
         [SerializeField] private Material groundMaterial;
-        [SerializeField] private object[,,] grid = new object[1, 1, 1];
         [SerializeField] private TerrainSetScriptableObject terrainSet;
         [SerializeField] private bool showDebugLogs = true;
+
+        [SerializeField] private GameEvent onMapCreated;
 
         public void BuildMap()
         {
             if (showDebugLogs) Debug.Log("Loading map...");
             // use the map data to build the map in the scene
             var map = Map.Load(mapJson);
-            grid = new object[map.MapSize.X, map.MapSize.Y, map.MapSize.Z];
+            map.MapGrid = new Grid3<Cube>(map.MapSize.X, map.MapSize.Y, map.MapSize.Z);
+
             if (showDebugLogs) Debug.Log("Map loaded.");
             if (showDebugLogs) Debug.Log($"Map Name: {map.MapName}");
             if (showDebugLogs) Debug.Log($"Map Size: {map.MapSize.ToString()}");
@@ -37,16 +39,21 @@ namespace Assets.Scripts
                     for (int z = 0; z < map.MapSize.Z; z++)
                     {
                         var terrain = Instantiate(terrainSet.terrainPieces[map.Layers[y].Objects[x, z].Type]);
-                        if (showDebugLogs) Debug.Log($"Placing {terrain.name}");
                         terrain.transform.localPosition = new Vector3((x * terrain.transform.lossyScale.x), (y * terrain.transform.lossyScale.y) + (terrain.transform.lossyScale.y / 2), (z * terrain.transform.lossyScale.z));
-                        grid[x, y, z] = terrain.AddComponent<Cube>();
-                        (grid[x, y, z] as Cube).mapPosition = new Vector3(x, y, z);
-                        (grid[x, y, z] as Cube).worldPosition = terrain.transform.localPosition;
-                        (grid[x, y, z] as Cube).worldSize = terrain.transform.lossyScale;
+                        if (showDebugLogs) Debug.Log($"Placing {terrain.name}");
+
+                        var cube = terrain.AddComponent<Cube>();
+                        cube.mapPosition = new Vector3(x, y, z);
+                        cube.worldPosition = terrain.transform.localPosition;
+                        cube.worldSize = terrain.transform.lossyScale;
+
+                        map.MapGrid.Add(cube, x, y, z);
                     }
                 }
             }
+
             if (showDebugLogs) Debug.Log("Terrain pieces placed.");
+            onMapCreated?.Raise(this, map);
         }
 
         private GameObject CreatePlane(string TexturePath, string Name, float Width, float Height)

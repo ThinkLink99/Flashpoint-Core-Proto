@@ -16,6 +16,8 @@ namespace Assets.Scripts
         [JsonProperty("layers")]
         public Layer[] Layers { get; set; }
 
+        public Grid3<Cube> MapGrid { get; set; }
+
         public static Map Load(TextAsset jsonFile)
         {
             Map mapInJson = JsonConvert.DeserializeObject<Map>(jsonFile.text);

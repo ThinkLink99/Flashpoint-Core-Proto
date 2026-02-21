@@ -741,6 +741,7 @@ GameObject:
   - component: {fileID: 1033910161}
   - component: {fileID: 1033910163}
   - component: {fileID: 1033910164}
+  - component: {fileID: 1033910165}
   m_Layer: 0
   m_Name: TableTop
   m_TagString: Untagged
@@ -799,6 +800,7 @@ MonoBehaviour:
   groundMaterial: {fileID: 2100000, guid: 2fcfc2ab7ef6296459cfe748745c50e5, type: 2}
   terrainSet: {fileID: 11400000, guid: 8b67c788b58ddf44f80c08a9c3cd1150, type: 2}
   showDebugLogs: 0
+  onMapCreated: {fileID: 11400000, guid: ae3509c80e9921149990d74e057f696b, type: 2}
 --- !u!114 &1033910161
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -898,6 +900,34 @@ MonoBehaviour:
   response:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &1033910165
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1033910154}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a9433f5e30db324682acd75aac39209, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameEvent: {fileID: 11400000, guid: ae3509c80e9921149990d74e057f696b, type: 2}
+  response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1033910155}
+        m_TargetAssemblyTypeName: Tabletop, Assembly-CSharp
+        m_MethodName: OnMapCreated
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1234078092
 GameObject:
   m_ObjectHideFlags: 0

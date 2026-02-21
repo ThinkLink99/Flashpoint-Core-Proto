@@ -9,7 +9,6 @@ public class Cube : MonoBehaviour
 
     public BoxCollider boxCollider;
 
-
     public void Start()
     {
         boxCollider = GetComponent<BoxCollider>();
