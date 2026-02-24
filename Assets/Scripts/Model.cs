@@ -1,5 +1,8 @@
 using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody))]
+[RequireComponent(typeof(BoxCollider))]
+[RequireComponent(typeof(UnitActionController))]
 public class Model : MonoBehaviour
 {
     [Header("Events")]
@@ -7,7 +10,8 @@ public class Model : MonoBehaviour
 
     [Header("Model Details")]
     public Tabletop tabletop;
-    public Unit unit; 
+    public Unit unit;
+    [SerializeField] private UnitActionController actionController;
 
     private GameObject basePrefab;
     private GameObject hitBox;
@@ -17,6 +21,7 @@ public class Model : MonoBehaviour
     private Vector3 lastPosition = Vector3.zero;
 
     public Cube CurrentCube { get => currentCube; }
+    public UnitActionController ActionController { get => actionController; }
 
     // Start is called before the first frame update
     void Start()
@@ -25,6 +30,7 @@ public class Model : MonoBehaviour
         hitBox = this.transform.GetChild(1).gameObject;
 
         tabletop = FindObjectOfType<Tabletop>();
+        actionController = GetComponent<UnitActionController>();
     }
 
     // Update is called once per frame
@@ -35,7 +41,6 @@ public class Model : MonoBehaviour
 
         if (lastPosition != this.transform.localPosition)
         {
-            Debug.Log("Model moved to: " + this.transform.localPosition);
             onModelMoved.Raise(this, this.transform.localPosition);
             lastPosition = this.transform.localPosition;
         }
@@ -44,6 +49,38 @@ public class Model : MonoBehaviour
     public void ChangeCube (Cube cube)
     {
         currentCube = cube;
+    }
+
+    // Helper: create a lightweight ghost clone (no Model, no physics, on IgnoreRaycast layer)
+    public GameObject CreateGhostInstance()
+    {
+        var ghost = Instantiate(this.gameObject);
+        ghost.name = this.gameObject.name + "_Ghost";
+
+        // Remove gameplay components
+        var modelComp = ghost.GetComponent<Model>();
+        if (modelComp != null) Destroy(modelComp);
+
+        foreach (var col in ghost.GetComponentsInChildren<Collider>())
+        {
+            col.enabled = false;
+        }
+
+        foreach (var rb in ghost.GetComponentsInChildren<Rigidbody>())
+        {
+            Destroy(rb);
+        }
+
+        int ignoreLayer = LayerMask.NameToLayer("Ignore Raycast");
+        if (ignoreLayer != -1)
+        {
+            foreach (Transform t in ghost.GetComponentsInChildren<Transform>())
+            {
+                t.gameObject.layer = ignoreLayer;
+            }
+        }
+
+        return ghost;
     }
 
     private void OnDrawGizmos()

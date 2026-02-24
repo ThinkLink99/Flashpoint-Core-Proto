@@ -1,9 +1,12 @@
 ﻿using Newtonsoft.Json;
+using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Assets.Scripts
 {
+    [Serializable]
     [JsonObject(MemberSerialization.OptIn)]
     public class Map
     {
@@ -13,8 +16,8 @@ namespace Assets.Scripts
         public MapSize MapSize { get; set; }
         [JsonProperty("cube_size")]
         public float CubeSize { get; set; } = 76.2f;
-        [JsonProperty("layers")]
-        public Layer[] Layers { get; set; }
+        [JsonProperty("terrain")]
+        public Terrain[] Terrain { get; set; }
 
         public Grid3<Cube> MapGrid { get; set; }
 
@@ -23,6 +26,21 @@ namespace Assets.Scripts
             Map mapInJson = JsonConvert.DeserializeObject<Map>(jsonFile.text);
             // do we want to do any of the map building here? or just return the map and have the map builder do it?
             return mapInJson;
+        }
+
+        public void AddTerrain (Terrain terrain)
+        {
+            // add the terrain to the map's terrain array
+            var terrainList = new List<Terrain>(Terrain);
+            terrainList.Add(terrain);
+            Terrain = terrainList.ToArray();
+        }
+        public void AddTerrain(IEnumerable<Terrain> terrain)
+        {
+            // add the terrain to the map's terrain array
+            var terrainList = new List<Terrain>(Terrain);
+            terrainList.AddRange(terrain);
+            Terrain = terrainList.ToArray();
         }
         public void Save(string path)
         {
@@ -45,17 +63,5 @@ namespace Assets.Scripts
         {
             return $"({X}, {Y}, {Z})";
         }
-    }
-    [JsonObject(MemberSerialization.OptIn)]
-    public struct Layer
-    {
-        [JsonProperty("objects")]
-        public CubeInfo[,] Objects { get; set; }
-    }
-    [JsonObject(MemberSerialization.OptIn)]
-    public struct CubeInfo
-    {
-        [JsonProperty("type")]
-        public string Type { get; set; }
     }
 }

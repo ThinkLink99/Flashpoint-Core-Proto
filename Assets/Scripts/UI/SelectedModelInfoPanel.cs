@@ -12,6 +12,11 @@ public class SelectedModelInfoPanel : MonoBehaviour
     public void ShowPanel()
     {
         this.gameObject.SetActive(true);
+
+        if (selectedModel?.ActionController.RemainingAP > 0)
+        {
+
+        }
     }
     public void HidePanel()
     {

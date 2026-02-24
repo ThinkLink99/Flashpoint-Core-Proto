@@ -4,45 +4,67 @@ namespace Assets.Scripts
 {
     public class MapBuilder : MonoBehaviour
     {
+        [SerializeField] private Map map;
         [SerializeField] private TextAsset mapJson;
+        [SerializeField] private GameObject emptyCube;
         [SerializeField] private Material groundMaterial;
         [SerializeField] private TerrainSetScriptableObject terrainSet;
         [SerializeField] private bool showDebugLogs = true;
 
         [SerializeField] private GameEvent onMapCreated;
 
-        public void BuildMap()
+        public void OnGameStart (Component sender, object data)
+        {
+            BuildMap()
+            .SpawnGroundPlane()
+            .SpawnGridLines()
+            .SpawnTerrain()
+            .DrawDeploymentZones()
+            .RaiseMapCreatedEvent ();
+        }
+
+        public MapBuilder BuildMap()
         {
             if (showDebugLogs) Debug.Log("Loading map...");
             // use the map data to build the map in the scene
-            var map = Map.Load(mapJson);
+            map = Map.Load(mapJson);
             map.MapGrid = new Grid3<Cube>(map.MapSize.X, map.MapSize.Y, map.MapSize.Z);
 
             if (showDebugLogs) Debug.Log("Map loaded.");
             if (showDebugLogs) Debug.Log($"Map Name: {map.MapName}");
             if (showDebugLogs) Debug.Log($"Map Size: {map.MapSize.ToString()}");
 
+            onMapCreated?.Raise(this, map);
+            return this;
+        }
+        public MapBuilder SpawnGroundPlane()
+        {
             if (showDebugLogs) Debug.Log("Creating Ground Plane...");
             // instantiate a ground plane and set its scale to match the map size
             var mesh = CreatePlane("Materials/testGround", "Ground", map.MapSize.X * map.CubeSize, map.MapSize.Z * map.CubeSize);
             //var plane = Instantiate<GameObject>(mesh, this.transform);
+            mesh.transform.parent = this.transform;
             mesh.transform.position = new Vector3((map.MapSize.X * map.CubeSize) / 2, 0, (map.MapSize.Z * map.CubeSize) / 2);
             mesh.transform.localScale = new Vector3(1, 1, 1);
             if (showDebugLogs) Debug.Log("Ground Plane Created.");
+            return this;
+        }
+        public MapBuilder SpawnGridLines()
+        {
+            if (showDebugLogs) Debug.Log("Spawning Grid Lines...");
+            // instantiate grid lines based on the map size and cube size
 
-            if (showDebugLogs) Debug.Log("Placing Terrain pieces...");
-            var start = this.transform.localPosition;
             for (int y = 0; y < map.MapSize.Y; y++)
             {
                 for (int x = 0; x < map.MapSize.X; x++)
                 {
                     for (int z = 0; z < map.MapSize.Z; z++)
                     {
-                        var terrain = Instantiate(terrainSet.terrainPieces[map.Layers[y].Objects[x, z].Type]);
+                        var terrain = Instantiate(emptyCube, this.transform);
                         terrain.transform.localPosition = new Vector3((x * terrain.transform.lossyScale.x), (y * terrain.transform.lossyScale.y) + (terrain.transform.lossyScale.y / 2), (z * terrain.transform.lossyScale.z));
                         if (showDebugLogs) Debug.Log($"Placing {terrain.name}");
 
-                        var cube = terrain.AddComponent<Cube>();
+                        var cube = terrain.GetComponent<Cube>();
                         cube.mapPosition = new Vector3(x, y, z);
                         cube.worldPosition = terrain.transform.localPosition;
                         cube.worldSize = terrain.transform.lossyScale;
@@ -52,9 +74,38 @@ namespace Assets.Scripts
                 }
             }
 
+            if (showDebugLogs) Debug.Log("Grid Lines Spawned.");
+            return this;
+        }
+        public MapBuilder SpawnTerrain() 
+        {
+            if (showDebugLogs) Debug.Log("Placing Terrain pieces...");
+            var start = this.transform.localPosition;
+            
+            for (int x = 0; x < map.Terrain.Length; x++)
+            {
+                var terrain = Instantiate(terrainSet.terrainPieces[map.Terrain[x].id], this.transform);
+                terrain.transform.localPosition = map.Terrain[x].worldPositon.ToVector3();
+                terrain.transform.localEulerAngles = map.Terrain[x].worldRotation.ToVector3();
+                if (showDebugLogs) Debug.Log($"Placing {terrain.name}");
+            }
+
             if (showDebugLogs) Debug.Log("Terrain pieces placed.");
+            return this;
+        }
+        public MapBuilder DrawDeploymentZones ()
+        {
+            if (showDebugLogs) Debug.Log("Drawing Deployment Zones...");
+
+
+            if (showDebugLogs) Debug.Log("Deployment Zones Drawn.");
+            return this;
+        }
+        public void RaiseMapCreatedEvent ()
+        {
             onMapCreated?.Raise(this, map);
         }
+
 
         private GameObject CreatePlane(string TexturePath, string Name, float Width, float Height)
         {
@@ -62,20 +113,10 @@ namespace Assets.Scripts
             g.transform.localEulerAngles = new Vector3(0, 0, 0);
             g.AddComponent<MeshFilter>();
             g.AddComponent<MeshRenderer>();
-            g.GetComponent<MeshFilter>().mesh = CreatePlaneMesh(Width, Height);
-            g.AddComponent<MeshCollider>().sharedMesh = g.GetComponent<MeshFilter>().mesh;
+            g.GetComponent<MeshFilter>().sharedMesh = CreatePlaneMesh(Width, Height);
+            g.AddComponent<MeshCollider>().sharedMesh = g.GetComponent<MeshFilter>().sharedMesh;
 
-            g.GetComponent<MeshRenderer>().material = groundMaterial;
-            //Material m = new Material("my_material");
-            //m.name = "my_material";
-            ////m.shader = Shader.Find("Transparent/Cutout/Diffuse");
-            //m.shader = Shader.Find("Somian/Unlit/Transparent");
-
-            //g.material = m;
-            //g.renderer.material.mainTexture = (Texture2D)Resources.Load(TexturePath);
-            //g.renderer.castShadows = false;
-            //g.renderer.receiveShadows = false;
-
+            g.GetComponent<MeshRenderer>().material = new Material(groundMaterial);
             return g;
         }
         private Mesh CreatePlaneMesh(float Width, float Height)

@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e3ebdc023417a264abb90a365b3300e7, type: 3}
+  m_Name: Spartan Deadeye
+  m_EditorClassIdentifier: 
+  baseSizeMM: 32
+  factionName: UNSC
+  unitName: Spartan MK VII
+  unitHP: 4
+  unitArmor: 2
+  unitAdvanceSpeed: 2
+  unitSprintSpeed: 3
+  unitRange: 4
+  unitFight: 4
+  unitSave: 4

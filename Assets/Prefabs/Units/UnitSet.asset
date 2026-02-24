@@ -9,10 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 018e0b2622fc8f3499f78cabee018e8d, type: 3}
-  m_Name: TerrainSet
+  m_Script: {fileID: 11500000, guid: 4cc0aa856658c3443a821dd6bc94e7fb, type: 3}
+  m_Name: UnitSet
   m_EditorClassIdentifier: 
-  terrainPieces:
+  units:
     reorderableList:
       canAdd: 1
       canRemove: 1
@@ -36,14 +36,17 @@ MonoBehaviour:
     reqReferences: {fileID: 0}
     isExpanded: 1
     _keyValues:
-    - ground_grass
-    - wall_block
-    - empty
+    - Spartan MK VII
+    - Spartan Deadeye
+    - Spartan Brawler
+    - Spartan Zvezda
     _keys:
-    - ground_grass
-    - wall_block
-    - empty
+    - Spartan MK VII
+    - Spartan Deadeye
+    - Spartan Brawler
+    - Spartan Zvezda
     _values:
-    - {fileID: 7292448822111165194, guid: 36e03c7ed4821134aba736c907d9daff, type: 3}
-    - {fileID: 7292448822111165194, guid: b035de6f52b87c947ac4e9c0a6f5c392, type: 3}
-    - {fileID: 7292448822111165194, guid: 8e4ea439ca775514493165ad7485dd3f, type: 3}
+    - {fileID: 888885711658051730, guid: b38ede538d854bb46a5b3dd20ce22bf3, type: 3}
+    - {fileID: 8893908974339623627, guid: 222b5f8174df27643a05c855fff08d49, type: 3}
+    - {fileID: 1825267052091645875, guid: ba21d85b8cf60fc46be2de148123f3b2, type: 3}
+    - {fileID: 8967731110272924250, guid: 99128d77b04b4224fa1d5e7acac2f1e9, type: 3}

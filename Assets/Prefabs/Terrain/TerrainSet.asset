@@ -1,0 +1,46 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 018e0b2622fc8f3499f78cabee018e8d, type: 3}
+  m_Name: TerrainSet
+  m_EditorClassIdentifier: 
+  terrainPieces:
+    reorderableList:
+      canAdd: 1
+      canRemove: 1
+      draggable: 1
+      expandable: 1
+      multipleSelection: 1
+      isExpanded: 1
+      label:
+        m_Text: Keys
+        m_Image: {fileID: 0}
+        m_Tooltip: 
+      headerHeight: 18
+      footerHeight: 13
+      slideEasing: 0.15
+      verticalSpacing: 2
+      showDefaultBackground: 1
+      elementDisplayType: 0
+      elementNameProperty: 
+      elementNameOverride: 
+      elementIcon: {fileID: 0}
+    reqReferences: {fileID: 0}
+    isExpanded: 1
+    _keyValues:
+    - wall_block
+    - terrain_tower_2x1
+    _keys:
+    - wall_block
+    - terrain_tower_2x1
+    _values:
+    - {fileID: 7292448822111165194, guid: b035de6f52b87c947ac4e9c0a6f5c392, type: 3}
+    - {fileID: 900061382940513216, guid: 99e7173899bf6294a8ac00b35b9905cb, type: 3}
