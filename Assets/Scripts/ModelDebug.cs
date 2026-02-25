@@ -20,12 +20,18 @@ public class ModelDebug : MonoBehaviour
         // If not assigned in the inspector, try to find GameObjects by name in the scene.
         if (monitorModel == null)
         {
-            monitorModel = this.gameObject;
+            monitorModel = this.GetComponentInParent<Model>().gameObject;
         }
 
         distanceToPlayer = Chain<Vector3, float>.Start(new DistanceFromPlayer(monitorModel.transform))
             .Then(new DistanceScorer())
             .Compile();
+    }
+
+    private void LateUpdate()
+    {
+        transform.LookAt(Camera.main.transform);
+        transform.RotateAround(transform.position, transform.up, 180f);
     }
 
     private void OnDestroy()
@@ -43,6 +49,7 @@ public class ModelDebug : MonoBehaviour
     public void modelMovedHandler (Component sender, object data)
     {
         if (sender is not Model model) return;
+        if (model != GetComponentInParent<Model>()) return;
 
         Vector3 modelPosition = (Vector3)data;
         xText.text = $"X: {modelPosition.x.ToString("F2")}";

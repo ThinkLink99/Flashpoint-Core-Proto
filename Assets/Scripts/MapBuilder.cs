@@ -34,7 +34,6 @@ namespace Assets.Scripts
             if (showDebugLogs) Debug.Log($"Map Name: {map.MapName}");
             if (showDebugLogs) Debug.Log($"Map Size: {map.MapSize.ToString()}");
 
-            onMapCreated?.Raise(this, map);
             return this;
         }
         public MapBuilder SpawnGroundPlane()

@@ -48,6 +48,18 @@ public class Map
         terrainList.AddRange(terrain);
         Terrain = terrainList.ToArray();
     }
+    public DeploymentZone GetZoneForTeam (TeamId teamId)
+    {
+        if (DeploymentZones == null) return default;
+
+        foreach (var zone in DeploymentZones)
+        {
+            if (zone.teamId == teamId) return zone;
+        }
+
+        // if we found no team with that id, return nothing
+        return default;
+    }
     public bool CubeIsInDeploymentZone(Vector2IntS cubePos, out TeamId teamIdOfZone)
     {
         // check if the cube position is in any of the deployment zones for the given team
