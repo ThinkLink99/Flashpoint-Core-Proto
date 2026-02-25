@@ -1467,6 +1467,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29aeeee5fb42978418d4a3972a16d414, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  spawnableUnits: {fileID: 11400000, guid: 1fa6eadaa05ebc64f94da9310b0f7cdf, type: 2}
+  redTeamMaterial: {fileID: 2100000, guid: 7aa14d2a8deb94b4ea590af9e9c8b32a, type: 2}
+  blueTeamMaterial: {fileID: 2100000, guid: 37307ebaf4d5f1745b07d5739963c0f7, type: 2}
+  team: 1
   fireteam:
     models:
     - {fileID: 11400000, guid: e32cb81dfd8912948ac75ddb1ec9b77a, type: 2}
