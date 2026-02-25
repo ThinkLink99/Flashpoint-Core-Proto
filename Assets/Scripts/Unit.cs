@@ -1,23 +1,25 @@
+using Newtonsoft.Json;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[JsonObject(MemberSerialization.OptIn)]
 [CreateAssetMenu(fileName = "New Unit", menuName = "Unit")]
 public class Unit : ScriptableObject
 {
-    public int baseSizeMM = 28;
-    public string factionName = "UNSC";
-    public string unitName = "Spartan MK VII";
+    [JsonProperty] public int baseSizeMM = 32;
+    [JsonProperty] public string factionName = "UNSC";
+    [JsonProperty] public string unitName = "Spartan MK VII";
 
     // TODO: Add Keyword functionality
 
-    public int unitHP = 4;
-    public int unitArmor = 2;
-    public int unitAdvanceSpeed = 2;
-    public int unitSprintSpeed = 3;
-    public int unitRange = 4;
-    public int unitFight = 4;
-    public int unitSave = 4;
+    [JsonProperty] public int unitHP = 4;
+    [JsonProperty] public int unitArmor = 2;
+    [JsonProperty] public int unitAdvanceSpeed = 2;
+    [JsonProperty] public int unitSprintSpeed = 3;
+    [JsonProperty] public int unitRange = 4;
+    [JsonProperty] public int unitFight = 4;
+    [JsonProperty] public int unitSave = 4;
 
     // TODO: Add Weapon loadout functionality
 }
