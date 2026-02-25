@@ -97,6 +97,24 @@ namespace Assets.Scripts
         {
             if (showDebugLogs) Debug.Log("Drawing Deployment Zones...");
 
+            for (int y = 0; y < map.MapSize.y; y++)
+            {
+                for (int x = 0; x < map.MapSize.x; x++)
+                {
+                    for (int z = 0; z < map.MapSize.z; z++)
+                    {
+                        // check if this X,Z  coord is even a Deployment Zone, if not skip it
+                        if (map.CubeIsInDeploymentZone(x, z, out TeamId teamId) == false) continue;
+
+                        var cube = map.MapGrid.Get(x, y, z);
+                        if (cube == null) continue;
+
+                        cube.IsDeploymentZone = true;
+                        cube.deploymentZoneTeam = teamId;
+                    }
+                }
+            }
+
 
             if (showDebugLogs) Debug.Log("Deployment Zones Drawn.");
             return this;

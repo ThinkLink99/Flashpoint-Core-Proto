@@ -789,6 +789,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0826c4457b582f44f98094a43f0e5adc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  map:
+    mapName: 
+    mapSize:
+      x: 0
+      y: 0
+      z: 0
+    cubeSize: 76.2
+    deploymentZones: []
   mapJson: {fileID: 4900000, guid: 13b6ea0ff829af3479806e9e474d9bbf, type: 3}
   emptyCube: {fileID: 7292448822111165194, guid: 8e4ea439ca775514493165ad7485dd3f, type: 3}
   groundMaterial: {fileID: 2100000, guid: 2fcfc2ab7ef6296459cfe748745c50e5, type: 2}

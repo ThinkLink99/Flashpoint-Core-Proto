@@ -9,11 +9,45 @@
   "deployment_zones": [
     {
       "teamId": 1,
-      "squares": null
+      "squares": [
+        {
+          "x": 0,
+          "y": 3
+        },
+        {
+          "x": 0,
+          "y": 4
+        },
+        {
+          "x": 0,
+          "y": 5
+        },
+        {
+          "x": 0,
+          "y": 2
+        }
+      ]
     },
     {
       "teamId": 2,
-      "squares": null
+      "squares": [
+        {
+          "x": 7,
+          "y": 3
+        },
+        {
+          "x": 7,
+          "y": 4
+        },
+        {
+          "x": 7,
+          "y": 5
+        },
+        {
+          "x": 7,
+          "y": 2
+        }
+      ]
     }
   ],
   "terrain": [

@@ -68,8 +68,6 @@ public class Cube : MonoBehaviour
     private void OnDrawGizmos()
     {
         //Gizmos.color = Color.green;
-        //Gizmos.DrawWireCube(worldPosition, worldSize);
-
         if (IsDeploymentZone)
         {
             switch (deploymentZoneTeam)
@@ -84,6 +82,7 @@ public class Cube : MonoBehaviour
                     Gizmos.color = new Color(1f, 1f, 1f, 0.5f);
                     break;
             }
+            Gizmos.DrawWireCube(worldPosition, worldSize);
         }
     }
 }

@@ -48,6 +48,40 @@ public class Map
         terrainList.AddRange(terrain);
         Terrain = terrainList.ToArray();
     }
+    public bool CubeIsInDeploymentZone(Vector2IntS cubePos, out TeamId teamIdOfZone)
+    {
+        // check if the cube position is in any of the deployment zones for the given team
+        foreach (var zone in DeploymentZones)
+        {
+            foreach (var square in zone.squares)
+            {
+                if (square.x == cubePos.x && square.y == cubePos.y)
+                {
+                    teamIdOfZone = zone.teamId;
+                    return true;
+                }
+            }
+        }
+        teamIdOfZone = default;
+        return false;
+    }
+    public bool CubeIsInDeploymentZone(int x, int z, out TeamId teamIdOfZone)
+    {
+        // check if the cube position is in any of the deployment zones for the given team
+        foreach (var zone in DeploymentZones)
+        {
+            foreach (var square in zone.squares)
+            {
+                if (square.x == x && square.y == z)
+                {
+                    teamIdOfZone = zone.teamId;
+                    return true;
+                }
+            }
+        }
+        teamIdOfZone = default;
+        return false;
+    }
 
     public void Save(string path)
     {
