@@ -9,7 +9,8 @@ public class Cube : MonoBehaviour
 
     public BoxCollider boxCollider;
 
-    public bool IsDeploymentZone { get; set; } = false;
+    public TeamId deploymentZoneTeam;
+    public bool IsDeploymentZone = false;
 
     public void Start()
     {
@@ -68,5 +69,21 @@ public class Cube : MonoBehaviour
     {
         //Gizmos.color = Color.green;
         //Gizmos.DrawWireCube(worldPosition, worldSize);
+
+        if (IsDeploymentZone)
+        {
+            switch (deploymentZoneTeam)
+            {
+                case TeamId.Red:
+                    Gizmos.color = new Color(1f, 0f, 0f, 0.5f);
+                    break;
+                case TeamId.Blue:
+                    Gizmos.color = new Color(0f, 0f, 1f, 0.5f);
+                    break;
+                default:
+                    Gizmos.color = new Color(1f, 1f, 1f, 0.5f);
+                    break;
+            }
+        }
     }
 }

@@ -80,11 +80,11 @@ public class MovementPlanner
     // Find cube in map that contains world position (linear search similar to previous implementation)
     private Cube GetCubeAtWorldPosition(Vector3 position)
     {
-        for (int x = 0; x < map.MapSize.X; x++)
+        for (int x = 0; x < map.MapSize.x; x++)
         {
-            for (int y = 0; y < map.MapSize.Y; y++)
+            for (int y = 0; y < map.MapSize.y; y++)
             {
-                for (int z = 0; z < map.MapSize.Z; z++)
+                for (int z = 0; z < map.MapSize.z; z++)
                 {
                     var cube = map.MapGrid.Get(x, y, z);
                     if (cube is null) continue;

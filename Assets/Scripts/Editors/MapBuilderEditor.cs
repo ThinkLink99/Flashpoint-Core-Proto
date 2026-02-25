@@ -8,7 +8,12 @@ using UnityEngine.UIElements;
 public class MapBuilderEditor : Editor
 {
     SerializedProperty map;
-    SerializedProperty Size_X;
+
+    public Map Map
+    {
+        get => (Map)map.GetUnderlyingValue();
+        set => map.SetUnderlyingValue(value);
+    }
 
     public void OnEnable()
     {
@@ -27,13 +32,13 @@ public class MapBuilderEditor : Editor
             var newMap = new Map
             {
                 MapName = "New Map",
-                MapSize = new MapSize { X = 8, Y = 8, Z = 8 },
+                MapSize = new Vector3IntS(8,8,8),
                 CubeSize = 76.2f,
                 Terrain = new Terrain[0],
                 MapGrid = new Grid3<Cube>(8, 8, 8)
             };
             Debug.Log($"newMap: {newMap.MapName}");
-            map.SetUnderlyingValue(newMap);
+            Map = newMap;
         }
         if (GUILayout.Button("Load Map from File"))
         {
@@ -53,8 +58,7 @@ public class MapBuilderEditor : Editor
         if (GUILayout.Button("Save Map"))
         {
             // clear current terrain from the map to avoid dupes
-            ((Map)map.GetUnderlyingValue())
-                .Terrain = new Terrain[0];
+            Map.Terrain = new Terrain[0];
 
             // add the terrain currently a child of this obeserved object
             var terrain = ((MapBuilder)target).GetComponentsInChildren<Terrain>();
@@ -64,11 +68,10 @@ public class MapBuilderEditor : Editor
                 t.SetPositionFromTransform (t.transform);
                 t.SetRotationFromTransform (t.transform);
 
-                ((Map)map.GetUnderlyingValue())
-                .AddTerrain(t);
+                Map.AddTerrain(t);
             }
 
-            ((Map)map.GetUnderlyingValue()).Save(Application.dataPath + "/Maps/" + ((Map)map.GetUnderlyingValue()).MapName + ".json");
+            Map.Save(Application.dataPath + "/Maps/" + Map.MapName + ".json");
             Debug.Log("Map Saved.");
         }
 

@@ -1,5 +1,5 @@
 {
-  "map": "flatgrass",
+  "map": "SampleMap",
   "size": {
     "x": 8,
     "y": 3,
@@ -9,11 +9,11 @@
   "deployment_zones": [
     {
       "teamId": 1,
-      "squares": null
+      "squares": []
     },
     {
       "teamId": 2,
-      "squares": null
+      "squares": []
     }
   ],
   "terrain": [

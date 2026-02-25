@@ -28,7 +28,7 @@ namespace Assets.Scripts
             if (showDebugLogs) Debug.Log("Loading map...");
             // use the map data to build the map in the scene
             map = Map.Load(mapJson);
-            map.MapGrid = new Grid3<Cube>(map.MapSize.X, map.MapSize.Y, map.MapSize.Z);
+            map.MapGrid = new Grid3<Cube>(map.MapSize.x, map.MapSize.y, map.MapSize.z);
 
             if (showDebugLogs) Debug.Log("Map loaded.");
             if (showDebugLogs) Debug.Log($"Map Name: {map.MapName}");
@@ -41,10 +41,10 @@ namespace Assets.Scripts
         {
             if (showDebugLogs) Debug.Log("Creating Ground Plane...");
             // instantiate a ground plane and set its scale to match the map size
-            var mesh = CreatePlane("Materials/testGround", "Ground", map.MapSize.X * map.CubeSize, map.MapSize.Z * map.CubeSize);
+            var mesh = CreatePlane("Materials/testGround", "Ground", map.MapSize.x * map.CubeSize, map.MapSize.z * map.CubeSize);
             //var plane = Instantiate<GameObject>(mesh, this.transform);
             mesh.transform.parent = this.transform;
-            mesh.transform.position = new Vector3((map.MapSize.X * map.CubeSize) / 2, 0, (map.MapSize.Z * map.CubeSize) / 2);
+            mesh.transform.position = new Vector3((map.MapSize.x * map.CubeSize) / 2, 0, (map.MapSize.z * map.CubeSize) / 2);
             mesh.transform.localScale = new Vector3(1, 1, 1);
             if (showDebugLogs) Debug.Log("Ground Plane Created.");
             return this;
@@ -54,11 +54,11 @@ namespace Assets.Scripts
             if (showDebugLogs) Debug.Log("Spawning Grid Lines...");
             // instantiate grid lines based on the map size and cube size
 
-            for (int y = 0; y < map.MapSize.Y; y++)
+            for (int y = 0; y < map.MapSize.y; y++)
             {
-                for (int x = 0; x < map.MapSize.X; x++)
+                for (int x = 0; x < map.MapSize.x; x++)
                 {
-                    for (int z = 0; z < map.MapSize.Z; z++)
+                    for (int z = 0; z < map.MapSize.z; z++)
                     {
                         var terrain = Instantiate(emptyCube, this.transform);
                         terrain.transform.localPosition = new Vector3((x * terrain.transform.lossyScale.x), (y * terrain.transform.lossyScale.y) + (terrain.transform.lossyScale.y / 2), (z * terrain.transform.lossyScale.z));
