@@ -58,6 +58,7 @@ public class MapBuilderEditor : Editor
 
             // add the terrain currently a child of this obeserved object
             var terrain = ((MapBuilder)target).GetComponentsInChildren<Terrain>();
+            Debug.Log(terrain.Length);
             foreach (var t in terrain)
             {
                 t.SetPositionFromTransform (t.transform);
@@ -68,8 +69,15 @@ public class MapBuilderEditor : Editor
             }
 
             ((Map)map.GetUnderlyingValue()).Save(Application.dataPath + "/Maps/" + ((Map)map.GetUnderlyingValue()).MapName + ".json");
+            Debug.Log("Map Saved.");
         }
 
+        if (GUILayout.Button("Clear Terrain"))
+        {
+            var mapObjects = ((MapBuilder)target).GetComponentsInChildren<Terrain>(includeInactive: true);
+            for (int i = mapObjects.Length; i > 0; --i)
+                DestroyImmediate(mapObjects[i].gameObject);
+        }
         if (GUILayout.Button("Reset Map Builder"))
         {
             var mapObjects = ((MapBuilder)target).GetComponentInChildren<Transform>(includeInactive: true);

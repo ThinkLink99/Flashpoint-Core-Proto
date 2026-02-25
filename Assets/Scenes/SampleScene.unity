@@ -123,72 +123,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &18735130
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 18735131}
-  - component: {fileID: 18735133}
-  - component: {fileID: 18735132}
-  m_Layer: 0
-  m_Name: Player 2
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &18735131
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 18735130}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1033910159}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &18735132
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 18735130}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 07859d7588c7bd14595f977a5a347e0b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  spawnableUnits: {fileID: 11400000, guid: 1fa6eadaa05ebc64f94da9310b0f7cdf, type: 2}
-  playerTeamMaterial: {fileID: 2100000, guid: 37307ebaf4d5f1745b07d5739963c0f7, type: 2}
-  enemyTeamMaterial: {fileID: 2100000, guid: 7aa14d2a8deb94b4ea590af9e9c8b32a, type: 2}
---- !u!114 &18735133
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 18735130}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 29aeeee5fb42978418d4a3972a16d414, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  onTurnStarted: {fileID: 0}
-  onTurnEnded: {fileID: 0}
-  spawnTestUnit: 1
-  testUnitName: Spartan Deadeye
-  testSpawnPosition: {x: 300, y: 20, z: 300}
-  modelSpawner: {fileID: 18735132}
 --- !u!1 &40793062
 GameObject:
   m_ObjectHideFlags: 0
@@ -782,6 +716,85 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 280309380}
   m_CullTransparentMesh: 1
+--- !u!1 &536174323
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 536174324}
+  - component: {fileID: 536174326}
+  - component: {fileID: 536174325}
+  m_Layer: 0
+  m_Name: Map
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &536174324
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 536174323}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1033910159}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &536174325
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 536174323}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a9433f5e30db324682acd75aac39209, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameEvent: {fileID: 11400000, guid: 44199c0b8e846354cabfed937b4ec396, type: 2}
+  response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 536174326}
+        m_TargetAssemblyTypeName: Assets.Scripts.MapBuilder, Assembly-CSharp
+        m_MethodName: OnGameStart
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &536174326
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 536174323}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0826c4457b582f44f98094a43f0e5adc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mapJson: {fileID: 4900000, guid: 13b6ea0ff829af3479806e9e474d9bbf, type: 3}
+  emptyCube: {fileID: 7292448822111165194, guid: 8e4ea439ca775514493165ad7485dd3f, type: 3}
+  groundMaterial: {fileID: 2100000, guid: 2fcfc2ab7ef6296459cfe748745c50e5, type: 2}
+  terrainSet: {fileID: 11400000, guid: 8b67c788b58ddf44f80c08a9c3cd1150, type: 2}
+  showDebugLogs: 1
+  onMapCreated: {fileID: 11400000, guid: ae3509c80e9921149990d74e057f696b, type: 2}
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -1212,85 +1225,6 @@ MonoBehaviour:
   moveSpeed: 100
   rotateSpeed: 100
   zoomSpeed: 20
---- !u!1 &965291151
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 965291152}
-  - component: {fileID: 965291154}
-  - component: {fileID: 965291153}
-  m_Layer: 0
-  m_Name: Map
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &965291152
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 965291151}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1033910159}
-  m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &965291153
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 965291151}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5a9433f5e30db324682acd75aac39209, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  gameEvent: {fileID: 11400000, guid: 44199c0b8e846354cabfed937b4ec396, type: 2}
-  response:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 965291154}
-        m_TargetAssemblyTypeName: Assets.Scripts.MapBuilder, Assembly-CSharp
-        m_MethodName: OnGameStart
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
---- !u!114 &965291154
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 965291151}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0826c4457b582f44f98094a43f0e5adc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  mapJson: {fileID: 4900000, guid: 13b6ea0ff829af3479806e9e474d9bbf, type: 3}
-  emptyCube: {fileID: 7292448822111165194, guid: 8e4ea439ca775514493165ad7485dd3f, type: 3}
-  groundMaterial: {fileID: 2100000, guid: 2fcfc2ab7ef6296459cfe748745c50e5, type: 2}
-  terrainSet: {fileID: 11400000, guid: 8b67c788b58ddf44f80c08a9c3cd1150, type: 2}
-  showDebugLogs: 1
-  onMapCreated: {fileID: 11400000, guid: ae3509c80e9921149990d74e057f696b, type: 2}
 --- !u!1 &1033910154
 GameObject:
   m_ObjectHideFlags: 0
@@ -1338,7 +1272,8 @@ MonoBehaviour:
   cubeSize: 76.2
   previewMovementRange: 0
   playerBuilder: {fileID: 1033910166}
-  players: []
+  players:
+  - {fileID: 1137172419}
 --- !u!4 &1033910159
 Transform:
   m_ObjectHideFlags: 0
@@ -1352,8 +1287,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1137172418}
-  - {fileID: 18735131}
-  - {fileID: 965291152}
+  - {fileID: 536174324}
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1457,6 +1391,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 1137172419}
+        m_TargetAssemblyTypeName: Player, Assembly-CSharp
+        m_MethodName: OnMapCreated
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1033910166
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1479,7 +1425,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1137172418}
   - component: {fileID: 1137172419}
-  - component: {fileID: 1137172420}
   m_Layer: 0
   m_Name: Player 1
   m_TagString: Untagged
@@ -1514,27 +1459,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29aeeee5fb42978418d4a3972a16d414, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  fireteam:
+    models:
+    - {fileID: 11400000, guid: e32cb81dfd8912948ac75ddb1ec9b77a, type: 2}
+    - {fileID: 11400000, guid: 785ea8fffe4dce64e8e8ae9cc41596b2, type: 2}
+    - {fileID: 11400000, guid: ecc059817118747439990c5ab2b5d860, type: 2}
+    - {fileID: 11400000, guid: 26fba4c7bb49cfc43b13a2277cdf9975, type: 2}
   onTurnStarted: {fileID: 0}
   onTurnEnded: {fileID: 0}
-  spawnTestUnit: 1
-  testUnitName: Spartan MK VII
-  testSpawnPosition: {x: 0, y: 20, z: 0}
-  modelSpawner: {fileID: 1137172420}
---- !u!114 &1137172420
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1137172417}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 07859d7588c7bd14595f977a5a347e0b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  spawnableUnits: {fileID: 11400000, guid: 1fa6eadaa05ebc64f94da9310b0f7cdf, type: 2}
-  playerTeamMaterial: {fileID: 2100000, guid: 37307ebaf4d5f1745b07d5739963c0f7, type: 2}
-  enemyTeamMaterial: {fileID: 2100000, guid: 7aa14d2a8deb94b4ea590af9e9c8b32a, type: 2}
 --- !u!1 &1234078092
 GameObject:
   m_ObjectHideFlags: 0

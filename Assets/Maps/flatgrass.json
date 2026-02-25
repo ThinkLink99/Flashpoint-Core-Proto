@@ -2,7 +2,7 @@
   "map": "flatgrass",
   "size": {
     "x": 8,
-    "y": 8,
+    "y": 3,
     "z": 8
   },
   "cube_size": 76.2,
@@ -17,6 +17,19 @@
       "world_rotation": {
         "x": 0.0,
         "y": 0.0,
+        "z": 0.0
+      }
+    },
+    {
+      "id": "terrain_shipping_container",
+      "world_position": {
+        "x": 404.0,
+        "y": 0.0,
+        "z": 370.0
+      },
+      "world_rotation": {
+        "x": 0.0,
+        "y": 90.7601852,
         "z": 0.0
       }
     }

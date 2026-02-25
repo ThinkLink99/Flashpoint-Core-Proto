@@ -38,9 +38,12 @@ MonoBehaviour:
     _keyValues:
     - wall_block
     - terrain_tower_2x1
+    - terrain_shipping_container
     _keys:
     - wall_block
     - terrain_tower_2x1
+    - terrain_shipping_container
     _values:
     - {fileID: 7292448822111165194, guid: b035de6f52b87c947ac4e9c0a6f5c392, type: 3}
     - {fileID: 900061382940513216, guid: 99e7173899bf6294a8ac00b35b9905cb, type: 3}
+    - {fileID: 1916017704557670735, guid: 1b9b5e1c1a6fd4348a2348033f3d6406, type: 3}

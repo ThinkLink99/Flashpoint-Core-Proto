@@ -9,6 +9,8 @@ public class Cube : MonoBehaviour
 
     public BoxCollider boxCollider;
 
+    public bool IsDeploymentZone { get; set; } = false;
+
     public void Start()
     {
         boxCollider = GetComponent<BoxCollider>();
