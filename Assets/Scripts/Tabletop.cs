@@ -1,7 +1,4 @@
-using Assets.Scripts;
 using System.Collections.Generic;
-using Unity.VisualScripting;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -138,7 +135,16 @@ public class Tabletop : MonoBehaviour
         {
             if (Physics.Raycast(ray, out RaycastHit hitInfo))
             {
-                selectedPoint = hitInfo.point;
+                // check if this point falls withing our movement range
+                var potentialPoint = hitInfo.point;
+                if (potentialPoint == null) return; // shouldnt even happen but we'll check it JIC
+
+                var cubeIn = movePlanner.GetCubeContainingPoint(potentialPoint);
+                if (cubeIn == null) return; // there is no cube in the world for this point, don't update the selected point
+
+                if (highlightedCubes.Contains(cubeIn))
+                    // if our cube is in this list, we can update our selected point
+                    selectedPoint = hitInfo.point;
             }
         }
 
@@ -283,13 +289,6 @@ public class Tabletop : MonoBehaviour
         // return the final product
         return mac;
     }
-
-
-
-
-
-
-
 
     private void OnDrawGizmos()
     {

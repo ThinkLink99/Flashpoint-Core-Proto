@@ -1424,6 +1424,7 @@ GameObject:
   - component: {fileID: 963194227}
   - component: {fileID: 963194226}
   - component: {fileID: 963194230}
+  - component: {fileID: 963194231}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -1504,7 +1505,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9181481514899c242844cc514e96f325, type: 3}
   m_Name: 
@@ -1524,6 +1525,22 @@ MonoBehaviour:
   panSpeed: 0.5
   keyboardPanSpeed: 5
   moveDamping: 0
+--- !u!114 &963194231
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 963194225}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 504b40f527dd2a9459423bf40dfea567, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveSpeed: 100
+  shiftMultiplier: 5
+  rotateSpeed: 100
+  zoomSpeed: 20
 --- !u!1 &1019063241
 GameObject:
   m_ObjectHideFlags: 0
@@ -1715,8 +1732,20 @@ MonoBehaviour:
   movingModel: 0
   selectedModel: {fileID: 0}
   selectedPoint: {x: 0, y: 0, z: 0}
+  pickUpHeightFromCube: 1
   cubeSize: 76.2
   previewMovementRange: 0
+  movePlanner:
+    map:
+      mapName: 
+      mapSize:
+        x: 0
+        y: 0
+        z: 0
+      cubeSize: 76.2
+      deploymentZones: []
+    advanceRange: 0
+    sprintRange: 0
   playerBuilder: {fileID: 1033910166}
   players:
   - {fileID: 1137172419}

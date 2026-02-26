@@ -4,6 +4,7 @@
 public class MoveableCamera : MonoBehaviour
 {
     public float moveSpeed = 20f;
+    public float shiftMultiplier = 5f;
     public float rotateSpeed = 100f;
     public float zoomSpeed = 20f;
 
@@ -30,7 +31,17 @@ public class MoveableCamera : MonoBehaviour
         // Otherwise, normal speed.
         if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
         {
-            mvSpeed *= 2f;
+            mvSpeed *= shiftMultiplier;
+        }
+
+        if (Input.GetMouseButton(1)) // Right mouse button
+        {
+            float mouseX = Input.GetAxis("Mouse X");
+            float mouseY = Input.GetAxis("Mouse Y");
+        }
+        else
+        {
+
         }
 
         if (Input.GetKey(KeyCode.W)) move += camera.transform.forward;
@@ -50,21 +61,21 @@ public class MoveableCamera : MonoBehaviour
             float mouseY = Input.GetAxis("Mouse Y");
 
             // Y axis rotation (orbit around board)
-            camera.transform.RotateAround(Vector3.zero, Vector3.up, mouseX * rotateSpeed * Time.deltaTime);
+            camera.transform.RotateAround(camera.transform.forward * 5, Vector3.up, mouseX * rotateSpeed * Time.deltaTime);
 
             // X axis rotation (tilt up/down)
             Vector3 rightAxis = camera.transform.right;
-            camera.transform.RotateAround(Vector3.zero, rightAxis, -mouseY * rotateSpeed * Time.deltaTime);
+            camera.transform.RotateAround(camera.transform.forward * 5, rightAxis, -mouseY * rotateSpeed * Time.deltaTime);
         }
 
         // Q/E keys for Y axis rotation
         if (Input.GetKey(KeyCode.Q))
         {
-            camera.transform.RotateAround(Vector3.zero, Vector3.up, -rotateSpeed * Time.deltaTime);
+            camera.transform.RotateAround(camera.transform.forward * 5, Vector3.up, -rotateSpeed * Time.deltaTime);
         }
         if (Input.GetKey(KeyCode.E))
         {
-            camera.transform.RotateAround(Vector3.zero, Vector3.up, rotateSpeed * Time.deltaTime);
+            camera.transform.RotateAround(camera.transform.forward * 5, Vector3.up, rotateSpeed * Time.deltaTime);
         }
     }
     void ZoomCamera()
