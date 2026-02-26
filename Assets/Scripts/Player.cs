@@ -59,7 +59,7 @@ public class Player : MonoBehaviour
     private void SpawnModel(ModelSO unit, Vector3Int gridPos, float cubeSize)
     {
         var model = Instantiate(spawnableUnits.units[unit.name], this.transform);
-        model.name = unit.name;
+        model.name = $"{unit.name} ({this.name})";
         model.transform.localPosition = new Vector3 (gridPos.x * cubeSize, gridPos.y * cubeSize, gridPos.z * cubeSize);
         switch (team)
         {

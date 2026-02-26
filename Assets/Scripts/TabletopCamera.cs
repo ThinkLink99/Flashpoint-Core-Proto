@@ -159,7 +159,6 @@ public class TabletopCamera : MonoBehaviour
             _panOffset = Vector3.zero;
         }
     }
-
     private void ApplyTransform()
     {
         // compute desired rotation & position from yaw/pitch (this rot matches the orbit used to compute desiredPosition)
@@ -185,6 +184,17 @@ public class TabletopCamera : MonoBehaviour
             else
             {
                 transform.rotation = Quaternion.Slerp(transform.rotation, rot, 1f - Mathf.Exp(-rotationDamping * Time.deltaTime));
+            }
+        }
+    }
+
+    public void OnModelSelected (Component sender, object data)
+    {
+        if (data is Model model)
+        {
+            if (model.transform == target)
+            {
+                ApplyTransform();
             }
         }
     }

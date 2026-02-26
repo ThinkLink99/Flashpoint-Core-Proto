@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 // Tabletop now handles input/selection and delegates visualization and planning to dedicated components.
 public class Tabletop : MonoBehaviour
 {
     public Camera mainCamera;
+    [SerializeField] private TabletopCamera tabletopCameraController;
 
     [Header("Events")]
     [SerializeField] private GameEvent onGameStart;
@@ -19,10 +21,9 @@ public class Tabletop : MonoBehaviour
     [SerializeField] private bool movingModel = false;
     [SerializeField] private Model selectedModel;
     [SerializeField] private Vector3 selectedPoint = Vector3.zero;
+    public Vector3 SelectedPoint => selectedPoint;
 
     [Header("Preview Managers")]
-    [SerializeField] private GhostPreviewManager ghostManager;
-    [SerializeField] private MovementRangeVisualizer rangeVisualizer;
     [SerializeField] private float cubeSize = 76.2f; // fallback world units per cube
     [SerializeField] private bool previewMovementRange = false; // toggle in inspector or via UI
 
@@ -31,11 +32,11 @@ public class Tabletop : MonoBehaviour
     [SerializeField] private List<Player> players;
 
     private Map currentMap;
-    private MovementPlanner planner;
 
     void Start()
     {
         if (playerBuilder == null) TryGetComponent<PlayerBuilder>(out playerBuilder);
+        if (tabletopCameraController == null) mainCamera.TryGetComponent<TabletopCamera>(out tabletopCameraController);
 
         onGameStart.Raise(this, null);
     }
@@ -44,6 +45,7 @@ public class Tabletop : MonoBehaviour
     {
         var mousePos = Input.mousePosition;
         Ray ray = mainCamera.ScreenPointToRay(mousePos);
+
         DoModelSelect(mousePos, ray);
         DoModelPointAndClickMove(mousePos, ray);
 
@@ -54,19 +56,31 @@ public class Tabletop : MonoBehaviour
         // Show Action buttons for actions that can be taken with the remaining AP
     }
 
+    private bool PointerOverUI()
+    {
+        // Prevent world interaction when clicking/pressing UI
+        if (EventSystem.current == null) return false;
+
+        // Mouse (editor / standalone)
+        if (EventSystem.current.IsPointerOverGameObject()) return true;
+
+        // Touch (mobile): check all touches
+        for (int i = 0; i < Input.touchCount; i++)
+        {
+            if (EventSystem.current.IsPointerOverGameObject(Input.GetTouch(i).fingerId)) return true;
+        }
+
+        return false;
+    }
+
     public void EnableModelMovementMode() => movingModel = true;
     public void DisableeModelMovementMode() => movingModel = false;
 
-    // UI hook
-    public void ToggleMovementPreview()
-    {
-        previewMovementRange = !previewMovementRange;
-        if (!previewMovementRange) rangeVisualizer?.ClearMarkers();
-        else if (selectedModel != null && planner != null) ShowMovementRangePreview(selectedModel);
-    }
-
     private void DoModelSelect (Vector3 mousePos, Ray ray)
     {
+        if (PointerOverUI()) return;
+        if (movingModel) return;
+
         if (Input.GetMouseButtonDown(0))
         {
             if (Physics.Raycast(ray, out RaycastHit hitInfo))
@@ -79,6 +93,8 @@ public class Tabletop : MonoBehaviour
                 }
 
                 selectedModel = hitModel;
+                tabletopCameraController.target = selectedModel.transform;
+
                 if (selectedModel != null) onModelSelected?.Raise(this, selectedModel);
 
                 //if (previewMovementRange && selectedModel != null)
@@ -91,6 +107,8 @@ public class Tabletop : MonoBehaviour
     }
     private void DoModelPointAndClickMove(Vector3 mousePos, Ray ray)
     {
+        if (PointerOverUI()) return;
+
         if (movingModel && selectedModel != null && Input.GetMouseButtonDown(0))
         {
             if (Physics.Raycast(ray, out RaycastHit hitInfo))
@@ -105,9 +123,6 @@ public class Tabletop : MonoBehaviour
             selectedPoint = Vector3.zero;
             selectedModel = null;
 
-            ghostManager?.HideGhost();
-            rangeVisualizer?.ClearMarkers();
-
             onModelDeselected?.Raise(this, prev);
             onModelMoveDeactivated?.Raise(this, prev);
             DisableeModelMovementMode();
@@ -116,58 +131,20 @@ public class Tabletop : MonoBehaviour
         //ShowModelAsGhost();
     }
 
-    private void ShowModelAsGhost()
-    {
-        if (selectedModel == null || selectedPoint == Vector3.zero)
-        {
-            ghostManager?.HideGhost();
-            rangeVisualizer?.HideRangeCircle();
-            return;
-        }
-
-        if (planner == null) planner = currentMap != null ? new MovementPlanner(currentMap) : null;
-
-        Vector3 clampedPoint = selectedPoint;
-        bool inRange = true;
-        if (planner != null && selectedModel.CurrentCube != null && selectedModel.unit != null)
-        {
-            clampedPoint = planner.ClampPointToRange(selectedModel.CurrentCube, selectedPoint, selectedModel.unit.unitAdvanceSpeed);
-            float maxDist = selectedModel.unit.unitAdvanceSpeed * (currentMap != null ? currentMap.CubeSize : cubeSize);
-            inRange = Vector3.Distance(selectedModel.CurrentCube.worldPosition, clampedPoint) <= maxDist + 0.01f;
-        }
-
-        float yOffset = 0f;
-        if (selectedModel.CurrentCube != null)
-        {
-            yOffset = selectedModel.transform.position.y - selectedModel.CurrentCube.worldPosition.y;
-        }
-        Vector3 ghostPos = new Vector3(clampedPoint.x, clampedPoint.y + yOffset, clampedPoint.z);
-
-        ghostManager?.ShowGhost(selectedModel.gameObject, ghostPos, selectedModel.transform.rotation, inRange);
-
-        if (selectedModel.CurrentCube != null && selectedModel.unit != null)
-        {
-            float radius = selectedModel.unit.unitAdvanceSpeed * (currentMap != null ? currentMap.CubeSize : cubeSize);
-            rangeVisualizer?.ShowRangeCircle(selectedModel.CurrentCube.worldPosition, radius);
-        }
-    }
-    private void ShowMovementRangePreview(Model model)
-    {
-        rangeVisualizer?.ClearMarkers();
-        if (model == null || model.CurrentCube == null || model.unit == null || currentMap == null) return;
-        if (planner == null) planner = new MovementPlanner(currentMap);
-
-        var reachable = planner.GetReachableCubes(model.CurrentCube, model.unit.unitAdvanceSpeed);
-        rangeVisualizer?.ShowMarkers(reachable);
-    }
 
     public void OnMapCreated(Component sender, object data)
     {
         if (data is Map map)
         {
             currentMap = map;
-            planner = new MovementPlanner(map);
         }
+    }
+    public void OnModelMoveConfirmed (Component component, object data)
+    {
+        movingModel = false;
+
+        // move the model
+        selectedModel.ActionController.TryPerformAction(new AdvanceAction());
     }
 
     private void OnDrawGizmos()

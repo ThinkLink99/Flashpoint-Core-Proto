@@ -890,6 +890,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6fa3b3b8c10dbe4b9a87804ccae75c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  remainingAP: 0
+  hasActivated: 0
+  isActivated: 0
+  unit: {fileID: 1965722776726469951}
+  onActivationEnded: {fileID: 11400000, guid: 86c93250d86ac964ab9d01540c3fc353, type: 2}
 --- !u!114 &1965722776726469951
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -906,3 +911,4 @@ MonoBehaviour:
   tabletop: {fileID: 0}
   unit: {fileID: 11400000, guid: 785ea8fffe4dce64e8e8ae9cc41596b2, type: 2}
   actionController: {fileID: 0}
+  playerControlling: {fileID: 0}

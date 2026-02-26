@@ -252,6 +252,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6fa3b3b8c10dbe4b9a87804ccae75c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  remainingAP: 0
+  hasActivated: 0
+  isActivated: 0
+  unit: {fileID: 866652522240744388}
+  onActivationEnded: {fileID: 11400000, guid: 86c93250d86ac964ab9d01540c3fc353, type: 2}
 --- !u!114 &866652522240744388
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -268,6 +273,7 @@ MonoBehaviour:
   tabletop: {fileID: 0}
   unit: {fileID: 11400000, guid: ecc059817118747439990c5ab2b5d860, type: 2}
   actionController: {fileID: 0}
+  playerControlling: {fileID: 0}
 --- !u!1 &3612982076285903892
 GameObject:
   m_ObjectHideFlags: 0

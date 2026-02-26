@@ -53,6 +53,10 @@ public class Model : MonoBehaviour
     {
         currentCube = cube;
     }
+    public void MoveModelToPoint (Vector3 point)
+    {
+        this.transform.localPosition = point;
+    }
 
     // Helper: create a lightweight ghost clone (no Model, no physics, on IgnoreRaycast layer)
     public GameObject CreateGhostInstance()

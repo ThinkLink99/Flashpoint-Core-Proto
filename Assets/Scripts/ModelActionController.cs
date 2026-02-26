@@ -7,7 +7,13 @@ public class ModelActionController : MonoBehaviour
     [SerializeField] private int remainingAP = 0;
     [SerializeField] private bool hasActivated = false;
     [SerializeField] private bool isActivated = false; // this is GOING to need changed to be handled globally.
-                                                       // or atleast have an event fire that updates other models if a user tries to activate something else before an action has taken place.
+    [SerializeField] private Model unit;               // or atleast have an event fire that updates other models if a user tries to activate something else before an action has taken place.
+    [SerializeField] private GameEvent onActivationEnded;
+
+    private void Start()
+    {
+        unit = GetComponent<Model>();
+    }
 
     public int RemainingAP { get => remainingAP; private set => remainingAP = value; }
     public bool HasActivated { get => hasActivated; set => hasActivated = value; }
@@ -24,21 +30,23 @@ public class ModelActionController : MonoBehaviour
         HasActivated = true;
         IsActivated = false;
 
-        OnActivationComplete(this.GetComponent<Model>());
+        OnActivationComplete();
     }
 
-    public bool TryPerformAction(IUnitAction action, Model unit)
+    public bool TryPerformAction(IUnitAction action)
     {
         if (action.Cost > RemainingAP) return false;
         if (!action.CanExecute(unit)) return false;
         RemainingAP -= action.Cost;
-        _ = action.Execute(unit); // handle async/coroutines properly
-        if (RemainingAP == 0) OnActivationComplete(unit);
+        // start the action coroutine on this MonoBehaviour so the action can perform animations/movement
+        StartCoroutine(action.Execute(unit));
+        if (RemainingAP == 0) OnActivationComplete();
         return true;
     }
 
-    private void OnActivationComplete(Model unit)
+    private void OnActivationComplete()
     {
         // notify turn manager, disable input, fire events
+        onActivationEnded?.Raise(this, unit);
     }
 }
