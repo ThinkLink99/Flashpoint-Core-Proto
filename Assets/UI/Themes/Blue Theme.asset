@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f3271089be02d343b0c7feb3db5b5a5, type: 3}
+  m_Name: Blue Theme
+  m_EditorClassIdentifier: 
+  text_primary: {r: 0, g: 0, b: 0, a: 1}
+  background_primary: {r: 0.48998755, g: 0.6004166, b: 0.7264151, a: 1}
+  text_secondary: {r: 0, g: 0, b: 0, a: 1}
+  background_secondary: {r: 0.8632076, g: 0.9228172, b: 1, a: 1}
+  text_tertiary: {r: 0, g: 0, b: 0, a: 1}
+  background_tertiary: {r: 0, g: 0.10536535, b: 0.41509432, a: 1}
+  disable: {r: 0, g: 0, b: 0, a: 1}
