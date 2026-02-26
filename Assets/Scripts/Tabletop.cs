@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -18,16 +19,18 @@ public class Tabletop : MonoBehaviour
     [SerializeField] private bool movingModel = false;
     [SerializeField] private Model selectedModel;
     [SerializeField] private Vector3 selectedPoint = Vector3.zero;
+    public Vector3 SelectedPoint => selectedPoint;
+
     [SerializeField] private float pickUpHeightFromCube = 1f; // default height above cube when placed
 
-    public Vector3 SelectedPoint => selectedPoint;
 
     [Header("Preview Managers")]
     [SerializeField] private float cubeSize = 76.2f; // fallback world units per cube
     [SerializeField] private bool previewMovementRange = false; // toggle in inspector or via UI
     [SerializeField] private MovementPlanner movePlanner;
     // cubes that should be highlighted when movement mode is active
-    private List<Cube> highlightedCubes = new List<Cube>();
+    private List<Cube> advanceHighlightedCubes = new List<Cube>();
+    private List<Cube> sprintHighlightedCubes = new List<Cube>();
     private GameObject ghostInstance;
 
     [Header("Players")]
@@ -83,22 +86,26 @@ public class Tabletop : MonoBehaviour
         movePlanner = new MovementPlanner(mac);
         movingModel = true;
         // compute reachable cubes and cache for visualization
-        highlightedCubes.Clear();
+        advanceHighlightedCubes.Clear();
+        sprintHighlightedCubes.Clear();
         if (mac != null && mac.OriginCube != null)
         {
-            var reachable = movePlanner.GetReachableCubes(mac.OriginCube, mac.SourceModel.unit.unitAdvanceSpeed);
+            var advanceReachable = movePlanner.GetReachableCubes(mac.OriginCube, mac.SourceModel.unit.unitAdvanceSpeed);
+            var sprintReachable = movePlanner.GetReachableCubes(mac.OriginCube, mac.SourceModel.unit.unitSprintSpeed);
+
             // exclude origin cube from highlights
-            foreach (var c in reachable)
-            {
-                if (c != mac.OriginCube) highlightedCubes.Add(c);
-            }
+            advanceReachable.Remove(mac.OriginCube);
+            sprintReachable.Remove(mac.OriginCube);
+
+            advanceHighlightedCubes.AddRange(advanceReachable);
+            sprintHighlightedCubes.AddRange(sprintReachable);
         }
     }
     public void DisableModelMovementMode()
     {
         movePlanner = null;
         movingModel = false;
-        highlightedCubes.Clear();
+        sprintHighlightedCubes.Clear();
     }
 
     private void DoModelSelect (Vector3 mousePos, Ray ray)
@@ -142,7 +149,7 @@ public class Tabletop : MonoBehaviour
                 var cubeIn = movePlanner.GetCubeContainingPoint(potentialPoint);
                 if (cubeIn == null) return; // there is no cube in the world for this point, don't update the selected point
 
-                if (highlightedCubes.Contains(cubeIn))
+                if (advanceHighlightedCubes.Contains(cubeIn))
                     // if our cube is in this list, we can update our selected point
                     selectedPoint = hitInfo.point;
             }
@@ -293,10 +300,23 @@ public class Tabletop : MonoBehaviour
     private void OnDrawGizmos()
     {
         // draw highlights for reachable cubes when movement mode is active
-        if (movingModel && highlightedCubes != null && highlightedCubes.Count > 0)
+        if (movingModel && sprintHighlightedCubes != null && sprintHighlightedCubes.Count > 0)
         {
             Gizmos.color = Color.yellow;
-            foreach (var cube in highlightedCubes)
+            var remaining = sprintHighlightedCubes.Except(advanceHighlightedCubes).ToList();
+            foreach (var cube in sprintHighlightedCubes)
+            {
+                if (cube == null) continue;
+                // draw a thin wire-cube at the bottom face of the cube
+                var half = cube.worldSize * 0.5f;
+                float bottomY = cube.worldPosition.y - half.y;
+                // make the highlight very thin on Y so it appears as a bottom-face outline
+                Vector3 center = new Vector3(cube.worldPosition.x, bottomY + 0.01f, cube.worldPosition.z);
+                Vector3 size = new Vector3(cube.worldSize.x, 0.02f, cube.worldSize.z);
+                Gizmos.DrawWireCube(center, size);
+            }
+            Gizmos.color = Color.red;
+            foreach (var cube in remaining)
             {
                 if (cube == null) continue;
                 // draw a thin wire-cube at the bottom face of the cube
