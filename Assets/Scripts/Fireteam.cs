@@ -7,13 +7,13 @@ using UnityEngine;
 [JsonObject(MemberSerialization.OptIn)]
 public class Fireteam
 {
-    [SerializeField] private List<Unit> models = new List<Unit>();
+    [SerializeField] private List<ModelSO> models = new List<ModelSO>();
 
     [JsonProperty("models")]
-    public List<Unit> Models
+    public List<ModelSO> Models
     {
         get => models; 
-        set => models = value ?? new List<Unit>(); // Ensure we never set it to null
+        set => models = value ?? new List<ModelSO>(); // Ensure we never set it to null
 
     }
 

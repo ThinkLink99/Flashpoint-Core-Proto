@@ -2,17 +2,17 @@ using UnityEngine;
 
 public class UIButton : MonoBehaviour
 {
-    [SerializeField] private GameEvent onButtonClicked;
+    [SerializeField] protected GameEvent onButtonClicked;
 
-    public void ShowButton()
+    public virtual void ShowButton()
     {
         this.gameObject.SetActive(true);
     }
-    public void HideButton()
+    public virtual void HideButton()
     {
         this.gameObject.SetActive(false);
     }
-    public void OnButtonClick()
+    public virtual void OnButtonClick()
     {
         onButtonClicked.Raise(this, null);
         HideButton();

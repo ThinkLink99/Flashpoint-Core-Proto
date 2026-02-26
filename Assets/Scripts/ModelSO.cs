@@ -5,7 +5,7 @@ using UnityEngine;
 
 [JsonObject(MemberSerialization.OptIn)]
 [CreateAssetMenu(fileName = "New Unit", menuName = "Unit")]
-public class Unit : ScriptableObject
+public class ModelSO : ScriptableObject
 {
     [JsonProperty] public int baseSizeMM = 32;
     [JsonProperty] public string factionName = "UNSC";

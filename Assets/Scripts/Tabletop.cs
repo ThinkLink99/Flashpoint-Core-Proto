@@ -44,6 +44,7 @@ public class Tabletop : MonoBehaviour
     {
         var mousePos = Input.mousePosition;
         Ray ray = mainCamera.ScreenPointToRay(mousePos);
+        DoModelSelect(mousePos, ray);
         DoModelPointAndClickMove(mousePos, ray);
 
         // keep track of activation order
@@ -64,9 +65,9 @@ public class Tabletop : MonoBehaviour
         else if (selectedModel != null && planner != null) ShowMovementRangePreview(selectedModel);
     }
 
-    private void DoModelPointAndClickMove(Vector3 mousePos, Ray ray)
+    private void DoModelSelect (Vector3 mousePos, Ray ray)
     {
-        if (selectedModel == null && Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0))
         {
             if (Physics.Raycast(ray, out RaycastHit hitInfo))
             {
@@ -87,7 +88,9 @@ public class Tabletop : MonoBehaviour
             }
             return;
         }
-
+    }
+    private void DoModelPointAndClickMove(Vector3 mousePos, Ray ray)
+    {
         if (movingModel && selectedModel != null && Input.GetMouseButtonDown(0))
         {
             if (Physics.Raycast(ray, out RaycastHit hitInfo))

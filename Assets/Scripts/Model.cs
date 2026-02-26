@@ -2,7 +2,7 @@ using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(BoxCollider))]
-[RequireComponent(typeof(UnitActionController))]
+[RequireComponent(typeof(ModelActionController))]
 public class Model : MonoBehaviour
 {
     [Header("Events")]
@@ -10,8 +10,9 @@ public class Model : MonoBehaviour
 
     [Header("Model Details")]
     public Tabletop tabletop;
-    public Unit unit;
-    [SerializeField] private UnitActionController actionController;
+    public ModelSO unit;
+    [SerializeField] private ModelActionController actionController;
+    [SerializeField] private Player playerControlling;
 
     private GameObject basePrefab;
     private GameObject hitBox;
@@ -21,7 +22,8 @@ public class Model : MonoBehaviour
     private Vector3 lastPosition = Vector3.zero;
 
     public Cube CurrentCube { get => currentCube; }
-    public UnitActionController ActionController { get => actionController; }
+    public ModelActionController ActionController { get => actionController; }
+    public Player PlayerControlling => playerControlling;
 
     // Start is called before the first frame update
     void Start()
@@ -30,7 +32,8 @@ public class Model : MonoBehaviour
         hitBox = this.transform.GetChild(1).gameObject;
 
         tabletop = FindObjectOfType<Tabletop>();
-        actionController = GetComponent<UnitActionController>();
+        actionController = GetComponent<ModelActionController>();
+        playerControlling = GetComponentInParent<Player>();
     }
 
     // Update is called once per frame

@@ -6,7 +6,7 @@ using UnityEngine;
 // Such as handling player input, managing the player's turn, and so on. For now, it just holds a reference to a model.
 public class Player : MonoBehaviour
 {
-    public UnitSetScriptableObject spawnableUnits;
+    public ModelSetScriptableObject spawnableUnits;
     public Material redTeamMaterial;
     public Material blueTeamMaterial;
 
@@ -17,6 +17,8 @@ public class Player : MonoBehaviour
 
     [SerializeField] private GameEvent onTurnStarted;
     [SerializeField] private GameEvent onTurnEnded;
+
+    [SerializeField] private Model selectedModel;
 
     public void OnMapCreated (Component component, object data)
     {
@@ -38,9 +40,10 @@ public class Player : MonoBehaviour
         }
     }
 
-    public void SpawnModel(Unit unit, Vector3 worldPosition)
+    // Potentially move these back into the ModelSpawner pseudo factory at somepoint, but its easier for now to just spawn them here while testing.
+    private void SpawnModel(ModelSO unit, Vector3 worldPosition)
     {
-        var model = Instantiate(spawnableUnits.units[unit.name]);
+        var model = Instantiate(spawnableUnits.units[unit.name], this.transform);
         model.name = unit.name;
         model.transform.localPosition = worldPosition;
         switch (team)
@@ -53,10 +56,9 @@ public class Player : MonoBehaviour
                 break;
         }
     }
-
-    public void SpawnModel(Unit unit, Vector3Int gridPos, float cubeSize)
+    private void SpawnModel(ModelSO unit, Vector3Int gridPos, float cubeSize)
     {
-        var model = Instantiate(spawnableUnits.units[unit.name]);
+        var model = Instantiate(spawnableUnits.units[unit.name], this.transform);
         model.name = unit.name;
         model.transform.localPosition = new Vector3 (gridPos.x * cubeSize, gridPos.y * cubeSize, gridPos.z * cubeSize);
         switch (team)
@@ -78,5 +80,24 @@ public class Player : MonoBehaviour
     public void EndTurn()
     {
         // Handle turn end logic, such as disabling input, notifying turn manager, etc.
+    }
+
+    public void OnModelSelected (Component sender, object data)
+    {
+        if (data is not Model model) return;
+        if (selectedModel == model) return;
+
+        selectedModel = model;
+    }
+    public void OnModelDeselected(Component sender, object data)
+    {
+        if (data is not Model model) return;
+        if (selectedModel != model) return;
+
+        selectedModel = null;
+    }
+    public void OnModelActivated (Component sender, object data)
+    {
+        selectedModel.ActionController.BeginActivation();
     }
 }

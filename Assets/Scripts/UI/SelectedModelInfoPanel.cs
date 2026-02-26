@@ -23,22 +23,24 @@ public class SelectedModelInfoPanel : MonoBehaviour
         this.gameObject.SetActive(false);
     }
 
-    public void OnSelectedModelChanged (Component sender, object data)
+    public void OnModelSelected(Component sender, object data)
     {
-        if (data is Model model)
-        {
-            selectedModel = model;
-            // Update the UI elements to show the new model's information
-            Debug.Log("Selected model changed: " + model.name);
+        if (data is not Model model) return;
+        if (selectedModel == model) return;
 
-            ShowPanel();
-            modelNameTextBox?.SetText(model.name);
-        }
-        else
-        {
-            selectedModel = null;
-            // Clear the UI elements since no model is selected
-            Debug.Log("No model selected.");
-        }
+        selectedModel = model;
+
+        ShowPanel();
+        modelNameTextBox?.SetText(model.name);
+    }
+    public void OnModelDeselected(Component sender, object data)
+    {
+        if (data is not Model model) return;
+        if (selectedModel != model) return;
+
+        selectedModel = null;
+
+        modelNameTextBox?.SetText("");
+        HidePanel();
     }
 }

@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class ModelSpawner : MonoBehaviour
 {
-    public UnitSetScriptableObject spawnableUnits;
+    public ModelSetScriptableObject spawnableUnits;
 
     public Material playerTeamMaterial;
     public Material enemyTeamMaterial;
