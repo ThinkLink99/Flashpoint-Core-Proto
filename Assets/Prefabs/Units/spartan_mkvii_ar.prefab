@@ -322,6 +322,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 50d26667ff16f6248a74832006c759bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  showDebug: 0
   monitorModel: {fileID: 888885711658051730}
   xText: {fileID: 1036287554586375204}
   yText: {fileID: 2472804536327255110}

@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class ModelDebug : MonoBehaviour
 {
+    [SerializeField] private bool showDebug = true;
     [SerializeField] private GameObject monitorModel;
 
     [SerializeField] private TextMeshPro xText;
@@ -14,6 +15,11 @@ public class ModelDebug : MonoBehaviour
 
 
     private ProcessorDelegate<Vector3, float> distanceToPlayer;
+    private void OnValidate()
+    {
+        DrawDebugText();
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -30,8 +36,7 @@ public class ModelDebug : MonoBehaviour
 
     private void LateUpdate()
     {
-        transform.LookAt(Camera.main.transform);
-        transform.RotateAround(transform.position, transform.up, 180f);
+        DrawDebugText();
     }
 
     private void OnDestroy()
@@ -46,6 +51,16 @@ public class ModelDebug : MonoBehaviour
         //Gizmos.DrawLine(eyes.transform.position, eyes.transform.position + eyes.transform.forward * 100);                                              
     }
 
+    private void DrawDebugText ()
+    {
+        this.gameObject.SetActive(showDebug);
+
+        if (showDebug)
+        {
+            transform.LookAt(Camera.main.transform);
+            transform.RotateAround(transform.position, transform.up, 180f);
+        }
+    }
     public void modelMovedHandler (Component sender, object data)
     {
         if (sender is not Model model) return;

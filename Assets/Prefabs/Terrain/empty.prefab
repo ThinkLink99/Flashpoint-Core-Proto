@@ -47,7 +47,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   worldPosition: {x: 0, y: 0, z: 0}
   worldSize: {x: 1, y: 1, z: 1}
+  mapPosition: {x: 0, y: 0, z: 0}
   boxCollider: {fileID: 5605645711304708520}
+  deploymentZoneTeam: 0
+  IsDeploymentZone: 0
 --- !u!65 &5605645711304708520
 BoxCollider:
   m_ObjectHideFlags: 0
