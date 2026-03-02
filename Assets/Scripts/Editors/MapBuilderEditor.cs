@@ -71,7 +71,7 @@ public class MapBuilderEditor : Editor
                 Map.AddTerrain(t);
             }
 
-            Map.Save(Application.dataPath + "/Maps/" + Map.MapName + ".json");
+            Map.Save(Application.dataPath + "/Data/Maps/" + Map.MapName + ".json");
             Debug.Log("Map Saved.");
         }
 

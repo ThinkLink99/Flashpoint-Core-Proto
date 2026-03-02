@@ -936,8 +936,9 @@ MonoBehaviour:
   emptyCube: {fileID: 7292448822111165194, guid: 8e4ea439ca775514493165ad7485dd3f, type: 3}
   groundMaterial: {fileID: 2100000, guid: 2fcfc2ab7ef6296459cfe748745c50e5, type: 2}
   terrainSet: {fileID: 11400000, guid: 8b67c788b58ddf44f80c08a9c3cd1150, type: 2}
-  showDebugLogs: 1
+  onMapCreating: {fileID: 11400000, guid: 6e252d87e6b30a04094b715fca5c7ac6, type: 2}
   onMapCreated: {fileID: 11400000, guid: ae3509c80e9921149990d74e057f696b, type: 2}
+  showDebugLogs: 1
 --- !u!1 &688125108
 GameObject:
   m_ObjectHideFlags: 0
@@ -1082,6 +1083,7 @@ MonoBehaviour:
   onTurnStarted: {fileID: 0}
   onTurnEnded: {fileID: 0}
   selectedModel: {fileID: 0}
+  showDebugLogs: 0
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -1700,9 +1702,9 @@ GameObject:
   - component: {fileID: 1033910159}
   - component: {fileID: 1033910155}
   - component: {fileID: 1033910166}
-  - component: {fileID: 1033910161}
   - component: {fileID: 1033910163}
   - component: {fileID: 1033910164}
+  - component: {fileID: 1033910167}
   - component: {fileID: 1033910165}
   m_Layer: 0
   m_Name: TableTop
@@ -1768,34 +1770,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1033910161
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1033910154}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5a9433f5e30db324682acd75aac39209, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  gameEvent: {fileID: 11400000, guid: 44199c0b8e846354cabfed937b4ec396, type: 2}
-  response:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1033910166}
-        m_TargetAssemblyTypeName: PlayerBuilder, Assembly-CSharp
-        m_MethodName: OnGameStart
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 0
 --- !u!114 &1033910163
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1916,6 +1890,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 989e1b9842750be4da138aa5ee042fb2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1033910167
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1033910154}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a9433f5e30db324682acd75aac39209, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameEvent: {fileID: 11400000, guid: 6e252d87e6b30a04094b715fca5c7ac6, type: 2}
+  response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1033910155}
+        m_TargetAssemblyTypeName: Tabletop, Assembly-CSharp
+        m_MethodName: OnMapCreated
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1137172417
 GameObject:
   m_ObjectHideFlags: 0
@@ -1976,6 +1978,7 @@ MonoBehaviour:
   onTurnStarted: {fileID: 0}
   onTurnEnded: {fileID: 0}
   selectedModel: {fileID: 0}
+  showDebugLogs: 0
 --- !u!114 &1137172420
 MonoBehaviour:
   m_ObjectHideFlags: 0

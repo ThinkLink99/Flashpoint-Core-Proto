@@ -12,6 +12,9 @@ public class Cube : MonoBehaviour
     public TeamId deploymentZoneTeam;
     public bool IsDeploymentZone = false;
 
+    public bool isPassable = true;
+    public bool hasTerrainBelow = false;
+
     public void Start()
     {
         boxCollider = GetComponent<BoxCollider>();
@@ -41,8 +44,6 @@ public class Cube : MonoBehaviour
         bool inY = (y <= yMax && y >= yMin);
         bool inZ = (z <= zMax && z >= zMin);
 
-        Debug.Log("inX: " + inX + " inY: " + inY + " inZ: " + inZ);
-
         return inX && inY && inZ;
     }
 
@@ -67,7 +68,6 @@ public class Cube : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        //Gizmos.color = Color.green;
         if (IsDeploymentZone)
         {
             switch (deploymentZoneTeam)
@@ -82,6 +82,12 @@ public class Cube : MonoBehaviour
                     Gizmos.color = new Color(1f, 1f, 1f, 0.5f);
                     break;
             }
+            Gizmos.DrawWireCube(worldPosition, worldSize);
+        }
+
+        if (isPassable == false)
+        {
+            Gizmos.color = Color.red;
             Gizmos.DrawWireCube(worldPosition, worldSize);
         }
     }

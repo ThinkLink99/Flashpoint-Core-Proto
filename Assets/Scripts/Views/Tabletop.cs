@@ -23,7 +23,6 @@ public class Tabletop : MonoBehaviour
 
     [SerializeField] private float pickUpHeightFromCube = 1f; // default height above cube when placed
 
-
     [Header("Preview Managers")]
     [SerializeField] private float cubeSize = 76.2f; // fallback world units per cube
     [SerializeField] private bool previewMovementRange = false; // toggle in inspector or via UI
@@ -36,7 +35,6 @@ public class Tabletop : MonoBehaviour
     [Header("Players")]
     [SerializeField] private PlayerBuilder playerBuilder;
     [SerializeField] private List<Player> players;
-
 
     private Map currentMap;
     public Map CurrentMap => currentMap;

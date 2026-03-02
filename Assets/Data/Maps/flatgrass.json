@@ -54,9 +54,9 @@
     {
       "id": "terrain_tower_2x1",
       "world_position": {
-        "x": 45.0,
+        "x": 32.0,
         "y": 0.0,
-        "z": 180.0
+        "z": 194.8
       },
       "world_rotation": {
         "x": 0.0,

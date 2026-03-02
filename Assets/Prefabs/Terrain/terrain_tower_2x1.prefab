@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 7940247282679357408}
   - component: {fileID: 4273408581237395731}
   - component: {fileID: 8462351772514673483}
+  - component: {fileID: 7189986751086351439}
   m_Layer: 0
   m_Name: model_simple
   m_TagString: Untagged
@@ -26,8 +27,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 253352232663759823}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 2.2761, y: 4.2998, z: -0.9127}
+  m_LocalScale: {x: 0.88100606, y: 0.928177, z: 0.8677544}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 519736550217943418}
@@ -83,6 +84,20 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &7189986751086351439
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 253352232663759823}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -2432090755550338912, guid: 161cfc029570c92458d46d12048cab44, type: 3}
 --- !u!1 &900061382940513216
 GameObject:
   m_ObjectHideFlags: 0
@@ -131,6 +146,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: terrain_tower_2x1
   terrainMesh: {fileID: 4273408581237395731}
+  terrainCollider: {fileID: 7189986751086351439}
   cubesIn: []
   tabletop: {fileID: 0}
   vertices:
@@ -182,6 +198,9 @@ MonoBehaviour:
   - {x: 7.258965, y: 164.35986, z: -6.5396686}
   - {x: 97.03493, y: 164.35986, z: -6.5396686}
   - {x: 97.03493, y: 164.35986, z: -84.08376}
+  showDebugMessages: 0
+  showDebugGizmos: 1
+  lastPosition: {x: 0, y: 0, z: 0}
 --- !u!1 &8210170900806642457
 GameObject:
   m_ObjectHideFlags: 0

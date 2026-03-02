@@ -9,13 +9,18 @@ namespace Assets.Scripts
         [SerializeField] private GameObject emptyCube;
         [SerializeField] private Material groundMaterial;
         [SerializeField] private TerrainSetScriptableObject terrainSet;
-        [SerializeField] private bool showDebugLogs = true;
 
+        [Header("Game Events")]
+        [SerializeField] private GameEvent onMapCreating;
         [SerializeField] private GameEvent onMapCreated;
+
+        [Header("Debugging")]
+        [SerializeField] private bool showDebugLogs = true;
 
         public void OnGameStart (Component sender, object data)
         {
             BuildMap()
+            .RaiseMapCreatingEvent()
             .SpawnGroundPlane()
             .SpawnGridLines()
             .SpawnTerrain()
@@ -34,6 +39,11 @@ namespace Assets.Scripts
             if (showDebugLogs) Debug.Log($"Map Name: {map.MapName}");
             if (showDebugLogs) Debug.Log($"Map Size: {map.MapSize.ToString()}");
 
+            return this;
+        }
+        public MapBuilder RaiseMapCreatingEvent()
+        {
+            onMapCreating?.Raise(this, map);
             return this;
         }
         public MapBuilder SpawnGroundPlane()
@@ -60,13 +70,15 @@ namespace Assets.Scripts
                     for (int z = 0; z < map.MapSize.z; z++)
                     {
                         var terrain = Instantiate(emptyCube, this.transform);
-                        terrain.transform.localPosition = new Vector3((x * terrain.transform.lossyScale.x), (y * terrain.transform.lossyScale.y) + (terrain.transform.lossyScale.y / 2), (z * terrain.transform.lossyScale.z));
+                        terrain.transform.position = new Vector3((x * terrain.transform.lossyScale.x), (y * terrain.transform.lossyScale.y) + (terrain.transform.lossyScale.y / 2), (z * terrain.transform.lossyScale.z));
                         if (showDebugLogs) Debug.Log($"Placing {terrain.name}");
 
                         var cube = terrain.GetComponent<Cube>();
                         cube.mapPosition = new Vector3(x, y, z);
-                        cube.worldPosition = terrain.transform.localPosition;
+                        cube.worldPosition = terrain.transform.position;
                         cube.worldSize = terrain.transform.lossyScale;
+
+                        if (y  == 0) cube.hasTerrainBelow = true;
 
                         map.MapGrid.Add(cube, x, y, z);
                     }
@@ -79,12 +91,14 @@ namespace Assets.Scripts
         public MapBuilder SpawnTerrain() 
         {
             if (showDebugLogs) Debug.Log("Placing Terrain pieces...");
-            var start = this.transform.localPosition;
+            var start = this.transform.position;
             
             for (int x = 0; x < map.Terrain.Length; x++)
             {
+                if (showDebugLogs) Debug.Log($"Instantiating {map.Terrain[x].id}.");
                 var terrain = Instantiate(terrainSet.terrainPieces[map.Terrain[x].id], this.transform);
-                terrain.transform.localPosition = map.Terrain[x].worldPositon.ToVector3();
+                if (showDebugLogs) Debug.Log($"Putting {map.Terrain[x].id} in position.");
+                terrain.transform.position = map.Terrain[x].worldPositon.ToVector3();
                 terrain.transform.localEulerAngles = map.Terrain[x].worldRotation.ToVector3();
                 if (showDebugLogs) Debug.Log($"Placing {terrain.name}");
             }
@@ -122,7 +136,6 @@ namespace Assets.Scripts
         {
             onMapCreated?.Raise(this, map);
         }
-
 
         private GameObject CreatePlane(string TexturePath, string Name, float Width, float Height)
         {

@@ -24,7 +24,7 @@ public class MovementPlanner
     }
 
 
-    // Returns reachable cubes (including origin) using 8-directional movement with cost 1 per cube.
+    // Respects Cube.isPassable and prevents diagonal corner-cutting.
     public List<Cube> GetReachableCubes(Cube origin, int range)
     {
         var result = new List<Cube>();
@@ -37,6 +37,7 @@ public class MovementPlanner
         var visited = new HashSet<(int x, int y, int z)>();
         var q = new Queue<(int x, int y, int z, int dist)>();
 
+        // origin always starts in queue/result (so unit can stay in place even if origin flagged not passable)
         q.Enqueue((ox, oy, oz, 0));
         visited.Add((ox, oy, oz));
         result.Add(origin);
@@ -51,13 +52,30 @@ public class MovementPlanner
                 for (int dz = -1; dz <= 1; dz++)
                 {
                     if (dx == 0 && dz == 0) continue;
+
                     int nx = node.x + dx;
-                    int ny = node.y; // keep same height layer for now
+                    int ny = node.y; // same vertical layer
                     int nz = node.z + dz;
 
                     if (visited.Contains((nx, ny, nz))) continue;
+
                     var neighbor = map.MapGrid.Get(nx, ny, nz);
-                    if (neighbor == null) continue; // out of bounds or empty
+                    if (neighbor == null) continue; // out of bounds
+
+                    // Skip impassable cubes
+                    if (!neighbor.isPassable) continue;
+
+                    // Prevent diagonal corner cutting:
+                    // if movement is diagonal, ensure both orthogonal neighbors are passable.
+                    if (dx != 0 && dz != 0)
+                    {
+                        var sideA = map.MapGrid.Get(node.x + dx, node.y, node.z);     // step in X
+                        var sideB = map.MapGrid.Get(node.x, node.y, node.z + dz);     // step in Z
+
+                        // if either orthogonal neighbor is missing or not passable, block diagonal move
+                        if (sideA == null || sideB == null) continue;
+                        if (!sideA.isPassable || !sideB.isPassable) continue;
+                    }
 
                     visited.Add((nx, ny, nz));
                     result.Add(neighbor);

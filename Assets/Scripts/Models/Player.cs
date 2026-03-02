@@ -20,16 +20,19 @@ public class Player : MonoBehaviour
 
     [SerializeField] private Model selectedModel;
 
+
+    [Header("Debugging")]
+    [SerializeField] private bool showDebugLogs = true;
     public void OnMapCreated (Component component, object data)
     {
         if (data is Map map)
         {
             // Initialize player state, such as setting up the fireteam, resetting any turn-specific data, etc.
-            Debug.Log($"Player {name} has started the game with fireteam of {fireteam.Models.Count} models.");
+            if (showDebugLogs) Debug.Log($"Player {name} has started the game with fireteam of {fireteam.Models.Count} models.");
 
             // temporarily loop through units and ground level deployment cubes and spawn a model of a unit in each cube
             var zone = map.GetZoneForTeam (team);
-            Debug.Log($"Zones for {team.ToString()}: {zone.squares.Count}");
+            if (showDebugLogs) Debug.Log($"Zones for {team.ToString()}: {zone.squares.Count}");
             for (int i = 0; i < zone.squares.Count; i++)
             {
                 if (fireteam.Models[i] != null)
