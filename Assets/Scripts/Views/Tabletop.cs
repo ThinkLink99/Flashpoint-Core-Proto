@@ -23,6 +23,10 @@ public class Tabletop : MonoBehaviour
 
     [SerializeField] private float pickUpHeightFromCube = 1f; // default height above cube when placed
 
+    [Header("Model Targetting")]
+    [SerializeField] private bool targetingMode = false;
+    [SerializeField] private Model targettedModel;
+
     [Header("Preview Managers")]
     [SerializeField] private float cubeSize = 76.2f; // fallback world units per cube
     [SerializeField] private bool previewMovementRange = false; // toggle in inspector or via UI
@@ -88,8 +92,8 @@ public class Tabletop : MonoBehaviour
         sprintHighlightedCubes.Clear();
         if (mac != null && mac.OriginCube != null)
         {
-            var advanceReachable = movePlanner.GetReachableCubes(mac.OriginCube, mac.SourceModel.unit.unitAdvanceSpeed);
-            var sprintReachable = movePlanner.GetReachableCubes(mac.OriginCube, mac.SourceModel.unit.unitSprintSpeed);
+            var advanceReachable = movePlanner.GetReachableCubes(mac.OriginCube, mac.SourceModel.modelConfiguration.unitAdvanceSpeed);
+            var sprintReachable = movePlanner.GetReachableCubes(mac.OriginCube, mac.SourceModel.modelConfiguration.unitSprintSpeed);
 
             // exclude origin cube from highlights
             advanceReachable.Remove(mac.OriginCube);
@@ -122,9 +126,14 @@ public class Tabletop : MonoBehaviour
                     hitModel = go.GetComponentInParent<Model>();
                 }
 
-                selectedModel = hitModel;
-                if (selectedModel != null)
+                if (targetingMode)
                 {
+                    targettedModel = hitModel;
+                    //onModelSelected?.Raise(this, targettedModel);
+                }
+                else
+                {
+                    selectedModel = hitModel;
                     tabletopCameraController.target = selectedModel.transform;
                     onModelSelected?.Raise(this, selectedModel);
                 }
@@ -132,6 +141,7 @@ public class Tabletop : MonoBehaviour
             return;
         }
     }
+
     private void DoModelPointAndClickMove(Vector3 mousePos, Ray ray)
     {
         if (PointerOverUI()) return;
@@ -253,6 +263,19 @@ public class Tabletop : MonoBehaviour
         ghostInstance.transform.rotation = selectedModel.transform.rotation;
         ghostInstance.transform.localScale = selectedModel.transform.localScale;
     }
+    
+    private bool SelectedModelHasLineOfSight (Model target)
+    {
+        // draw a ray from eyes of current model to the whole target model
+        var ray = new Ray(selectedModel.transform.position, target.transform.position - selectedModel.transform.position);
+        if (Physics.Raycast(ray, out RaycastHit hitInfo))
+        {
+            return true;
+        }
+
+        return false;
+    }
+
 
     public void OnMapCreated(Component sender, object data)
     {
@@ -273,6 +296,10 @@ public class Tabletop : MonoBehaviour
             .TryPerformAction(
                 new AdvanceAction(), 
                 CreateModelActionContext().SetSelectedPoint (selectedPoint));
+    }
+    public void OnModelShootingStarted(Component component, object data)
+    {
+        targetingMode = true;
     }
 
     /// <summary>
@@ -331,6 +358,12 @@ public class Tabletop : MonoBehaviour
         {
             Gizmos.color = Color.red;
             Gizmos.DrawSphere(selectedPoint, 1f);
+        }
+
+        if (selectedModel != null && targettedModel != null)
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawLine(selectedModel.transform.position, targettedModel.transform.position);
         }
     }
 }

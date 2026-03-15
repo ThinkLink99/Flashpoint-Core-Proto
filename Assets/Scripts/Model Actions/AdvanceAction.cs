@@ -1,5 +1,5 @@
 using System.Collections;
-using UnityEngine;
+using UnityEngine; 
 
 public class AdvanceAction : IModelAction
 {
@@ -25,7 +25,7 @@ public class AdvanceAction : IModelAction
             modelYOffset = ctx.SourceModel.transform.position.y - ctx.OriginCube.worldPosition.y;
         }
 
-        Vector3 clamped = planner.ClampPointToRange(ctx.OriginCube, ctx.SelectedPoint, ctx.SourceModel.unit.unitAdvanceSpeed, modelYOffset);
+        Vector3 clamped = planner.ClampPointToRange(ctx.OriginCube, ctx.SelectedPoint, ctx.SourceModel.modelConfiguration.unitAdvanceSpeed, modelYOffset);
 
         //var point = ctx.SelectedPoint + (ctx.SourceModel.transform.up * 20);
         ctx.SourceModel.MoveModelToPoint(clamped);

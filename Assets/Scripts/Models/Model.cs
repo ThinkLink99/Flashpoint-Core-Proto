@@ -10,7 +10,7 @@ public class Model : MonoBehaviour
 
     [Header("Model Details")]
     public Tabletop tabletop;
-    public ModelSO unit;
+    public ModelConfiguration ModelConfiguration { get; private set; }
     [SerializeField] private ModelActionController actionController;
     [SerializeField] private Player playerControlling;
 
@@ -24,6 +24,11 @@ public class Model : MonoBehaviour
     public Cube CurrentCube { get => currentCube; }
     public ModelActionController ActionController { get => actionController; }
     public Player PlayerControlling => playerControlling;
+
+    public void Initialize (ModelConfiguration modelConfiguration)
+    {
+        ModelConfiguration = modelConfiguration; 
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -40,7 +45,7 @@ public class Model : MonoBehaviour
     void Update()
     {
         if (tabletop == null) return;
-        if (unit == null) return;
+        if (ModelConfiguration == null) return;
 
         if (lastPosition != this.transform.localPosition)
         {
@@ -92,10 +97,10 @@ public class Model : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        if (unit != null && basePrefab != null)
+        if (ModelConfiguration != null && basePrefab != null)
         {
             Gizmos.color = Color.blue;
-            Gizmos.DrawWireSphere(this.transform.position, unit.baseSizeMM / 2);
+            Gizmos.DrawWireSphere(this.transform.position, ModelConfiguration.baseSizeMM / 2);
         }
 
         if (currentCube != null)

@@ -44,7 +44,7 @@ public class Player : MonoBehaviour
     }
 
     // Potentially move these back into the ModelSpawner pseudo factory at somepoint, but its easier for now to just spawn them here while testing.
-    private void SpawnModel(ModelSO unit, Vector3 worldPosition)
+    private void SpawnModel(ModelConfiguration unit, Vector3 worldPosition)
     {
         var model = Instantiate(spawnableUnits.units[unit.name], this.transform);
         model.name = unit.name;
@@ -59,7 +59,7 @@ public class Player : MonoBehaviour
                 break;
         }
     }
-    private void SpawnModel(ModelSO unit, Vector3Int gridPos, float cubeSize)
+    private void SpawnModel(ModelConfiguration unit, Vector3Int gridPos, float cubeSize)
     {
         var model = Instantiate(spawnableUnits.units[unit.name], this.transform);
         model.name = $"{unit.name} ({this.name})";
