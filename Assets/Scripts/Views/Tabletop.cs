@@ -92,8 +92,8 @@ public class Tabletop : MonoBehaviour
         sprintHighlightedCubes.Clear();
         if (mac != null && mac.OriginCube != null)
         {
-            var advanceReachable = movePlanner.GetReachableCubes(mac.OriginCube, mac.SourceModel.modelConfiguration.unitAdvanceSpeed);
-            var sprintReachable = movePlanner.GetReachableCubes(mac.OriginCube, mac.SourceModel.modelConfiguration.unitSprintSpeed);
+            var advanceReachable = movePlanner.GetReachableCubes(mac.OriginCube, mac.SourceModel.ModelConfiguration.unitAdvanceSpeed);
+            var sprintReachable = movePlanner.GetReachableCubes(mac.OriginCube, mac.SourceModel.ModelConfiguration.unitSprintSpeed);
 
             // exclude origin cube from highlights
             advanceReachable.Remove(mac.OriginCube);

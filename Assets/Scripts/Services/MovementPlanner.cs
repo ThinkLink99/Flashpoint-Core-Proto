@@ -19,8 +19,8 @@ public class MovementPlanner
         _actionContext = modelActionContext;
 
         this.map = modelActionContext.Map;
-        advanceRange = modelActionContext.SourceModel.modelConfiguration.unitAdvanceSpeed;
-        sprintRange = modelActionContext.SourceModel.modelConfiguration.unitSprintSpeed;
+        advanceRange = modelActionContext.SourceModel.ModelConfiguration.unitAdvanceSpeed;
+        sprintRange = modelActionContext.SourceModel.ModelConfiguration.unitSprintSpeed;
     }
 
 

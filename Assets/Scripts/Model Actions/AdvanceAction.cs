@@ -25,7 +25,7 @@ public class AdvanceAction : IModelAction
             modelYOffset = ctx.SourceModel.transform.position.y - ctx.OriginCube.worldPosition.y;
         }
 
-        Vector3 clamped = planner.ClampPointToRange(ctx.OriginCube, ctx.SelectedPoint, ctx.SourceModel.modelConfiguration.unitAdvanceSpeed, modelYOffset);
+        Vector3 clamped = planner.ClampPointToRange(ctx.OriginCube, ctx.SelectedPoint, ctx.SourceModel.ModelConfiguration.unitAdvanceSpeed, modelYOffset);
 
         //var point = ctx.SelectedPoint + (ctx.SourceModel.transform.up * 20);
         ctx.SourceModel.MoveModelToPoint(clamped);
