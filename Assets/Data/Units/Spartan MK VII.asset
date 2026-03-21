@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3ebdc023417a264abb90a365b3300e7, type: 3}
   m_Name: Spartan MK VII
   m_EditorClassIdentifier: 
-  Model: {fileID: 0}
+  Model: {fileID: 888885711658051730, guid: b38ede538d854bb46a5b3dd20ce22bf3, type: 3}
   baseSizeMM: 32
   factionName: UNSC
   unitName: Spartan MK VII

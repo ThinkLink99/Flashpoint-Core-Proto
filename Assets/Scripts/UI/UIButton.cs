@@ -1,8 +1,18 @@
+using TMPro;
 using UnityEngine;
 
 public class UIButton : MonoBehaviour
 {
     [SerializeField] protected GameEvent onButtonClicked;
+    [SerializeField] protected TextMeshProUGUI buttonTextUGUI;
+
+    [SerializeField] private string buttonText = "Button";
+
+    private void Awake()
+    {
+        if (buttonTextUGUI == null) buttonTextUGUI = GetComponentInChildren<TextMeshProUGUI>();
+        buttonTextUGUI.text = buttonText;
+    }
 
     public virtual void ShowButton()
     {
@@ -14,7 +24,6 @@ public class UIButton : MonoBehaviour
     }
     public virtual void OnButtonClick()
     {
-        onButtonClicked.Raise(this, null);
-        HideButton();
+        onButtonClicked?.Raise(this, null);
     }
 }

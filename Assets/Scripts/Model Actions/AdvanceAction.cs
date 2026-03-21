@@ -9,6 +9,7 @@ public class AdvanceAction : IModelAction
         if (ctx == null) return false;
 
         if (ctx.SourceModel.ActionController.RemainingAP >= Cost) return true;
+        else if (ctx.SourceModel.ActionController.HasMoved) return false;
         else return false;
     }
     public IEnumerator Execute(ModelActionContext ctx)
@@ -29,6 +30,7 @@ public class AdvanceAction : IModelAction
 
         //var point = ctx.SelectedPoint + (ctx.SourceModel.transform.up * 20);
         ctx.SourceModel.MoveModelToPoint(clamped);
+        ctx.SourceModel.ActionController.HasMoved = true;
 
         yield return null;
     }

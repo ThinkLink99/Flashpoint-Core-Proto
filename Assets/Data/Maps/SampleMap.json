@@ -1,47 +1,54 @@
 {
   "map": "SampleMap",
   "size": {
-    "x": 8,
-    "y": 3,
-    "z": 8
+    "x": 4,
+    "y": 1,
+    "z": 4
   },
   "cube_size": 76.2,
   "deployment_zones": [
     {
-      "teamId": 1,
-      "squares": []
+      "teamId": 0,
+      "squares": [
+        {
+          "x": 0,
+          "y": 3
+        },
+        {
+          "x": 0,
+          "y": 2
+        },
+        {
+          "x": 0,
+          "y": 1
+        },
+        {
+          "x": 0,
+          "y": 0
+        }
+      ]
     },
     {
-      "teamId": 2,
-      "squares": []
+      "teamId": 1,
+      "squares": [
+        {
+          "x": 3,
+          "y": 3
+        },
+        {
+          "x": 3,
+          "y": 2
+        },
+        {
+          "x": 3,
+          "y": 1
+        },
+        {
+          "x": 3,
+          "y": 0
+        }
+      ]
     }
   ],
-  "terrain": [
-    {
-      "id": "terrain_tower_2x1",
-      "world_position": {
-        "x": 45.0,
-        "y": 0.0,
-        "z": 180.0
-      },
-      "world_rotation": {
-        "x": 0.0,
-        "y": 0.0,
-        "z": 0.0
-      }
-    },
-    {
-      "id": "terrain_shipping_container",
-      "world_position": {
-        "x": 404.0,
-        "y": 0.0,
-        "z": 370.0
-      },
-      "world_rotation": {
-        "x": 0.0,
-        "y": 90.7601852,
-        "z": 0.0
-      }
-    }
-  ]
+  "terrain": []
 }

@@ -9,7 +9,7 @@ public class ModelActionContext
     public Cube OriginCube { get; private set;  }
     public Model SourceModel { get; private set; }
     public Model TargetModel { get; private set; }
-    public Player InitiatingPlayer { get; private set; }
+    public PlayerController InitiatingPlayer { get; private set; }
     public int RemainingAP { get; private set; }
 
     // Extensible metadata bag for special cases
@@ -38,7 +38,7 @@ public class ModelActionContext
     {
         if (this.Tabletop == null) return this;
 
-        this.Map = Tabletop.CurrentMap;
+        this.Map = Tabletop.currentMap;
 
         return this;
     }
@@ -49,7 +49,7 @@ public class ModelActionContext
     }
     public ModelActionContext GetInitiatingPlayer ()
     {
-        InitiatingPlayer = SourceModel?.PlayerControlling;
+        InitiatingPlayer = SourceModel?.playerControlling;
         return this;
     }
 

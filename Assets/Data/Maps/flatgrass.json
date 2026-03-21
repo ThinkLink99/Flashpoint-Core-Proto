@@ -8,7 +8,7 @@
   "cube_size": 76.2,
   "deployment_zones": [
     {
-      "teamId": 1,
+      "teamId": 0,
       "squares": [
         {
           "x": 0,
@@ -29,7 +29,7 @@
       ]
     },
     {
-      "teamId": 2,
+      "teamId": 1,
       "squares": [
         {
           "x": 7,

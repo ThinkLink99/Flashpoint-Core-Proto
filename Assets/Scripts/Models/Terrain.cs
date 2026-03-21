@@ -63,7 +63,7 @@ public class Terrain : MonoBehaviour
     {
         cubesIn.Clear();
 
-        if (tabletop == null || tabletop.CurrentMap == null)
+        if (tabletop == null || tabletop.currentMap == null)
         {
             if (showDebugMessages) Debug.LogWarning("Tabletop or CurrentMap is null. Cannot compute cubes containing terrain.");
             return;
@@ -73,13 +73,13 @@ public class Terrain : MonoBehaviour
         if (terrainCollider != null)
         {
             // Iterate all cubes and check if the cube's world box overlaps the terrain collider
-            for (int y = 0; y < tabletop.CurrentMap.MapSize.y; y++)
+            for (int y = 0; y < tabletop.currentMap.MapSize.y; y++)
             {
-                for (int x = 0; x < tabletop.CurrentMap.MapSize.x; x++)
+                for (int x = 0; x < tabletop.currentMap.MapSize.x; x++)
                 {
-                    for (int z = 0; z < tabletop.CurrentMap.MapSize.z; z++)
+                    for (int z = 0; z < tabletop.currentMap.MapSize.z; z++)
                     {
-                        var c = tabletop.CurrentMap.MapGrid.Get(x, y, z);
+                        var c = tabletop.currentMap.MapGrid.Get(x, y, z);
                         if (c == null) continue;
 
                         // Use the cube's center and half extents for overlap test
@@ -144,13 +144,13 @@ public class Terrain : MonoBehaviour
     private IEnumerable<Cube> GetCubeContainingPoint(Vector3 worldPoint)
     {
         var cubes = new List<Cube>();
-        for (int y = 0; y < tabletop.CurrentMap.MapSize.y; y++)
+        for (int y = 0; y < tabletop.currentMap.MapSize.y; y++)
         {
-            for (int x = 0; x < tabletop.CurrentMap.MapSize.x; x++)
+            for (int x = 0; x < tabletop.currentMap.MapSize.x; x++)
             {
-                for (int z = 0; z < tabletop.CurrentMap.MapSize.z; z++)
+                for (int z = 0; z < tabletop.currentMap.MapSize.z; z++)
                 {
-                    var c = tabletop.CurrentMap.MapGrid.Get(x, y, z);
+                    var c = tabletop.currentMap.MapGrid.Get(x, y, z);
                     if (c == null) continue;
                     if (c.PositionIsInCube(worldPoint) && !cubes.Contains(c)) cubes.Add(c);
                 }

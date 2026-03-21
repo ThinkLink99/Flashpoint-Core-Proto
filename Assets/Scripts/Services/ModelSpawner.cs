@@ -6,19 +6,22 @@ using UnityEngine;
 public class ModelSpawner : MonoBehaviour
 {
     [SerializeField] private IModelFactory factory;
-    public List<ModelConfiguration> configurations = new List<ModelConfiguration>();
+    public List<Material> teamColorMaterials;
+    public ModelSetScriptableObject configurations;
 
     private void Awake()
     {
         factory = new ModelFactory();
     }
 
-    public Model SpawnForPlayer (string unitName, Player player, Vector3 position)
+    public Model SpawnForPlayer (string unitName, PlayerController player, Vector3 worldPosition)
     {
-        var model = factory.Create(configurations[0]);
+        var model = factory.Create(configurations.units[unitName]);
         model.name = $"{player.name}'s {unitName}";
-        model.transform.localPosition = position;
+        model.transform.localPosition = worldPosition;
+        model.playerControlling = player;
 
+        model.GetComponentInChildren<MeshRenderer>().material = new Material(teamColorMaterials[(int)player.team]);
         return model;
     }
 }

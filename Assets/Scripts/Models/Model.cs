@@ -1,8 +1,5 @@
 using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody))]
-[RequireComponent(typeof(BoxCollider))]
-[RequireComponent(typeof(ModelActionController))]
 public class Model : MonoBehaviour
 {
     [Header("Events")]
@@ -12,7 +9,7 @@ public class Model : MonoBehaviour
     public Tabletop tabletop;
     public ModelConfiguration ModelConfiguration { get; private set; }
     [SerializeField] private ModelActionController actionController;
-    [SerializeField] private Player playerControlling;
+    [SerializeField] public PlayerController playerControlling;
 
     private GameObject basePrefab;
     private GameObject hitBox;
@@ -23,7 +20,6 @@ public class Model : MonoBehaviour
 
     public Cube CurrentCube { get => currentCube; }
     public ModelActionController ActionController { get => actionController; }
-    public Player PlayerControlling => playerControlling;
 
     public void Initialize (ModelConfiguration modelConfiguration)
     {
@@ -38,7 +34,7 @@ public class Model : MonoBehaviour
 
         tabletop = FindObjectOfType<Tabletop>();
         actionController = GetComponent<ModelActionController>();
-        playerControlling = GetComponentInParent<Player>();
+        playerControlling = GetComponentInParent<PlayerController>();
     }
 
     // Update is called once per frame
@@ -70,18 +66,18 @@ public class Model : MonoBehaviour
         ghost.name = this.gameObject.name + "_Ghost";
 
         // Remove gameplay components
-        var modelComp = ghost.GetComponent<Model>();
-        if (modelComp != null) Destroy(modelComp);
+        //var modelComp = ghost.GetComponent<Model>();
+        //if (modelComp != null) Destroy(modelComp);
 
-        foreach (var col in ghost.GetComponentsInChildren<Collider>())
-        {
-            col.enabled = false;
-        }
+        //foreach (var col in ghost.GetComponentsInChildren<Collider>())
+        //{
+        //    col.enabled = false;
+        //}
 
-        foreach (var rb in ghost.GetComponentsInChildren<Rigidbody>())
-        {
-            Destroy(rb);
-        }
+        //foreach (var rb in ghost.GetComponentsInChildren<Rigidbody>())
+        //{
+        //    Destroy(rb);
+        //}
 
         int ignoreLayer = LayerMask.NameToLayer("Ignore Raycast");
         if (ignoreLayer != -1)

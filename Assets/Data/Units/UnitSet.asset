@@ -46,7 +46,7 @@ MonoBehaviour:
     - Spartan Brawler
     - Spartan Zvezda
     _values:
-    - {fileID: 888885711658051730, guid: b38ede538d854bb46a5b3dd20ce22bf3, type: 3}
-    - {fileID: 8893908974339623627, guid: 222b5f8174df27643a05c855fff08d49, type: 3}
-    - {fileID: 1825267052091645875, guid: ba21d85b8cf60fc46be2de148123f3b2, type: 3}
-    - {fileID: 8967731110272924250, guid: 99128d77b04b4224fa1d5e7acac2f1e9, type: 3}
+    - {fileID: 11400000, guid: e32cb81dfd8912948ac75ddb1ec9b77a, type: 2}
+    - {fileID: 11400000, guid: 785ea8fffe4dce64e8e8ae9cc41596b2, type: 2}
+    - {fileID: 11400000, guid: ecc059817118747439990c5ab2b5d860, type: 2}
+    - {fileID: 11400000, guid: 26fba4c7bb49cfc43b13a2277cdf9975, type: 2}

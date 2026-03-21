@@ -103,8 +103,8 @@ public class Map
 }
 
 public enum TeamId     {
-    Red = 1,
-    Blue = 2
+    Red = 0,
+    Blue = 1
 }
 
 [Serializable, JsonObject(MemberSerialization.OptIn)]
