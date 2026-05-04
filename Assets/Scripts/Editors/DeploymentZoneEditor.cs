@@ -82,7 +82,7 @@ namespace Assets.Scripts.Editors
                 EditorGUILayout.HelpBox("Selected MapBuilder has no Map instance (private `map` field is null). Build or load a map first.", MessageType.Warning);
                 if (GUILayout.Button("Build/Load Map in MapBuilder"))
                 {
-                    mapBuilder.BuildMap();
+                    mapBuilder.Start();
                 }
                 return;
             }
@@ -284,7 +284,7 @@ namespace Assets.Scripts.Editors
             {
                 try
                 {
-                    mapBuilder.BuildMap();
+                    mapBuilder.Start();
                     map = field.GetValue(mapBuilder) as Map;
                 }
                 catch { }

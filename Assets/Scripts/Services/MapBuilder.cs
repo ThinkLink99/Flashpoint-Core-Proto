@@ -19,7 +19,7 @@ namespace Assets.Scripts
 
         public void OnGameStart (Component sender, object data)
         {
-            BuildMap()
+            Start()
             .RaiseMapCreatingEvent()
             .SpawnGroundPlane()
             .SpawnGridLines()
@@ -28,7 +28,7 @@ namespace Assets.Scripts
             .RaiseMapCreatedEvent ();
         }
 
-        public MapBuilder BuildMap()
+        public MapBuilder Start()
         {
             if (showDebugLogs) Debug.Log("Loading map...");
             // use the map data to build the map in the scene
@@ -70,6 +70,8 @@ namespace Assets.Scripts
                     for (int z = 0; z < map.MapSize.z; z++)
                     {
                         var terrain = Instantiate(emptyCube, this.transform);
+                        terrain.transform.localScale *= map.CubeSize;
+
                         terrain.transform.position = new Vector3((x * terrain.transform.lossyScale.x), (y * terrain.transform.lossyScale.y) + (terrain.transform.lossyScale.y / 2), (z * terrain.transform.lossyScale.z));
                         if (showDebugLogs) Debug.Log($"Placing {terrain.name}");
 
@@ -78,7 +80,11 @@ namespace Assets.Scripts
                         cube.worldPosition = terrain.transform.position;
                         cube.worldSize = terrain.transform.lossyScale;
 
-                        if (y  == 0) cube.hasTerrainBelow = true;
+                        if (y == 0)
+                        {
+                            //Utils.CreateWorldText("test", cube.transform, Vector3.zero * 0.5f, 40, Color.black, TextAnchor.MiddleCenter, TextAlignment.Center);
+                            cube.hasTerrainBelow = true;
+                        }
 
                         map.MapGrid.Add(cube, x, y, z);
                     }
@@ -97,6 +103,7 @@ namespace Assets.Scripts
             {
                 if (showDebugLogs) Debug.Log($"Instantiating {map.Terrain[x].id}.");
                 var terrain = Instantiate(terrainSet.terrainPieces[map.Terrain[x].id], this.transform);
+                terrain.transform.localScale *= map.CubeSize;
                 if (showDebugLogs) Debug.Log($"Putting {map.Terrain[x].id} in position.");
                 terrain.transform.position = map.Terrain[x].worldPositon.ToVector3();
                 terrain.transform.localEulerAngles = map.Terrain[x].worldRotation.ToVector3();
@@ -110,7 +117,7 @@ namespace Assets.Scripts
         {
             if (showDebugLogs) Debug.Log("Drawing Deployment Zones...");
 
-            for (int y = 0; y < map.MapSize.y; y++)
+            for (int y = 0; y < map.MapSize.y; y++) 
             {
                 for (int x = 0; x < map.MapSize.x; x++)
                 {
@@ -135,6 +142,10 @@ namespace Assets.Scripts
         public void RaiseMapCreatedEvent ()
         {
             onMapCreated?.Raise(this, map);
+        }
+        public Map Build ()
+        {
+            return map;
         }
 
         private GameObject CreatePlane(string TexturePath, string Name, float Width, float Height)

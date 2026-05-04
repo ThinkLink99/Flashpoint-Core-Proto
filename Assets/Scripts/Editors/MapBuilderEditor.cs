@@ -44,7 +44,7 @@ public class MapBuilderEditor : Editor
         {
             //add everthing the button would do.
             ((MapBuilder)target)
-                .BuildMap()
+                .Start()
                 .SpawnGroundPlane()
                 .SpawnGridLines()
                 .SpawnTerrain()

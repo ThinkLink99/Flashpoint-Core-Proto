@@ -1,20 +1,24 @@
 ﻿using UnityEngine;
 
-[RequireComponent(typeof(Camera))]
 public class MoveableCamera : MonoBehaviour
 {
+    public float movementTime = 1f;
+
     public float moveSpeed = 20f;
     public float shiftMultiplier = 5f;
+
     public float rotateSpeed = 100f;
     public float zoomSpeed = 20f;
 
-    Camera camera;
+    public Vector3 newPosition;
+    public Quaternion newRotation;
+
+    public Transform camera;
+
     private void Start()
     {
-        if (camera is null)
-        {
-            camera = GetComponent<Camera>();
-        }
+        newPosition = transform.position;
+        newRotation = transform.rotation;
     }
     public void Update()
     {
@@ -25,7 +29,6 @@ public class MoveableCamera : MonoBehaviour
 
     void MoveCamera()
     {
-        Vector3 move = Vector3.zero;
         var mvSpeed = moveSpeed;
         // If shfit key is pressed, increase move speed.
         // Otherwise, normal speed.
@@ -33,6 +36,7 @@ public class MoveableCamera : MonoBehaviour
         {
             mvSpeed *= shiftMultiplier;
         }
+
 
         if (Input.GetMouseButton(1)) // Right mouse button
         {
@@ -44,43 +48,41 @@ public class MoveableCamera : MonoBehaviour
 
         }
 
-        if (Input.GetKey(KeyCode.W)) move += camera.transform.forward;
-        if (Input.GetKey(KeyCode.S)) move -= camera.transform.forward;
-        if (Input.GetKey(KeyCode.A)) move -= camera.transform.right;
-        if (Input.GetKey(KeyCode.D)) move += camera.transform.right;
+        if (Input.GetKey(KeyCode.W)) newPosition += (transform.forward * mvSpeed);
+        if (Input.GetKey(KeyCode.S)) newPosition += (transform.forward * -mvSpeed);
+        if (Input.GetKey(KeyCode.A)) newPosition += (transform.right * -mvSpeed);
+        if (Input.GetKey(KeyCode.D)) newPosition += (transform.right * mvSpeed);
 
-        // Restrict movement to XZ plane
-        move.y = 0;
-        camera.transform.position += move.normalized * mvSpeed * Time.deltaTime;
+        transform.position = Vector3.Lerp(transform.position, newPosition, Time.deltaTime * movementTime);
     }
     void RotateCamera()
     {
-        if (Input.GetMouseButton(1)) // Right mouse button
+        if (Input.GetMouseButton(2)) // Right mouse button
         {
             float mouseX = Input.GetAxis("Mouse X");
             float mouseY = Input.GetAxis("Mouse Y");
 
             // Y axis rotation (orbit around board)
-            camera.transform.RotateAround(camera.transform.forward * 5, Vector3.up, mouseX * rotateSpeed * Time.deltaTime);
+            newRotation *= Quaternion.Euler(Vector3.up * (mouseY * rotateSpeed));
 
             // X axis rotation (tilt up/down)
-            Vector3 rightAxis = camera.transform.right;
-            camera.transform.RotateAround(camera.transform.forward * 5, rightAxis, -mouseY * rotateSpeed * Time.deltaTime);
         }
 
         // Q/E keys for Y axis rotation
         if (Input.GetKey(KeyCode.Q))
         {
-            camera.transform.RotateAround(camera.transform.forward * 5, Vector3.up, -rotateSpeed * Time.deltaTime);
+            newRotation *= Quaternion.Euler(Vector3.up * -rotateSpeed);
         }
         if (Input.GetKey(KeyCode.E))
         {
-            camera.transform.RotateAround(camera.transform.forward * 5, Vector3.up, rotateSpeed * Time.deltaTime);
+            newRotation *= Quaternion.Euler(Vector3.up * rotateSpeed);
         }
+
+        transform.rotation = Quaternion.Lerp(transform.rotation, newRotation, Time.deltaTime * movementTime);
     }
     void ZoomCamera()
     {
         float scroll = Input.GetAxis("Mouse ScrollWheel");
-        camera.transform.position += camera.transform.forward * scroll * zoomSpeed;
+        camera.position += camera.forward * scroll * zoomSpeed;
     }
 }

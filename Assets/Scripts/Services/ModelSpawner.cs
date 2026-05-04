@@ -16,7 +16,7 @@ public class ModelSpawner : MonoBehaviour
 
     public Model SpawnForPlayer (string unitName, PlayerController player, Vector3 worldPosition)
     {
-        var model = factory.Create(configurations.units[unitName]);
+        var model = factory.Create(configurations.units[unitName], player.transform);
         model.name = $"{player.name}'s {unitName}";
         model.transform.localPosition = worldPosition;
         model.playerControlling = player;

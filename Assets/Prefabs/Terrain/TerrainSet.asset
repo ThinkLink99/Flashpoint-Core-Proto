@@ -13,37 +13,8 @@ MonoBehaviour:
   m_Name: TerrainSet
   m_EditorClassIdentifier: 
   terrainPieces:
-    reorderableList:
-      canAdd: 1
-      canRemove: 1
-      draggable: 1
-      expandable: 1
-      multipleSelection: 1
-      isExpanded: 1
-      label:
-        m_Text: Keys
-        m_Image: {fileID: 0}
-        m_Tooltip: 
-      headerHeight: 18
-      footerHeight: 13
-      slideEasing: 0.15
-      verticalSpacing: 2
-      showDefaultBackground: 1
-      elementDisplayType: 0
-      elementNameProperty: 
-      elementNameOverride: 
-      elementIcon: {fileID: 0}
-    reqReferences: {fileID: 0}
-    isExpanded: 1
-    _keyValues:
-    - wall_block
-    - terrain_tower_2x1
-    - terrain_shipping_container
-    _keys:
-    - wall_block
-    - terrain_tower_2x1
-    - terrain_shipping_container
-    _values:
-    - {fileID: 7292448822111165194, guid: b035de6f52b87c947ac4e9c0a6f5c392, type: 3}
-    - {fileID: 900061382940513216, guid: 99e7173899bf6294a8ac00b35b9905cb, type: 3}
-    - {fileID: 1916017704557670735, guid: 1b9b5e1c1a6fd4348a2348033f3d6406, type: 3}
+    items:
+    - Key: terrain_tower_2x1
+      Value: {fileID: 900061382940513217, guid: 99e7173899bf6294a8ac00b35b9905cb, type: 3}
+    - Key: terrain_shipping_container
+      Value: {fileID: 6271982589333905314, guid: 1b9b5e1c1a6fd4348a2348033f3d6406, type: 3}

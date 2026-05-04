@@ -3,6 +3,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
+
 public class PlayerController : MonoBehaviour
 {
     [Header("Fireteam Details")]
@@ -12,22 +13,24 @@ public class PlayerController : MonoBehaviour
     [SerializeField] public ModelSpawner modelSpawner;
 
     [Header("Turn Information")]
+    [SerializeField] public bool isHumanControlled = false;
     [SerializeField] private bool firstTurnInRound = true;
     [SerializeField] private Model selectedModel = null;
     [SerializeField] private List<Model> activationsRemaining;
     [SerializeField] private Model activatedModel = null;
     [SerializeField] private ModelActionController activatedModelActionController = null;
 
+    [SerializeField] private GameInfoSO gameInfo;
+
 
     // UI Elements that will need to check against the Models activation status and remaining AP to determine visibility
     [Header("Player UI")]
-    [SerializeField] private GameObject modelInfoPanel;
     [SerializeField] private TMPro.TextMeshProUGUI modelNameTextBox;
     [SerializeField] private TMPro.TextMeshProUGUI modelAPTextBox;
 
     [SerializeField] private UIButton activateButton;
     [SerializeField] private UIButton cancelActivationButton;
- 
+
     [SerializeField] private bool movingModel = false;
     [SerializeField] private UIButton advanceButton;
     [SerializeField] private UIButton confirmAdvanceButton;
@@ -58,41 +61,25 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private GameEvent onModelSelected;
     [SerializeField] private GameEvent onModelDeselected;
     [SerializeField] private GameEvent onModelMoveDeactivated;
+    [SerializeField] private GameEvent onPlayerTurnEnded;
 
     [Header("Debugging")]
     [SerializeField] private bool showDebugLogs = true;
 
+    [Header("Player States")]
     StateMachine stateMachine;
+    [SerializeField] private bool isPlayerTurn = false;
+
+    public List<Model> ActivationsRemaining => activationsRemaining;
 
     public void Awake()
     {
-        stateMachine = new StateMachine();
         activationsRemaining = new List<Model>();
         spawnedModels = new List<Model>();
-
-        // Init states
-        var idleState = new PlayerIdleState(this);
-        var turnStartState = new TurnStartState(this);
-        var modelSelectedState = new ModelSelectedState(this);
-        var modelActivatedState = new ModelActivatedState(this);
-
-        // Define Transitions
-        At(idleState, turnStartState, new FuncPredicate(() => false));
-        At(turnStartState, modelSelectedState, new FuncPredicate(() => selectedModel != null));
-        At(modelSelectedState, modelActivatedState, new FuncPredicate(() => activatedModel != null));
-        Any(modelSelectedState, new FuncPredicate(() => selectedModel != null && activatedModel == null));
-
-        // set our current Player State
-        stateMachine.SetState(idleState);
     }  
-
-    void At(IState from, IState to, IPredicate condition) => stateMachine.AddTransition(from, to, condition);
-    void Any(IState to, IPredicate condition) => stateMachine.AddAnyTransition(to, condition);
 
     public void Update()
     {
-        stateMachine.Update();
-
         var mousePos = Input.mousePosition;
         Ray ray = Camera.main.ScreenPointToRay(mousePos);
 
@@ -103,7 +90,6 @@ public class PlayerController : MonoBehaviour
     }
     public void FixedUpdate()
     {
-        stateMachine.FixedUpdate();
     }
 
     public void BeginTurn ()
@@ -114,6 +100,8 @@ public class PlayerController : MonoBehaviour
             // reset activations
             ResetActivations();
         }
+
+        isPlayerTurn = true;
     }
     private void ResetActivations ()
     {
@@ -162,6 +150,7 @@ public class PlayerController : MonoBehaviour
                     }
                     else
                     {
+                        gameInfo.SelectedModel = hitModel;
                         selectedModel = hitModel;
                         //tabletopCameraController.target = selectedModel.transform;
                         onModelSelected?.Raise(this, selectedModel);
@@ -405,28 +394,24 @@ public class PlayerController : MonoBehaviour
 
     public void DoUI()
     {
-        if (selectedModel != null)
-        {
-            modelNameTextBox.text = selectedModel.name;
-            modelAPTextBox.text = selectedModel?.ActionController.RemainingAP.ToString();
-        }
+        //if (selectedModel != null)
+        //{
+        //    modelNameTextBox.text = selectedModel.name;
+        //    modelAPTextBox.text = selectedModel?.ActionController.RemainingAP.ToString();
+        //}
 
-        ToggleActivationButton();
-        ToggleCancelActivationButton();
+        //ToggleActivationButton();
+        //ToggleCancelActivationButton();
         //ToggleSprintButton();
-        ToggleAdvanceButton();
-        ToggleShootButton();
+        //ToggleAdvanceButton();
+        //ToggleShootButton();
     }
 
     public void ShowPanel()
     {
-        if (modelInfoPanel.activeSelf) return;
-        if (selectedModel != null) modelInfoPanel.SetActive(true);
     }
     public void HidePanel()
     {
-        if (!modelInfoPanel.activeSelf) return;
-        if (selectedModel == null) modelInfoPanel.SetActive(false);
     }
     public void ToggleActivationButton()
     {
@@ -487,22 +472,18 @@ public class PlayerController : MonoBehaviour
     public void EndTurn ()
     {
         // Handle turn end logic, such as disabling input, notifying turn manager, etc.
+        isPlayerTurn = false;
+        onPlayerTurnEnded?.Raise(this, null);
     }
 
-    public void OnModelSelected(Component sender, object data)
-    {
-        if (data is not Model model) return;
-        if (selectedModel == model) return;
-
-        selectedModel = model;
-        ShowPanel();
-    }
     public void OnModelDeselected(Component sender, object data)
     {
         if (data is not Model model) return;
         if (selectedModel != model) return;
 
         selectedModel = null;
+        gameInfo.SelectedModel = null;
+
         HidePanel();
     }
     public void OnModelActivated(Component sender, object data)
@@ -577,7 +558,7 @@ public class PlayerController : MonoBehaviour
         if (movingModel && sprintHighlightedCubes != null && sprintHighlightedCubes.Count > 0)
         {
             Gizmos.color = Color.yellow;
-            var remaining = sprintHighlightedCubes.Except(advanceHighlightedCubes).ToList();
+            var remaining = sprintHighlightedCubes.Except(advanceHighlightedCubes).ToList();  
             foreach (var cube in sprintHighlightedCubes)
             {
                 if (cube == null) continue;

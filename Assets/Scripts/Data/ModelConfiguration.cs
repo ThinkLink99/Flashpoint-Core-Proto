@@ -15,6 +15,7 @@ public class ModelConfiguration : ScriptableObject
 
     // TODO: Add Keyword functionality
 
+    [JsonProperty] public int unitCost = 40;
     [JsonProperty] public int unitHP = 4;
     [JsonProperty] public int unitArmor = 2;
     [JsonProperty] public int unitAdvanceSpeed = 2;

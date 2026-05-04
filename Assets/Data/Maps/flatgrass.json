@@ -5,7 +5,7 @@
     "y": 3,
     "z": 8
   },
-  "cube_size": 76.2,
+  "cube_size": 7.62,
   "deployment_zones": [
     {
       "teamId": 0,
@@ -54,26 +54,13 @@
     {
       "id": "terrain_tower_2x1",
       "world_position": {
-        "x": 32.0,
+        "x": 18.9,
         "y": 0.0,
-        "z": 194.8
+        "z": 24.3
       },
       "world_rotation": {
         "x": 0.0,
-        "y": 0.0,
-        "z": 0.0
-      }
-    },
-    {
-      "id": "terrain_shipping_container",
-      "world_position": {
-        "x": 404.0,
-        "y": 0.0,
-        "z": 370.0
-      },
-      "world_rotation": {
-        "x": 0.0,
-        "y": 90.7601852,
+        "y": 311.995178,
         "z": 0.0
       }
     }

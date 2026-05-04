@@ -5,8 +5,11 @@ using UnityEngine;
 public class Director : MonoBehaviour
 {
     [SerializeField] private Tabletop tabletop;
+    [SerializeField] private PlayerBuilder builder;
     [SerializeField] private ModelSpawner spawner;
     [SerializeField] private MapBuilder mapBuilder;
+
+    [SerializeField] List<PlayerController> playerControllers;
 
     [Header("Game Events")]
     [SerializeField] private GameEvent onGameStart;
@@ -14,9 +17,8 @@ public class Director : MonoBehaviour
     [SerializeField] private GameEvent onPlayersCreated;
     [SerializeField] private GameEvent onAllPlayersDeployed;
 
-    [SerializeField] private GameObject mainMenuPanel;
-
-    private StateMachine stateMachine;
+    [SerializeField] private GameObject loadingScreen;
+    [SerializeField] private ModelInformationController playerUI;
 
     [Header("Debug State Change Flags")]
     [SerializeField] private string currentStateName = string.Empty;
@@ -27,34 +29,25 @@ public class Director : MonoBehaviour
     [SerializeField] private bool playersDeployed = false;
     [SerializeField] private int round = 0;
 
+    private StateMachine stateMachine;
+
     private void Awake()
     {
         stateMachine = new StateMachine();
 
-        var appStartState = new AppStartState(tabletop);
-        var mainMenuState = new MainMenuState(tabletop, onGameStart: onGameStart,
-                                                        mainMenu: mainMenuPanel);
-        var mapSelectState = new MapSelectState(tabletop, onMapSelected: onMapSelected);
-        var mapBuildState = new MapBuildState (tabletop, mapBuilder);
-        var playerCreationState = new PlayerCreationState(tabletop, spawner, onPlayersCreated: onPlayersCreated, testModelsToSpawn: spawner.configurations.ToArray());
-        var deploymentState = new DeploymentRoundState(tabletop, onAllPlayersDeployed: onAllPlayersDeployed);
-        var roundState = new GameRoundState(tabletop);
+        Game.Instance.OnGameStart += OnGameStart;
+        Game.Instance.OnMapSelected += OnMapSelected;
+        Game.Instance.OnMapCreated += OnMapCreated;
+        Game.Instance.OnPlayersCreated += OnPlayersCreated;
+        Game.Instance.OnAllPlayersDeployed += OnAllPlayersDeployed;
 
-        At(appStartState, 
-           transitionTo: mainMenuState, 
-           when: new FuncPredicate(() => startApp));
-        At(mainMenuState,
-           transitionTo: mapSelectState,
+        var appStartState = new AppStartState(tabletop, loadingScreen, mapBuilder, builder, spawner.configurations.ToArray(), onGameStart);
+        var deploymentState = new DeploymentRoundState(tabletop, onAllPlayersDeployed: onAllPlayersDeployed);
+        var roundState = new GameRoundState(tabletop, modelInformationController: playerUI);
+
+        At(appStartState,  
+           transitionTo: deploymentState, 
            when: new FuncPredicate(() => gameStarted));
-        At(mapSelectState,
-           transitionTo: mapBuildState,
-           when: new FuncPredicate(() => mapSelected));
-        At(mapBuildState,
-           transitionTo: playerCreationState,
-           when: new FuncPredicate(() => mapBuilt));
-        At(playerCreationState,
-           transitionTo: deploymentState,
-           when: new FuncPredicate(() => tabletop.players.Count > 0));
         At(deploymentState,
            transitionTo: roundState,
            when: new FuncPredicate(() => playersDeployed));
@@ -82,7 +75,6 @@ public class Director : MonoBehaviour
     #region Event Listeners
     public void OnGameStart (Component sender, object data)
     {
-        // change our state to select map (noop, just use default map for now)
         gameStarted = true;
     }
     public void OnMapSelected(Component sender, object data)
@@ -93,8 +85,18 @@ public class Director : MonoBehaviour
     {
         mapBuilt = true;
     }
+    public void OnPlayersCreated(Component sender, object data)
+    {
+        // temporarily assign UI to player here. Need a more elegant solution in the future
+        if (data is List<PlayerController> players)
+        {
+            playerControllers = players;
+            playerUI.playerController = players[0];
+        }
+    }
     public void OnAllPlayersDeployed (Component sender, object data)
     {
+        Debug.Log("All Players Deployed!");
         playersDeployed = true;
     }
     #endregion

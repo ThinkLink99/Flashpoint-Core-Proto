@@ -1,0 +1,50 @@
+:root {
+}
+
+.button-group {
+    flex-direction: row;
+    flex-grow: 1;
+    align-items: center;
+}
+
+.button-group-vertical {
+    flex-direction: column;
+    flex-grow: 0;
+    align-items: center;
+}
+
+.button {
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+    flex-grow: 1;
+    align-self: stretch;
+    margin-top: 5px;
+    margin-left: 5px;
+    margin-right: 5px;
+    margin-bottom: 5px;
+}
+
+.button-primary {
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+}
+
+.button-primary:hover {
+    scale: 1.05 1.05;
+    border-left-color: rgba(255, 180, 37, 0.7);
+    border-right-color: rgba(255, 180, 37, 0.7);
+    border-top-color: rgba(255, 180, 37, 0.7);
+    border-bottom-color: rgba(255, 180, 37, 0.7);
+    border-top-width: 10px;
+    border-right-width: 10px;
+    border-bottom-width: 10px;
+    border-left-width: 10px;
+    transition-timing-function: ease-in-out;
+    transition-duration: 50ms;
+}
+
+.button-primary:active {
+    background-color: rgb(0, 142, 142);
+}

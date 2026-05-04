@@ -1,0 +1,100 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/Styles/MainStyle.uss?fileID=7433441132597879392&amp;guid=79df6bfaaf9f179488ea8b4cef63958b&amp;type=3#MainStyle"/>
+    <Style src="project://database/Assets/UI/Styles/ModelStatsCard.uss?fileID=7433441132597879392&amp;guid=e82dc4f85dbe48e46a7352e5e4159df9&amp;type=3#ModelStatsCard"/>
+    <ui:VisualElement data-source="project://database/Assets/Data/Game%20Info.asset?fileID=11400000&amp;guid=c6a48348a0c7a714a9c0aff53654df46&amp;type=2#Game Info" enabled="true" data-source-type="ModelConfiguration, Assembly-CSharp" data-source-path="SelectedModel.tabletop.players[0].fireteam.models[0]" class="model-card">
+        <ui:VisualElement name="InfoBlock" style="flex-grow: 0; height: 60%; width: 100%; flex-direction: row;">
+            <ui:VisualElement class="flex-col-1" style="flex-grow: 1;">
+                <ui:Image name="Image" source="project://database/Assets/Images/spartan_mkvii.png?fileID=2800000&amp;guid=3d28e5c4e9db2d747a15c8d81e7c4f20&amp;type=3#spartan_mkvii"/>
+            </ui:VisualElement>
+            <ui:VisualElement name="ModelStats" class="flex-col-2">
+                <ui:VisualElement name="Header" class="bg-primary" style="flex-grow: 0; flex-direction: row-reverse; justify-content: center; border-top-right-radius: 20px; height: 30px; width: 100%;">
+                    <ui:Label text="[00]" name="ModelCost" style="align-self: flex-end; height: 100%;">
+                        <Bindings>
+                            <ui:DataBinding property="text" data-source-path="SelectedModel.ModelConfiguration.unitCost" binding-mode="ToTarget"/>
+                        </Bindings>
+                    </ui:Label>
+                    <ui:Label text="MODEL NAME" name="ModelName" style="align-self: flex-end; height: 100%;">
+                        <Bindings>
+                            <ui:DataBinding property="text" data-source-path="SelectedModel.ModelConfiguration.unitName" binding-mode="ToTarget"/>
+                        </Bindings>
+                    </ui:Label>
+                </ui:VisualElement>
+                <ui:VisualElement name="Keywords" class="flex-grow-1" style="flex-grow: 1; height: auto;"/>
+                <ui:VisualElement name="SkillChecks" class="grid">
+                    <ui:VisualElement name="Range" class="text-center grid-item padding-5">
+                        <ui:Label text="RA" class="bg-primary text-primary fill-width"/>
+                        <ui:Label text="0+" class="bg-secondary text-secondary fill-width">
+                            <Bindings>
+                                <ui:DataBinding property="text" data-source-path="SelectedModel.ModelConfiguration.unitRange" binding-mode="ToTarget"/>
+                            </Bindings>
+                        </ui:Label>
+                    </ui:VisualElement>
+                    <ui:VisualElement name="Fight" class="text-center grid-item padding-5">
+                        <ui:Label text="FI" class="bg-primary text-primary fill-width"/>
+                        <ui:Label text="0+" class="bg-secondary text-secondary fill-width">
+                            <Bindings>
+                                <ui:DataBinding property="text" data-source-path="SelectedModel.ModelConfiguration.unitFight" binding-mode="ToTarget"/>
+                            </Bindings>
+                        </ui:Label>
+                    </ui:VisualElement>
+                    <ui:VisualElement name="Save" class="text-center grid-item padding-5">
+                        <ui:Label text="SV" class="bg-primary text-primary fill-width"/>
+                        <ui:Label text="0+" class="bg-secondary text-secondary fill-width">
+                            <Bindings>
+                                <ui:DataBinding property="text" data-source-path="SelectedModel.ModelConfiguration.unitSave" binding-mode="ToTarget"/>
+                            </Bindings>
+                        </ui:Label>
+                    </ui:VisualElement>
+                </ui:VisualElement>
+                <ui:VisualElement name="Attributes" class="grid text-center text-medium flex-grow-1">
+                    <ui:VisualElement name="Speed" class="grid-item bg-primary text-primary margin-5" style="flex-grow: 1;">
+                        <ui:Label text="SP" selectable="false" focusable="false" emoji-fallback-support="false"/>
+                        <ui:VisualElement style="flex-grow: 0; flex-direction: row; justify-content: space-evenly;">
+                            <ui:Label text="0" name="Advance">
+                                <Bindings>
+                                    <ui:DataBinding property="text" data-source-path="unitAdvanceSpeed" binding-mode="ToTarget"/>
+                                </Bindings>
+                            </ui:Label>
+                            <ui:Label text="/&#10;"/>
+                            <ui:Label text="0" name="Sprint">
+                                <Bindings>
+                                    <ui:DataBinding property="text" data-source-path="unitSprintSpeed" binding-mode="ToTarget"/>
+                                </Bindings>
+                            </ui:Label>
+                        </ui:VisualElement>
+                    </ui:VisualElement>
+                    <ui:VisualElement name="Armor" class="text-primary bg-primary margin-5" style="flex-grow: 1;">
+                        <ui:Label text="AR" enable-rich-text="false"/>
+                        <ui:Label text="0">
+                            <Bindings>
+                                <ui:DataBinding property="text" data-source-path="unitArmor" binding-mode="ToTarget"/>
+                            </Bindings>
+                        </ui:Label>
+                    </ui:VisualElement>
+                    <ui:VisualElement name="Wounds" class="grid-item bg-secondary text-secondary margin-5" style="flex-grow: 1;">
+                        <ui:Label text="HP"/>
+                        <ui:Label text="0" name="HPRemaining">
+                            <Bindings>
+                                <ui:DataBinding property="text" data-source-path="unitHP" binding-mode="ToTarget"/>
+                            </Bindings>
+                        </ui:Label>
+                    </ui:VisualElement>
+                </ui:VisualElement>
+            </ui:VisualElement>
+        </ui:VisualElement>
+        <ui:VisualElement name="WeaponBlock" style="flex-grow: 1; width: 100%; height: 50%;">
+            <ui:VisualElement name="GridHeader" class="bg-tertiary text-primary grid" style="flex-grow: 0; justify-content: space-evenly;">
+                <ui:Label text="WP" name="WeaponHeader" style="flex-grow: 1;"/>
+                <ui:Label text="RA" name="RangeHeader" style="flex-grow: 0;"/>
+                <ui:Label text="AP" name="ArmorPierceHeader"/>
+                <ui:Label text="KW" name="KeywordsHeader" style="flex-grow: 1;"/>
+            </ui:VisualElement>
+            <ui:VisualElement name="Weapons" class="grid bg-secondary text-secondary rounded-20-bottom" style="flex-grow: 1; justify-content: space-evenly;">
+                <ui:Label text="WP" name="WeaponHeader" style="flex-grow: 1;"/>
+                <ui:Label text="RA" name="RangeHeader"/>
+                <ui:Label text="AP" name="ArmorPierceHeader"/>
+                <ui:Label text="KW" name="KeywordsHeader" style="flex-grow: 1;"/>
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

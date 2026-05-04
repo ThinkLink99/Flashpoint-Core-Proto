@@ -1,0 +1,35 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/Styles/MainStyle.uss?fileID=7433441132597879392&amp;guid=79df6bfaaf9f179488ea8b4cef63958b&amp;type=3#MainStyle"/>
+    <Style src="project://database/Assets/UI/Styles/ButtonStyles.uss?fileID=7433441132597879392&amp;guid=42628e6f5733c534ea5d2e23a0a89e59&amp;type=3#ButtonStyles"/>
+    <ui:VisualElement name="MenuContainer" class="menu-contianer">
+        <ui:VisualElement name="MenuTitle" class="menu-title">
+            <ui:Image source="project://database/Assets/Images/halo-flashpoint-app-logo-header.png?fileID=2800000&amp;guid=2030c87e81d50b94b88455c29375fa8f&amp;type=3#halo-flashpoint-app-logo-header" focusable="true" enabled="true" scale-mode="ScaleToFit" name="Logo" style="flex-grow: 0; justify-content: flex-start; align-items: flex-start; width: 100%; height: 50%; padding-bottom: 25px; padding-right: 25px;"/>
+        </ui:VisualElement>
+        <ui:VisualElement name="MenuOptions" class="menu-options button-group-vertical" style="display: flex;">
+            <ui:Button text="START" display-tooltip-when-elided="true" name="Start" class="button-primary button"/>
+            <ui:Button text="SETTINGS" display-tooltip-when-elided="true" name="Settings" class="button-primary button"/>
+            <ui:Button text="EXIT" display-tooltip-when-elided="true" name="Exit" class="button-primary button"/>
+        </ui:VisualElement>
+        <ui:VisualElement name="PlayerSelection" class="menu-options" style="flex-grow: 1; display: none; visibility: visible;">
+            <ui:VisualElement name="VisualElement" class="bg-primary fill-width text-center text-large rounded-10 border-5 text-primary">
+                <ui:Label text="PLAYER SELECTION" class="fill-width" style="flex-grow: 1;"/>
+            </ui:VisualElement>
+            <ui:VisualElement style="flex-grow: 1; flex-direction: row;">
+                <ui:VisualElement name="Player1Options" class="text-secondary bg-secondary padding-5 rounded-10 border-5 margin-5" style="flex-grow: 1;">
+                    <ui:Label text="Player 1" class="text-large text-center"/>
+                    <ui:TextField label="Player Name" placeholder-text="name..." name="Player1Name" value="Player 1" class="text-medium text-center"/>
+                    <ui:EnumField label="Team Color" value="Red" type="TeamId, Assembly-CSharp" name="Player1Team" class="text-medium text-center"/>
+                    <ui:Toggle label="AI?" name="Player1IsAI" class="text-medium text-center"/>
+                </ui:VisualElement>
+                <ui:VisualElement name="Player2Options" class="text-secondary bg-secondary padding-5 rounded-10 border-5 margin-5" style="flex-grow: 1;">
+                    <ui:Label text="Player 2" class="text-large text-center"/>
+                    <ui:TextField label="Player Name" placeholder-text="name..." value="Player 2" name="Player2Name" class="text-medium text-center"/>
+                    <ui:EnumField label="Team Color" value="Blue" type="TeamId, Assembly-CSharp" name="Player2Team" class="text-medium text-center"/>
+                    <ui:Toggle label="AI?" value="true" name="Player2IsAI" class="text-medium text-center"/>
+                </ui:VisualElement>
+            </ui:VisualElement>
+            <ui:Button text="Continue" enable-rich-text="true" name="btnContinue" class="button-primary"/>
+            <ui:Button text="Back" enable-rich-text="true" name="btnBack" class="button-primary"/>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

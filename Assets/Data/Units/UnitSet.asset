@@ -13,40 +13,12 @@ MonoBehaviour:
   m_Name: UnitSet
   m_EditorClassIdentifier: 
   units:
-    reorderableList:
-      canAdd: 1
-      canRemove: 1
-      draggable: 1
-      expandable: 1
-      multipleSelection: 1
-      isExpanded: 1
-      label:
-        m_Text: Keys
-        m_Image: {fileID: 0}
-        m_Tooltip: 
-      headerHeight: 18
-      footerHeight: 13
-      slideEasing: 0.15
-      verticalSpacing: 2
-      showDefaultBackground: 1
-      elementDisplayType: 0
-      elementNameProperty: 
-      elementNameOverride: 
-      elementIcon: {fileID: 0}
-    reqReferences: {fileID: 0}
-    isExpanded: 1
-    _keyValues:
-    - Spartan MK VII
-    - Spartan Deadeye
-    - Spartan Brawler
-    - Spartan Zvezda
-    _keys:
-    - Spartan MK VII
-    - Spartan Deadeye
-    - Spartan Brawler
-    - Spartan Zvezda
-    _values:
-    - {fileID: 11400000, guid: e32cb81dfd8912948ac75ddb1ec9b77a, type: 2}
-    - {fileID: 11400000, guid: 785ea8fffe4dce64e8e8ae9cc41596b2, type: 2}
-    - {fileID: 11400000, guid: ecc059817118747439990c5ab2b5d860, type: 2}
-    - {fileID: 11400000, guid: 26fba4c7bb49cfc43b13a2277cdf9975, type: 2}
+    items:
+    - Key: Spartan MK VII
+      Value: {fileID: 11400000, guid: e32cb81dfd8912948ac75ddb1ec9b77a, type: 2}
+    - Key: Spartan Deadeye
+      Value: {fileID: 11400000, guid: 785ea8fffe4dce64e8e8ae9cc41596b2, type: 2}
+    - Key: Spartan Brawler
+      Value: {fileID: 11400000, guid: ecc059817118747439990c5ab2b5d860, type: 2}
+    - Key: Spartan Zvezda
+      Value: {fileID: 11400000, guid: 26fba4c7bb49cfc43b13a2277cdf9975, type: 2}

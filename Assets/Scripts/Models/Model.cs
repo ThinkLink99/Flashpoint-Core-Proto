@@ -7,7 +7,7 @@ public class Model : MonoBehaviour
 
     [Header("Model Details")]
     public Tabletop tabletop;
-    public ModelConfiguration ModelConfiguration { get; private set; }
+    public ModelConfiguration ModelConfiguration;
     [SerializeField] private ModelActionController actionController;
     [SerializeField] public PlayerController playerControlling;
 
