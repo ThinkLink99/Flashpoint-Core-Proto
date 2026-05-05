@@ -1,3 +1,4 @@
+using Unity.Properties;
 using UnityEngine;
 
 public class Model : MonoBehaviour
@@ -6,8 +7,11 @@ public class Model : MonoBehaviour
     public GameEvent onModelMoved;
 
     [Header("Model Details")]
-    public Tabletop tabletop;
+    public GameManager gameManager;
+    [CreateProperty]
     public ModelConfiguration ModelConfiguration;
+
+    [Header("Model Controllers")]
     [SerializeField] private ModelActionController actionController;
     [SerializeField] public PlayerController playerControlling;
 
@@ -32,7 +36,7 @@ public class Model : MonoBehaviour
         basePrefab = this.transform.GetChild(0).gameObject;
         hitBox = this.transform.GetChild(1).gameObject;
 
-        tabletop = FindObjectOfType<Tabletop>();
+        gameManager = FindAnyObjectByType<GameManager>();
         actionController = GetComponent<ModelActionController>();
         playerControlling = GetComponentInParent<PlayerController>();
     }
@@ -40,7 +44,7 @@ public class Model : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (tabletop == null) return;
+        if (gameManager == null) return;
         if (ModelConfiguration == null) return;
 
         if (lastPosition != this.transform.localPosition)
@@ -64,20 +68,6 @@ public class Model : MonoBehaviour
     {
         var ghost = Instantiate(this.gameObject);
         ghost.name = this.gameObject.name + "_Ghost";
-
-        // Remove gameplay components
-        //var modelComp = ghost.GetComponent<Model>();
-        //if (modelComp != null) Destroy(modelComp);
-
-        //foreach (var col in ghost.GetComponentsInChildren<Collider>())
-        //{
-        //    col.enabled = false;
-        //}
-
-        //foreach (var rb in ghost.GetComponentsInChildren<Rigidbody>())
-        //{
-        //    Destroy(rb);
-        //}
 
         int ignoreLayer = LayerMask.NameToLayer("Ignore Raycast");
         if (ignoreLayer != -1)

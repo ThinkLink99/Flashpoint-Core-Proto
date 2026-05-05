@@ -6,7 +6,7 @@ public class MainMenuState : BaseGameState
 
     [SerializeField] private GameObject mainMenu;
 
-    public MainMenuState(Tabletop tabletop, GameEvent onGameStart, GameObject mainMenu) : base(tabletop)
+    public MainMenuState(GameManager gameManager, GameEvent onGameStart, GameObject mainMenu) : base(gameManager)
     {
         this.onGameStart = onGameStart;
         this.mainMenu = mainMenu;

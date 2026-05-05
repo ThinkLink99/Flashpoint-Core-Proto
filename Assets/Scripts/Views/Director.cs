@@ -4,7 +4,8 @@ using UnityEngine;
 // Director should handle events and game flow / game states 
 public class Director : MonoBehaviour
 {
-    [SerializeField] private Tabletop tabletop;
+    [SerializeField] private GameInfoSO gameInfoSO;
+    [SerializeField] private GameManager gameManager;
     [SerializeField] private PlayerBuilder builder;
     [SerializeField] private ModelSpawner spawner;
     [SerializeField] private MapBuilder mapBuilder;
@@ -35,15 +36,9 @@ public class Director : MonoBehaviour
     {
         stateMachine = new StateMachine();
 
-        Game.Instance.OnGameStart += OnGameStart;
-        Game.Instance.OnMapSelected += OnMapSelected;
-        Game.Instance.OnMapCreated += OnMapCreated;
-        Game.Instance.OnPlayersCreated += OnPlayersCreated;
-        Game.Instance.OnAllPlayersDeployed += OnAllPlayersDeployed;
-
-        var appStartState = new AppStartState(tabletop, loadingScreen, mapBuilder, builder, spawner.configurations.ToArray(), onGameStart);
-        var deploymentState = new DeploymentRoundState(tabletop, onAllPlayersDeployed: onAllPlayersDeployed);
-        var roundState = new GameRoundState(tabletop, modelInformationController: playerUI);
+        var appStartState = new AppStartState(gameManager, loadingScreen, mapBuilder, builder, spawner.configurations.ToArray(), gameInfoSO.PlayerOptions, onGameStart);
+        var deploymentState = new DeploymentRoundState(gameManager, onAllPlayersDeployed: onAllPlayersDeployed);
+        var roundState = new GameRoundState(gameManager, modelInformationController: playerUI);
 
         At(appStartState,  
            transitionTo: deploymentState, 
@@ -75,6 +70,13 @@ public class Director : MonoBehaviour
     #region Event Listeners
     public void OnGameStart (Component sender, object data)
     {
+        // read our return data from the app start state and assign it to our director so we can pass it to other states as needed
+        if (data is AppStartReturnData ret)
+        {
+            gameManager.currentMap = ret.Map;
+            gameManager.players = ret.Players;
+        }
+
         gameStarted = true;
     }
     public void OnMapSelected(Component sender, object data)

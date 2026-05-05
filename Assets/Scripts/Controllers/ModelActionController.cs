@@ -44,17 +44,6 @@ public class ModelActionController : MonoBehaviour
         OnActivationComplete();
     }
 
-    public bool TryPerformAction(IModelAction action, ModelActionContext ctx)
-    {
-        if (action.Cost > RemainingAP) return false;
-        if (!action.CanExecute(ctx)) return false;
-        RemainingAP -= action.Cost;
-        // start the action coroutine on this MonoBehaviour so the action can perform animations/movement
-        StartCoroutine(action.Execute(ctx));
-        if (RemainingAP == 0) OnActivationComplete();
-        return true;
-    }
-
     private void OnActivationComplete()
     {
         // notify turn manager, disable input, fire events

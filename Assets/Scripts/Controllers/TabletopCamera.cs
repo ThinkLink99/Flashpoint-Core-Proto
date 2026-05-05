@@ -51,7 +51,7 @@ public class TabletopCamera : MonoBehaviour
         // initialize target
         if (target == null)
         {
-            var tt = FindObjectOfType<Tabletop>();
+            var tt = FindObjectOfType<GameManager>();
             if (tt != null) target = tt.transform;
         }
 

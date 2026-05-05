@@ -16,7 +16,7 @@ public class Terrain : MonoBehaviour
     [SerializeField] private MeshFilter terrainMesh;
     [SerializeField] private Collider terrainCollider;
     [SerializeField] private List<Cube> cubesIn;
-    [SerializeField] private Tabletop tabletop;
+    [SerializeField] private GameManager gameManager;
     [SerializeField] private Vector3[] vertices;
 
     [Header("Debugging")]
@@ -32,7 +32,7 @@ public class Terrain : MonoBehaviour
 
         if (transform.parent != null)
         {
-            tabletop = transform.parent.GetComponentInParent<Tabletop>();
+            gameManager = transform.parent.GetComponentInParent<GameManager>();
         }
     }
     private void OnValidate()
@@ -63,7 +63,7 @@ public class Terrain : MonoBehaviour
     {
         cubesIn.Clear();
 
-        if (tabletop == null || tabletop.currentMap == null)
+        if (gameManager == null || gameManager.currentMap == null)
         {
             if (showDebugMessages) Debug.LogWarning("Tabletop or CurrentMap is null. Cannot compute cubes containing terrain.");
             return;
@@ -73,13 +73,13 @@ public class Terrain : MonoBehaviour
         if (terrainCollider != null)
         {
             // Iterate all cubes and check if the cube's world box overlaps the terrain collider
-            for (int y = 0; y < tabletop.currentMap.MapSize.y; y++)
+            for (int y = 0; y < gameManager.currentMap.MapSize.y; y++)
             {
-                for (int x = 0; x < tabletop.currentMap.MapSize.x; x++)
+                for (int x = 0; x < gameManager.currentMap.MapSize.x; x++)
                 {
-                    for (int z = 0; z < tabletop.currentMap.MapSize.z; z++)
+                    for (int z = 0; z < gameManager.currentMap.MapSize.z; z++)
                     {
-                        var c = tabletop.currentMap.MapGrid.Get(x, y, z);
+                        var c = gameManager.currentMap.MapGrid.Get(x, y, z);
                         if (c == null) continue;
 
                         // Use the cube's center and half extents for overlap test
@@ -144,13 +144,13 @@ public class Terrain : MonoBehaviour
     private IEnumerable<Cube> GetCubeContainingPoint(Vector3 worldPoint)
     {
         var cubes = new List<Cube>();
-        for (int y = 0; y < tabletop.currentMap.MapSize.y; y++)
+        for (int y = 0; y < gameManager.currentMap.MapSize.y; y++)
         {
-            for (int x = 0; x < tabletop.currentMap.MapSize.x; x++)
+            for (int x = 0; x < gameManager.currentMap.MapSize.x; x++)
             {
-                for (int z = 0; z < tabletop.currentMap.MapSize.z; z++)
+                for (int z = 0; z < gameManager.currentMap.MapSize.z; z++)
                 {
-                    var c = tabletop.currentMap.MapGrid.Get(x, y, z);
+                    var c = gameManager.currentMap.MapGrid.Get(x, y, z);
                     if (c == null) continue;
                     if (c.PositionIsInCube(worldPoint) && !cubes.Contains(c)) cubes.Add(c);
                 }

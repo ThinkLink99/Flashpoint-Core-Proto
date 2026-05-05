@@ -6,6 +6,8 @@ using UnityEngine.EventSystems;
 
 public class PlayerController : MonoBehaviour
 {
+    [SerializeField] private GameManager gameManager;
+
     [Header("Fireteam Details")]
     [SerializeField] public TeamId team;
     [SerializeField] public Fireteam fireteam;
@@ -16,28 +18,16 @@ public class PlayerController : MonoBehaviour
     [SerializeField] public bool isHumanControlled = false;
     [SerializeField] private bool firstTurnInRound = true;
     [SerializeField] private Model selectedModel = null;
+    public Model SelectedModel => selectedModel;
     [SerializeField] private List<Model> activationsRemaining;
     [SerializeField] private Model activatedModel = null;
     [SerializeField] private ModelActionController activatedModelActionController = null;
 
     [SerializeField] private GameInfoSO gameInfo;
 
-
     // UI Elements that will need to check against the Models activation status and remaining AP to determine visibility
     [Header("Player UI")]
-    [SerializeField] private TMPro.TextMeshProUGUI modelNameTextBox;
-    [SerializeField] private TMPro.TextMeshProUGUI modelAPTextBox;
-
-    [SerializeField] private UIButton activateButton;
-    [SerializeField] private UIButton cancelActivationButton;
-
     [SerializeField] private bool movingModel = false;
-    [SerializeField] private UIButton advanceButton;
-    [SerializeField] private UIButton confirmAdvanceButton;
-    [SerializeField] private UIButton cancelAdvanceButton;
-    [SerializeField] private UIButton sprintButton;
-    [SerializeField] private UIButton confirmSprintButton;
-    [SerializeField] private UIButton cancelSprintButton;
 
     [Header("Model Moving")]
     [SerializeField] private float pickUpHeightFromCube = 1f; // default height above cube when placed
@@ -53,9 +43,6 @@ public class PlayerController : MonoBehaviour
     [Header("Model Targetting")]
     [SerializeField] private bool targettingModel = false;
     [SerializeField] private Model targettedModel;
-    [SerializeField] private UIButton shootButton; // Shoot Button (should not show if weapon has long keyword or other keyword with similar effect. For now, always show if unit has atleast 1 remaining AP)
-    [SerializeField] private UIButton confirmShootButton;
-    [SerializeField] private UIButton cancelShootButton;
 
     [Header("Game Events")]
     [SerializeField] private GameEvent onModelSelected;
@@ -76,8 +63,12 @@ public class PlayerController : MonoBehaviour
     {
         activationsRemaining = new List<Model>();
         spawnedModels = new List<Model>();
-    }  
-
+        gameManager = FindAnyObjectByType <GameManager>();
+    }
+    public void Start()
+    {
+        
+    }
     public void Update()
     {
         var mousePos = Input.mousePosition;
@@ -85,8 +76,6 @@ public class PlayerController : MonoBehaviour
 
         DoModelSelect(mousePos, ray);
         DoModelPointAndClickMove(mousePos, ray);
-
-        DoUI();
     }
     public void FixedUpdate()
     {
@@ -102,6 +91,7 @@ public class PlayerController : MonoBehaviour
         }
 
         isPlayerTurn = true;
+        gameManager.StartTurn(this);
     }
     private void ResetActivations ()
     {
@@ -146,13 +136,13 @@ public class PlayerController : MonoBehaviour
                     if (targettingModel)
                     {
                         targettedModel = hitModel;
-                        //onModelSelected?.Raise(this, targettedModel);
+                        gameManager.SelectTarget(targettedModel);
                     }
-                    else
+                    else 
                     {
-                        gameInfo.SelectedModel = hitModel;
                         selectedModel = hitModel;
                         //tabletopCameraController.target = selectedModel.transform;
+                        gameManager.SelectModel(selectedModel);
                         onModelSelected?.Raise(this, selectedModel);
                     }
                 }
@@ -163,6 +153,17 @@ public class PlayerController : MonoBehaviour
 
     private void DoModelPointAndClickMove(Vector3 mousePos, Ray ray)
     {
+        if (selectedModel != null && Input.GetAxis("Cancel") == 1)
+        {
+            var prev = selectedModel;
+            selectedPoint = Vector3.zero;
+            selectedModel = null;
+
+            onModelDeselected?.Raise(this, prev);
+            onModelMoveDeactivated?.Raise(this, prev);
+            DisableModelMovementMode();
+        }
+
         if (PointerOverUI()) return;
 
         if (movingModel && selectedModel != null && Input.GetMouseButtonDown(0))
@@ -182,39 +183,28 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        if (selectedModel != null && Input.GetAxis("Cancel") == 1)
-        {
-            var prev = selectedModel;
-            selectedPoint = Vector3.zero;
-            selectedModel = null;
-
-            onModelDeselected?.Raise(this, prev);
-            onModelMoveDeactivated?.Raise(this, prev);
-            DisableModelMovementMode();
-        }
-
         ShowModelAsGhost();
     }
     public void EnableModelMovementMode()
     {
-        var mac = CreateModelActionContext();
-        movePlanner = new MovementPlanner(mac);
-        movingModel = true;
-        // compute reachable cubes and cache for visualization
-        advanceHighlightedCubes.Clear();
-        sprintHighlightedCubes.Clear();
-        if (mac != null && mac.OriginCube != null)
-        {
-            var advanceReachable = movePlanner.GetReachableCubes(mac.OriginCube, mac.SourceModel.ModelConfiguration.unitAdvanceSpeed);
-            var sprintReachable = movePlanner.GetReachableCubes(mac.OriginCube, mac.SourceModel.ModelConfiguration.unitSprintSpeed);
+        //var mac = CreateModelActionContext();
+        //movePlanner = new MovementPlanner(mac);
+        //movingModel = true;
+        //// compute reachable cubes and cache for visualization
+        //advanceHighlightedCubes.Clear();
+        //sprintHighlightedCubes.Clear();
+        //if (mac != null && mac.OriginCube != null)
+        //{
+        //    var advanceReachable = movePlanner.GetReachableCubes(mac.OriginCube, mac.SourceModel.ModelConfiguration.unitAdvanceSpeed);
+        //    var sprintReachable = movePlanner.GetReachableCubes(mac.OriginCube, mac.SourceModel.ModelConfiguration.unitSprintSpeed);
 
-            // exclude origin cube from highlights
-            advanceReachable.Remove(mac.OriginCube);
-            sprintReachable.Remove(mac.OriginCube);
+        //    // exclude origin cube from highlights
+        //    advanceReachable.Remove(mac.OriginCube);
+        //    sprintReachable.Remove(mac.OriginCube);
 
-            advanceHighlightedCubes.AddRange(advanceReachable);
-            sprintHighlightedCubes.AddRange(sprintReachable);
-        }
+        //    advanceHighlightedCubes.AddRange(advanceReachable);
+        //    sprintHighlightedCubes.AddRange(sprintReachable);
+        //}
     }
     public void DisableModelMovementMode()
     {
@@ -320,154 +310,6 @@ public class PlayerController : MonoBehaviour
 
         return false;
     }
-    /// <summary>
-    /// Takes the current state of the board, map, players, and models and pases that into a UnitActionContext to give to any UnitAction object
-    /// </summary>
-    private ModelActionContext CreateModelActionContext()
-    {
-        if (selectedModel == null) return null; // if we don't have a selected model, then we shouldn't event be doing an action.
-
-        var mac = new ModelActionContext(selectedModel)
-
-        // can fill in any other needed context items here
-        // using the Builder pattern
-            .GetTabletop()
-            .GetMap()
-            .GetOriginCube()
-            .GetInitiatingPlayer();
-
-        // return the final product
-        return mac;
-    }
-
-    private bool CanActivate()
-    {
-        if (selectedModel == null) return false;
-        if (activatedModel != null) return false;
-
-        if (selectedModel.ActionController.IsActivated == false)
-        {
-            return !selectedModel.ActionController.HasActivated; // just wrap the action controller here
-        }
-        else return false;
-    }
-    private bool CanCancelActivation ()
-    {
-        if (selectedModel == null && activatedModel == null) return false;
-        if (selectedModel == activatedModel)
-        {
-            if (activatedModelActionController.RemainingAP == ModelActionController.ACTIVATION_STARTING_AP)
-            {
-                return true;
-            }
-            else return false;
-        }
-        else return false;
-    }
-    private bool CanAdvance()
-    {
-        if (activatedModel != selectedModel) return false;
-        if (activatedModel == null) return false;
-
-        if (movingModel) return false;
-        if (targettingModel) return false;
-
-        return activatedModelActionController.IsActivated && !activatedModelActionController.HasMoved && activatedModelActionController.RemainingAP > 0;
-    }
-    private bool CanSprint()
-    {
-        if (activatedModel != selectedModel) return false;
-        if (activatedModel == null) return false;
-        if (movingModel) return false;
-
-        return activatedModelActionController.IsActivated && !activatedModelActionController.HasMoved && activatedModelActionController.RemainingAP > 1;
-    }
-    private bool CanShoot()
-    {
-        if (activatedModel != selectedModel) return false;
-        if (activatedModel == null) return false;
-        if (targettingModel) return false;
-        if (movingModel) return false;
-
-        return activatedModelActionController.IsActivated && !activatedModelActionController.HasShot && activatedModelActionController.RemainingAP > 0;
-    }
-
-    public void DoUI()
-    {
-        //if (selectedModel != null)
-        //{
-        //    modelNameTextBox.text = selectedModel.name;
-        //    modelAPTextBox.text = selectedModel?.ActionController.RemainingAP.ToString();
-        //}
-
-        //ToggleActivationButton();
-        //ToggleCancelActivationButton();
-        //ToggleSprintButton();
-        //ToggleAdvanceButton();
-        //ToggleShootButton();
-    }
-
-    public void ShowPanel()
-    {
-    }
-    public void HidePanel()
-    {
-    }
-    public void ToggleActivationButton()
-    {
-        if (CanActivate())
-        {
-            activateButton?.ShowButton();
-        }
-        else
-        {
-            activateButton?.HideButton();
-        }
-    }
-    public void ToggleCancelActivationButton ()
-    {
-        if (CanCancelActivation())
-        {
-            cancelActivationButton.ShowButton();
-        }
-        else
-        {
-            cancelActivationButton?.HideButton();
-        }
-    }
-    public void ToggleAdvanceButton()
-    {
-        if (CanAdvance())
-        {
-            advanceButton?.ShowButton();
-        }
-        else
-        {
-            advanceButton?.HideButton();
-        }
-    }
-    public void ToggleSprintButton()
-    {
-        if (CanSprint())
-        {
-            sprintButton?.ShowButton();
-        }
-        else
-        {
-            sprintButton?.HideButton();
-        }
-    }
-    public void ToggleShootButton()
-    {
-        if (CanShoot())
-        {
-            shootButton?.ShowButton();
-        }
-        else
-        {
-            shootButton?.HideButton();
-        }
-    }
 
     public void EndTurn ()
     {
@@ -482,9 +324,6 @@ public class PlayerController : MonoBehaviour
         if (selectedModel != model) return;
 
         selectedModel = null;
-        gameInfo.SelectedModel = null;
-
-        HidePanel();
     }
     public void OnModelActivated(Component sender, object data)
     {
@@ -516,11 +355,9 @@ public class PlayerController : MonoBehaviour
             Destroy(ghostInstance.gameObject);
 
         // move the model
-        selectedModel
-            .ActionController
-            .TryPerformAction(
-                new AdvanceAction(),
-                CreateModelActionContext().SetSelectedPoint(selectedPoint));
+        gameManager.SelectDestination(selectedPoint);
+        gameManager.TryExecuteAction(
+                new AdvanceAction());
     }
     public void OnModelShootingStarted(Component sender, object data)
     {

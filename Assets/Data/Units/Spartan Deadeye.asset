@@ -15,7 +15,15 @@ MonoBehaviour:
   Model: {fileID: 8893908974339623627, guid: 222b5f8174df27643a05c855fff08d49, type: 3}
   baseSizeMM: 32
   factionName: UNSC
-  unitName: Spartan MK VII
+  unitName: Spartan Deadeye
+  unitDescription: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec
+    a diam lectus. Sed sit amet ipsum mauris. Maecenas congue ligula ac quam viverra
+    nec consectetur ante hendrerit. Donec et mollis dolor. Praesent et diam eget
+    libero egestas mattis sit amet vitae augue. Nam tincidunt congue enim, ut porta
+    lorem lacinia consectetur. Donec ut libero sed arcu vehicula ultricies a non
+    tortor. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+  unitImage: {fileID: 21300000, guid: 46facb75822c78d4c9e477633f5c18a1, type: 3}
+  unitCost: 40
   unitHP: 4
   unitArmor: 2
   unitAdvanceSpeed: 2

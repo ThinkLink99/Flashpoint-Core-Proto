@@ -562,9 +562,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1033910159}
-  - component: {fileID: 1033910155}
-  - component: {fileID: 1033910160}
-  - component: {fileID: 1033910161}
   m_Layer: 0
   m_Name: TableTop
   m_TagString: Untagged
@@ -572,29 +569,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1033910155
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1033910154}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 86e11f6d6f482c8428742c1a60538498, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  mainCamera: {fileID: 963194227}
-  tabletopCameraController: {fileID: 0}
-  players: []
-  currentMap:
-    mapName: 
-    mapSize:
-      x: 0
-      y: 0
-      z: 0
-    cubeSize: 76.2
-    deploymentZones: []
 --- !u!4 &1033910159
 Transform:
   m_ObjectHideFlags: 0
@@ -610,62 +584,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1501779058}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1033910160
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1033910154}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5a9433f5e30db324682acd75aac39209, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  gameEvent: {fileID: 11400000, guid: 09e1cd3694a6ca6409b5bbd629f508ee, type: 2}
-  response:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1033910155}
-        m_TargetAssemblyTypeName: Tabletop, Assembly-CSharp
-        m_MethodName: OnPlayersCreated
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
---- !u!114 &1033910161
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1033910154}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5a9433f5e30db324682acd75aac39209, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  gameEvent: {fileID: 11400000, guid: ae3509c80e9921149990d74e057f696b, type: 2}
-  response:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1033910155}
-        m_TargetAssemblyTypeName: Tabletop, Assembly-CSharp
-        m_MethodName: OnMapCreated
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
 --- !u!1 &1252523099
 GameObject:
   m_ObjectHideFlags: 0
@@ -734,7 +652,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e00b3f46caf68d645a3858c8a0a90811, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tabletop: {fileID: 1033910155}
+  gameInfoSO: {fileID: 11400000, guid: c6a48348a0c7a714a9c0aff53654df46, type: 2}
+  gameManager: {fileID: 0}
   builder: {fileID: 1252523107}
   spawner: {fileID: 1252523100}
   mapBuilder: {fileID: 536174326}
@@ -836,6 +755,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 1252523109}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+        m_MethodName: OnMapCreated
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1252523106
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -854,6 +785,18 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1252523102}
         m_TargetAssemblyTypeName: Director, Assembly-CSharp
+        m_MethodName: OnPlayersCreated
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1252523109}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
         m_MethodName: OnPlayersCreated
         m_Mode: 0
         m_Arguments:
@@ -916,10 +859,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 1252523099}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d88a78a24147b3244bece1c0cbb46d72, type: 3}
+  m_Script: {fileID: 11500000, guid: 3e8da6c3e5a7dbc4abbca5ad82b35a3f, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Game
-  CurrentMap:
+  m_EditorClassIdentifier: Assembly-CSharp::GameManager
+  mainCamera: {fileID: 963194227}
+  tabletopCameraController: {fileID: 0}
+  players: []
+  currentMap:
     mapName: 
     mapSize:
       x: 0
@@ -927,9 +873,6 @@ MonoBehaviour:
       z: 0
     cubeSize: 76.2
     deploymentZones: []
-  GameInfo: {fileID: 11400000, guid: c6a48348a0c7a714a9c0aff53654df46, type: 2}
-  Players: []
-  Round: 0
 --- !u!1 &1501779057
 GameObject:
   m_ObjectHideFlags: 0

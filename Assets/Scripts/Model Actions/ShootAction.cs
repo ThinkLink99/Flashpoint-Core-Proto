@@ -1,10 +1,10 @@
 using System.Collections;
 
-public class ShootAction : IModelAction
+public class ShootAction : IGameAction
 {
     public int Cost => 1;
 
-    public bool CanExecute(ModelActionContext ctx)
+    public bool CanExecute(GameActionContext ctx)
     {
         if (ctx == null) return false;
 
@@ -14,7 +14,7 @@ public class ShootAction : IModelAction
         else return false;
     }
 
-    public IEnumerator Execute(ModelActionContext ctx)
+    public IEnumerator Execute(GameActionContext ctx)
     {
         throw new System.NotImplementedException();
     }

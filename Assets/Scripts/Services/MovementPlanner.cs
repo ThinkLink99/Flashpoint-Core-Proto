@@ -6,7 +6,7 @@ using UnityEngine;
 [Serializable]
 public class MovementPlanner
 {
-    private ModelActionContext _actionContext;
+    private GameActionContext _actionContext;
 
     [SerializeField] private Map map;
     [SerializeField] private int advanceRange = 0;
@@ -14,7 +14,7 @@ public class MovementPlanner
 
     public Map Map => map;
 
-    public MovementPlanner(ModelActionContext modelActionContext)
+    public MovementPlanner(GameActionContext modelActionContext)
     {
         _actionContext = modelActionContext;
 

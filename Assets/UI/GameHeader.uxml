@@ -35,7 +35,7 @@
         <ui:ListView item-template="project://database/Assets/UI/Templates/ModelActivationCard.uxml?fileID=9197481963319205126&amp;guid=e79c84b816e9c00458702d072c7cbd41&amp;type=3#ModelActivationCard" name="ActivationsList" enabled="true" show-bound-collection-size="false" header-title="Activations Remaining" show-border="false" show-add-remove-footer="false" allow-add="false" allow-remove="false" binding-source-selection-mode="AutoAssign" class="fill-height"/>
     </ui:VisualElement>
     <ui:VisualElement name="ModelActions" style="height: 100%; padding-top: 10px; padding-right: 10px; padding-bottom: 10px; padding-left: 10px; flex-direction: row;">
-        <ui:Instance template="ModelInformation" data-source-path="SelectedModel" style="width: 600px; height: 400px;"/>
+        <ui:Instance template="ModelInformation" name="ModelCard" data-source="project://database/Assets/Data/Units/Spartan%20Zvezda.asset?fileID=11400000&amp;guid=26fba4c7bb49cfc43b13a2277cdf9975&amp;type=2#Spartan Zvezda" style="width: 600px; height: 400px;"/>
         <ui:GroupBox style="width: 250px;">
             <ui:Button text="Shoot" name="btnShootModel" class="button button-primary rounded-10 border-5"/>
             <ui:Button text="Move" name="btnMoveModel" class="border-5 rounded-10 button button-primary"/>

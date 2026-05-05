@@ -13,6 +13,7 @@ public class ModelInformationController : MonoBehaviour
     [SerializeField] VisualElement header = null;
     [SerializeField] VisualElement listView = null;
     [SerializeField] VisualElement modelActions = null;
+    [SerializeField] VisualElement modelCard = null;
 
     public Model SelectedModel => selectedModel;
 
@@ -23,6 +24,7 @@ public class ModelInformationController : MonoBehaviour
         header = root.Q("HeaderBar");
         listView = root.Q<ListView>("ActivationsList");
         modelActions = root.Q("ModelActions");
+        modelCard = modelActions.Q("ModelCard").Q("Card");
 
         activationsRemaining = new List<Model>();
 
@@ -65,6 +67,8 @@ public class ModelInformationController : MonoBehaviour
         if (model != null)
         {
             selectedModel = model;
+            modelCard.dataSource = model.ModelConfiguration;
+
             modelActions.visible = true;
         }
     }

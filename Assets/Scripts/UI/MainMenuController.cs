@@ -73,9 +73,9 @@ public class MainMenuController : MonoBehaviour
         };
 
 
-        Game.Instance.GameInfo.PlayerOptions = new List<PlayerOptions> { player1Options, player2Options };
+        //Game.Instance.GameInfo.PlayerOptions = new List<PlayerOptions> { player1Options, player2Options };
 
-        Game.LoadScene(2); // Load the Game Scene
+        //Game.LoadScene(2); // Load the Game Scene
     }
 
     private void OnPlayerSelectionBackClicked(ClickEvent e)

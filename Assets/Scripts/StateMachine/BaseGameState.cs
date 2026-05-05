@@ -1,10 +1,10 @@
 ﻿public abstract class BaseGameState : IState
 {
-    protected Tabletop tabletop;
+    protected GameManager gameManager;
 
-    protected BaseGameState(Tabletop tabletop)
+    protected BaseGameState(GameManager gameManager)
     {
-        this.tabletop = tabletop;
+        this.gameManager = gameManager;
     }
 
     public virtual void FixedUpdate()

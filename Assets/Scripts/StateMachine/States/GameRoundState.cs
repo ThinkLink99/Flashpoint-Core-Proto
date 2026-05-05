@@ -12,14 +12,14 @@ public class GameRoundState : BaseGameState
     private GameEvent onTurnStarted;
     private GameEventListener onTurnEndedListener;
 
-    public GameRoundState(Tabletop tabletop, ModelInformationController modelInformationController) : base(tabletop)
+    public GameRoundState(GameManager gameManager, ModelInformationController modelInformationController) : base(gameManager)
     {
         this.modelInformationController = modelInformationController;
     }
 
     public override void OnEnter()
     {
-        players = tabletop.players;
+        players = gameManager.players;
 
         NextTurn();
     }

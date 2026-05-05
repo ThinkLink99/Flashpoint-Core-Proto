@@ -9,18 +9,16 @@ public class DeploymentRoundState : BaseGameState
 
     private GameEvent onAllPlayersDeployed;
 
-    public DeploymentRoundState(Tabletop tabletop, GameEvent onAllPlayersDeployed) : base(tabletop)
+    public DeploymentRoundState(GameManager gameManager, GameEvent onAllPlayersDeployed) : base(gameManager)
     {
         this.onAllPlayersDeployed = onAllPlayersDeployed;
     }
 
     public override void OnEnter()
     {
-        players = Game.Instance.Players;
-        tabletop.players = players;
+        players = gameManager.players;
+        currentMap = gameManager.currentMap;
 
-        currentMap = Game.Instance.CurrentMap;
-        tabletop.currentMap = currentMap;
         hasDeplopyed = new bool[players.Count];
     }
     public override void Update()
@@ -56,7 +54,7 @@ public class DeploymentRoundState : BaseGameState
             hasDeplopyed[i] = true;
             if (i == players.Count - 1) 
                 // raise an event to say we are done deploying
-                Game.Instance.RaiseAllPlayersDeployedEvent (null, null);
+                onAllPlayersDeployed.Raise(null, null);
         }
     }
 }

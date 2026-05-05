@@ -1,10 +1,10 @@
 using System.Collections;
 using UnityEngine; 
 
-public class AdvanceAction : IModelAction
+public class AdvanceAction : IGameAction
 {
     public int Cost => 1;
-    public bool CanExecute(ModelActionContext ctx)
+    public bool CanExecute(GameActionContext ctx)
     {
         if (ctx == null) return false;
 
@@ -12,12 +12,11 @@ public class AdvanceAction : IModelAction
         else if (ctx.SourceModel.ActionController.HasMoved) return false;
         else return false;
     }
-    public IEnumerator Execute(ModelActionContext ctx)
+    public IEnumerator Execute(GameActionContext ctx)
     {
         if (ctx == null) yield break;
 
         var planner = new MovementPlanner(ctx);
-        Debug.Log(ctx.Map.MapName);
 
         // compute model's vertical offset relative to origin cube center so placement keeps the same visual height
         float modelYOffset = 0f;

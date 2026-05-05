@@ -3,23 +3,33 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+public record AppStartReturnData
+{
+    public Map Map { get; set; }
+    public List<PlayerController> Players { get; set; }
+}
 public class AppStartState : BaseGameState
 {
     private GameObject loadingScreen;
     private readonly GameEvent onGameStart;
     private readonly MapBuilder mapBuilder;
-
     private readonly PlayerBuilder playerBuilder;
+    private readonly IEnumerable<PlayerOptions> playerOptions;
+
     private List<PlayerController> playersCreated;
+    private Map currentMap;
+
     private ModelConfiguration[] testModelsToSpawn; // Fireteams should be handled by a json object or ScriptableObject. this should not be permanent
 
-    public AppStartState(Tabletop tabletop, GameObject loadingScreen, MapBuilder mapBuilder, PlayerBuilder playerBuilder, ModelConfiguration[] testModelsToSpawn, GameEvent onGameStart) : base(tabletop)
+
+    public AppStartState(GameManager gameManager, GameObject loadingScreen, MapBuilder mapBuilder, PlayerBuilder playerBuilder, ModelConfiguration[] testModelsToSpawn, IEnumerable<PlayerOptions> playerOptions, GameEvent onGameStart) : base(gameManager)
     {
         this.loadingScreen = loadingScreen;
         this.onGameStart = onGameStart;
         this.mapBuilder = mapBuilder;
         this.playerBuilder = playerBuilder;
         this.testModelsToSpawn = testModelsToSpawn;
+        this.playerOptions = playerOptions;
     }
 
     public override void OnEnter()
@@ -30,7 +40,7 @@ public class AppStartState : BaseGameState
     public override void Update()
     {
         // do any loading that needs done here
-        Game.Instance.CurrentMap = mapBuilder.Start()
+        currentMap = mapBuilder.Start()
           .RaiseMapCreatingEvent()
           .SpawnGroundPlane()
           .SpawnGridLines()
@@ -39,7 +49,6 @@ public class AppStartState : BaseGameState
           .Build();
 
         playersCreated = new List<PlayerController>();
-        var playerOptions = Game.Instance.GameInfo.PlayerOptions;
         foreach (var playerOption in playerOptions)
         {
             var builder = playerBuilder.Start()
@@ -54,10 +63,10 @@ public class AppStartState : BaseGameState
             playersCreated.Add(player);
         }
 
-        Game.Instance.Players = playersCreated;
+        //Game.Instance.Players = playersCreated;
 
         // Raise the game start event to trigger the next state transition
-        Game.Instance.RaiseGameStartEvent (null, null);
+        onGameStart.Raise(null, new AppStartReturnData { Map = currentMap, Players = playersCreated });
     }
     public override void OnExit()
     {

@@ -250,6 +250,10 @@
     flex-grow: 2;
 }
 
+.flex-col-3 {
+    flex-grow: 3;
+}
+
 .fill {
     width: 100%;
     height: 100%;
