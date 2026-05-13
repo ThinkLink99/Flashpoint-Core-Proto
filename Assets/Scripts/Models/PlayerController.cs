@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -79,6 +80,13 @@ public class PlayerController : MonoBehaviour
     }
     public void FixedUpdate()
     {
+        DrawCubeRange((cube, color) =>
+        {
+            var rangeIndicator = cube.transform.GetChild(0);
+
+            rangeIndicator.GetComponent<SpriteRenderer>().color = color;
+            rangeIndicator.gameObject.SetActive(true);
+        });
     }
 
     public void BeginTurn ()
@@ -176,10 +184,11 @@ public class PlayerController : MonoBehaviour
 
                 var cubeIn = movePlanner.GetCubeContainingPoint(potentialPoint);
                 if (cubeIn == null) return; // there is no cube in the world for this point, don't update the selected point
-
+                
+                var p = movePlanner.ClampPointToRange(selectedModel.CurrentCube, potentialPoint, selectedModel.ModelConfiguration.unitSprintSpeed, pickUpHeightFromCube);
                 if (advanceHighlightedCubes.Contains(cubeIn))
                     // if our cube is in this list, we can update our selected point
-                    selectedPoint = hitInfo.point;
+                    selectedPoint = p;
             }
         }
 
@@ -187,30 +196,56 @@ public class PlayerController : MonoBehaviour
     }
     public void EnableModelMovementMode()
     {
-        //var mac = CreateModelActionContext();
-        //movePlanner = new MovementPlanner(mac);
-        //movingModel = true;
-        //// compute reachable cubes and cache for visualization
-        //advanceHighlightedCubes.Clear();
-        //sprintHighlightedCubes.Clear();
-        //if (mac != null && mac.OriginCube != null)
-        //{
-        //    var advanceReachable = movePlanner.GetReachableCubes(mac.OriginCube, mac.SourceModel.ModelConfiguration.unitAdvanceSpeed);
-        //    var sprintReachable = movePlanner.GetReachableCubes(mac.OriginCube, mac.SourceModel.ModelConfiguration.unitSprintSpeed);
+        var mac = gameManager.Context;
+        movePlanner = new MovementPlanner(mac);
+        movingModel = true;
+        // compute reachable cubes and cache for visualization
+        advanceHighlightedCubes.Clear();
+        sprintHighlightedCubes.Clear();
+        if (mac != null && mac.OriginCube != null)
+        {
+            var advanceReachable = movePlanner.GetReachableCubes(mac.OriginCube, mac.SourceModel.ModelConfiguration.unitAdvanceSpeed);
+            var sprintReachable = movePlanner.GetReachableCubes(mac.OriginCube, mac.SourceModel.ModelConfiguration.unitSprintSpeed);
 
-        //    // exclude origin cube from highlights
-        //    advanceReachable.Remove(mac.OriginCube);
-        //    sprintReachable.Remove(mac.OriginCube);
+            // exclude origin cube from highlights
+            advanceReachable.Remove(mac.OriginCube);
+            sprintReachable.Remove(mac.OriginCube);
 
-        //    advanceHighlightedCubes.AddRange(advanceReachable);
-        //    sprintHighlightedCubes.AddRange(sprintReachable);
-        //}
+            advanceHighlightedCubes.AddRange(advanceReachable);
+            sprintHighlightedCubes.AddRange(sprintReachable);
+        }
     }
     public void DisableModelMovementMode()
     {
         movePlanner = null;
         movingModel = false;
+
+        foreach (var cube in sprintHighlightedCubes)
+        {
+            if (cube == null) continue;
+            var rangeIndicator = cube.transform.GetChild(0);
+            rangeIndicator.gameObject.SetActive(false);
+        }
+
         sprintHighlightedCubes.Clear();
+    }
+    private void DrawCubeRange (Action<Cube, Color> drawFunc)
+    {
+        // draw highlights for reachable cubes when movement mode is active
+        if (movingModel && sprintHighlightedCubes != null && sprintHighlightedCubes.Count > 0)
+        {
+            var remaining = sprintHighlightedCubes.Except(advanceHighlightedCubes).ToList();
+            foreach (var cube in sprintHighlightedCubes)
+            {
+                if (cube == null) continue;
+                drawFunc(cube, Color.yellow);
+            }
+            foreach (var cube in remaining)
+            {
+                if (cube == null) continue;
+                drawFunc(cube, Color.red);
+            }
+        }
     }
     private void ShowModelAsGhost()
     {
@@ -325,6 +360,7 @@ public class PlayerController : MonoBehaviour
 
         selectedModel = null;
     }
+
     public void OnModelActivated(Component sender, object data)
     {
         activatedModel = selectedModel;
@@ -340,33 +376,50 @@ public class PlayerController : MonoBehaviour
         activatedModel = null;
         activatedModelActionController = null;
     }
+
     public void OnModelMoveActivated(Component sender, object data)
     {
-        movingModel = true;
+        EnableModelMovementMode ();
     }
     public void OnModelMoveDeactivated(Component sender, object data)
     {
-        movingModel = false;
+        DisableModelMovementMode ();
+        if (ghostInstance != null)
+            Destroy(ghostInstance.gameObject);
     }
     public void OnModelMoveConfirmed(Component component, object data)
     {
-        movingModel = false;
+        Debug.Log($"Move Confirmed to {selectedPoint}");
+
         if (ghostInstance != null)
             Destroy(ghostInstance.gameObject);
 
         // move the model
         gameManager.SelectDestination(selectedPoint);
         gameManager.TryExecuteAction(
-                new AdvanceAction());
+                new AdvanceAction(movePlanner));
+
+        DisableModelMovementMode();
     }
-    public void OnModelShootingStarted(Component sender, object data)
+
+    public void OnModelShootingActivated(Component sender, object data)
     {
         targettingModel = true;
     }
-    public void OnModelShootingFinished(Component sender, object data)
+    public void OnModelShootingDeactivated(Component sender, object data)
     {
-        targettingModel = true;
+        targettingModel = false;
+        targettedModel = null;
     }
+    public void OnModelShootingConfirmed(Component sender, object data)
+    {
+        gameManager.TryExecuteAction (
+            new ShootAction());
+
+        targettingModel = false;
+        targettedModel = null;
+    }
+
     public void OnMapCreated(Component component, object data)
     {
         if (data is Map map)
@@ -391,35 +444,18 @@ public class PlayerController : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        // draw highlights for reachable cubes when movement mode is active
-        if (movingModel && sprintHighlightedCubes != null && sprintHighlightedCubes.Count > 0)
+        DrawCubeRange((cube, color) =>
         {
-            Gizmos.color = Color.yellow;
-            var remaining = sprintHighlightedCubes.Except(advanceHighlightedCubes).ToList();  
-            foreach (var cube in sprintHighlightedCubes)
-            {
-                if (cube == null) continue;
-                // draw a thin wire-cube at the bottom face of the cube
-                var half = cube.worldSize * 0.5f;
-                float bottomY = cube.worldPosition.y - half.y;
-                // make the highlight very thin on Y so it appears as a bottom-face outline
-                Vector3 center = new Vector3(cube.worldPosition.x, bottomY + 0.01f, cube.worldPosition.z);
-                Vector3 size = new Vector3(cube.worldSize.x, 0.02f, cube.worldSize.z);
-                Gizmos.DrawWireCube(center, size);
-            }
-            Gizmos.color = Color.red;
-            foreach (var cube in remaining)
-            {
-                if (cube == null) continue;
-                // draw a thin wire-cube at the bottom face of the cube
-                var half = cube.worldSize * 0.5f;
-                float bottomY = cube.worldPosition.y - half.y;
-                // make the highlight very thin on Y so it appears as a bottom-face outline
-                Vector3 center = new Vector3(cube.worldPosition.x, bottomY + 0.01f, cube.worldPosition.z);
-                Vector3 size = new Vector3(cube.worldSize.x, 0.02f, cube.worldSize.z);
-                Gizmos.DrawWireCube(center, size);
-            }
-        }
+            Gizmos.color = color;
+
+            // draw a thin wire-cube at the bottom face of the cube
+            var half = cube.worldSize * 0.5f;
+            float bottomY = cube.worldPosition.y - half.y;
+            // make the highlight very thin on Y so it appears as a bottom-face outline
+            Vector3 center = new Vector3(cube.worldPosition.x, bottomY + 0.01f, cube.worldPosition.z);
+            Vector3 size = new Vector3(cube.worldSize.x, 0.02f, cube.worldSize.z);
+            Gizmos.DrawWireCube(center, size);
+        });
 
         if (selectedPoint != Vector3.zero)
         {

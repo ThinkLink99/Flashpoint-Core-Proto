@@ -37,6 +37,8 @@ public class GameRoundState : BaseGameState
 
                 if (currentPlayer.isHumanControlled)
                 {
+                    modelInformationController.HideUI();
+
                     // show UI
                     modelInformationController.playerController = currentPlayer;
                     modelInformationController.ControllerChanged();

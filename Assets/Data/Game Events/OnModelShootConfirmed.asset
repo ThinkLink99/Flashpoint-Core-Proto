@@ -10,5 +10,5 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f60743e87d7a2ec49984b410030e8ea1, type: 3}
-  m_Name: OnModelShootingStarted
+  m_Name: OnModelShootConfirmed
   m_EditorClassIdentifier: 

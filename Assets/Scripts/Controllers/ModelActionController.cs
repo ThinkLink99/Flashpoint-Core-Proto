@@ -1,4 +1,6 @@
+using System.Xml.Linq;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class ModelActionController : MonoBehaviour
 {
@@ -17,10 +19,12 @@ public class ModelActionController : MonoBehaviour
     [SerializeField] private bool hasAssaulted = false;
     [SerializeField] private bool hasUsedItem = false;
 
+    private void Awake() { }
     private void Start()
     {
         unit = GetComponent<Model>();
     }
+    private void Update() { }
 
     public int RemainingAP { get => remainingAP; private set => remainingAP = value; }
     public bool HasActivated { get => hasActivated; set => hasActivated = value; }

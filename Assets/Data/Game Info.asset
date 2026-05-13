@@ -18,8 +18,8 @@ MonoBehaviour:
     m_Value: 0
     m_Keyword: 0
   PlayerOptions:
-  - {fileID: 11400000, guid: 4ef2650965f48c845a7a1e7ce3eab1f8, type: 2}
   - {fileID: 11400000, guid: 535291d54b12f354c8096d169744588b, type: 2}
+  - {fileID: 11400000, guid: 4ef2650965f48c845a7a1e7ce3eab1f8, type: 2}
   CurrentPlayerTurn: {fileID: 0}
   RoundNumber: 0
   Player1Score: 0

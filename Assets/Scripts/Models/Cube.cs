@@ -61,7 +61,7 @@ public class Cube : MonoBehaviour
             // only clear if this cube is currently set on the model
             if (model.CurrentCube == this)
             {
-                model.ChangeCube(null);
+                //model.ChangeCube(null);
             }
         }
     }

@@ -8,8 +8,10 @@ public class Model : MonoBehaviour
 
     [Header("Model Details")]
     public GameManager gameManager;
+
     [CreateProperty]
     public ModelConfiguration ModelConfiguration;
+    [SerializeField] private int currentHealth = 0;
 
     [Header("Model Controllers")]
     [SerializeField] private ModelActionController actionController;
@@ -27,7 +29,10 @@ public class Model : MonoBehaviour
 
     public void Initialize (ModelConfiguration modelConfiguration)
     {
-        ModelConfiguration = modelConfiguration; 
+        ModelConfiguration = modelConfiguration;
+
+        // set dynamic values based on configuration, such as health, action points, etc.
+        currentHealth = modelConfiguration.unitHP;
     }
 
     // Start is called before the first frame update
@@ -54,6 +59,15 @@ public class Model : MonoBehaviour
         }
     }
 
+    private void Die()
+    {
+        // for now, just destroy the model. We can add death animations, ragdolls, etc. later.
+        Destroy(this.gameObject);
+
+        // Fire off a debug Log so we can see when a model dies. We can replace this with an event later if we want to trigger other things on death, such as checking for end of game conditions, triggering death animations, etc.
+        Debug.Log($"{this.gameObject.name} has died.");
+    }
+
     public void ChangeCube (Cube cube)
     {
         currentCube = cube;
@@ -61,6 +75,16 @@ public class Model : MonoBehaviour
     public void MoveModelToPoint (Vector3 point)
     {
         this.transform.localPosition = point;
+    }
+
+    public void Wound (int damage)
+    {
+        currentHealth -= damage;
+        if (currentHealth <= 0)
+        {
+            // for now, just destroy the model. We can add death animations, ragdolls, etc. later.
+            Die();
+        }
     }
 
     // Helper: create a lightweight ghost clone (no Model, no physics, on IgnoreRaycast layer)

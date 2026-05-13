@@ -85,6 +85,8 @@ public class GameManager : MonoBehaviour {
     public void SelectModel (Model model)
     {
         Context.SourceModel = model;
+        Context.OriginCube = model.CurrentCube;
+
         Debug.Log ($"Selected model: {model.name}");
     }
     public void SelectDestination (Vector3 destination)
@@ -96,6 +98,8 @@ public class GameManager : MonoBehaviour {
     public void SelectTarget (Model target)
     {
         Context.TargetModel = target;
+
+        Debug.Log ($"Selected target: {target.name}");
     }
     public void EndTurn (PlayerController player)
     {

@@ -17,6 +17,10 @@ GameObject:
   - component: {fileID: 3655806712780010629}
   - component: {fileID: 3190461687404716658}
   - component: {fileID: 7595364150841098048}
+  - component: {fileID: 5514815186034109228}
+  - component: {fileID: 2988013358601767008}
+  - component: {fileID: -638322989544333869}
+  - component: {fileID: 816329438068995220}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -51,6 +55,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a7e00e9201352941b2108990babc95f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gameManager: {fileID: 0}
   team: 0
   fireteam:
     models:
@@ -67,17 +72,7 @@ MonoBehaviour:
   activatedModel: {fileID: 0}
   activatedModelActionController: {fileID: 0}
   gameInfo: {fileID: 11400000, guid: c6a48348a0c7a714a9c0aff53654df46, type: 2}
-  modelNameTextBox: {fileID: 0}
-  modelAPTextBox: {fileID: 0}
-  activateButton: {fileID: 0}
-  cancelActivationButton: {fileID: 0}
   movingModel: 0
-  advanceButton: {fileID: 0}
-  confirmAdvanceButton: {fileID: 0}
-  cancelAdvanceButton: {fileID: 0}
-  sprintButton: {fileID: 0}
-  confirmSprintButton: {fileID: 0}
-  cancelSprintButton: {fileID: 0}
   pickUpHeightFromCube: 1
   selectedPoint: {x: 0, y: 0, z: 0}
   cubeSize: 76.2
@@ -95,9 +90,6 @@ MonoBehaviour:
     sprintRange: 0
   targettingModel: 0
   targettedModel: {fileID: 0}
-  shootButton: {fileID: 0}
-  confirmShootButton: {fileID: 0}
-  cancelShootButton: {fileID: 0}
   onModelSelected: {fileID: 11400000, guid: c6f06b996a1b7854083081ab14af7ffa, type: 2}
   onModelDeselected: {fileID: 11400000, guid: ba65d6a91f6088e499ebf09d3178a832, type: 2}
   onModelMoveDeactivated: {fileID: 11400000, guid: d4821896293a85345805254a62697b61, type: 2}
@@ -291,6 +283,118 @@ MonoBehaviour:
       - m_Target: {fileID: 217924318817557379}
         m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
         m_MethodName: OnModelMoveDeactivated
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &5514815186034109228
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5157984894270404262}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a9433f5e30db324682acd75aac39209, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GameEventListener
+  gameEvent: {fileID: 11400000, guid: d99a74a19b87a5146bf0609a063d2147, type: 2}
+  response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 217924318817557379}
+        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
+        m_MethodName: OnModelMoveConfirmed
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &2988013358601767008
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5157984894270404262}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a9433f5e30db324682acd75aac39209, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GameEventListener
+  gameEvent: {fileID: 11400000, guid: d46486e69dee9d6449573f3c0820ad05, type: 2}
+  response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 217924318817557379}
+        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
+        m_MethodName: OnModelShootingActivated
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &-638322989544333869
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5157984894270404262}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a9433f5e30db324682acd75aac39209, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GameEventListener
+  gameEvent: {fileID: 11400000, guid: 65e02185fb43942488d941ecfe226fd4, type: 2}
+  response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 217924318817557379}
+        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
+        m_MethodName: OnModelShootingConfirmed
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &816329438068995220
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5157984894270404262}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a9433f5e30db324682acd75aac39209, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GameEventListener
+  gameEvent: {fileID: 11400000, guid: d930428f1903a7f428fe0bd1b0ba5a85, type: 2}
+  response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 217924318817557379}
+        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
+        m_MethodName: OnModelShootingDeactivated
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

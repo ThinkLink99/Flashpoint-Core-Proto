@@ -32,16 +32,61 @@
     </ui:VisualElement>
     <ui:VisualElement name="ActivationsRemaining" style="flex-grow: 0; width: 500px; height: 100%; padding-top: 0; margin-top: 50px; margin-left: 25px; margin-right: 25px; margin-bottom: 50px;">
         <ui:Label text="Label"/>
-        <ui:ListView item-template="project://database/Assets/UI/Templates/ModelActivationCard.uxml?fileID=9197481963319205126&amp;guid=e79c84b816e9c00458702d072c7cbd41&amp;type=3#ModelActivationCard" name="ActivationsList" enabled="true" show-bound-collection-size="false" header-title="Activations Remaining" show-border="false" show-add-remove-footer="false" allow-add="false" allow-remove="false" binding-source-selection-mode="AutoAssign" class="fill-height"/>
+        <ui:ListView item-template="project://database/Assets/UI/Templates/ModelActivationCard.uxml?fileID=9197481963319205126&amp;guid=e79c84b816e9c00458702d072c7cbd41&amp;type=3#ModelActivationCard" name="ActivationsList" enabled="true" show-bound-collection-size="false" header-title="Activations Remaining" show-border="false" show-add-remove-footer="false" allow-add="false" allow-remove="false" binding-source-selection-mode="AutoAssign" class="fill-height" style="border-left-color: rgba(0, 0, 0, 0); border-right-color: rgba(0, 0, 0, 0); border-top-color: rgba(0, 0, 0, 0); border-bottom-color: rgba(0, 0, 0, 0);"/>
     </ui:VisualElement>
     <ui:VisualElement name="ModelActions" style="height: 100%; padding-top: 10px; padding-right: 10px; padding-bottom: 10px; padding-left: 10px; flex-direction: row;">
-        <ui:Instance template="ModelInformation" name="ModelCard" data-source="project://database/Assets/Data/Units/Spartan%20Zvezda.asset?fileID=11400000&amp;guid=26fba4c7bb49cfc43b13a2277cdf9975&amp;type=2#Spartan Zvezda" style="width: 600px; height: 400px;"/>
-        <ui:GroupBox style="width: 250px;">
-            <ui:Button text="Shoot" name="btnShootModel" class="button button-primary rounded-10 border-5"/>
-            <ui:Button text="Move" name="btnMoveModel" class="border-5 rounded-10 button button-primary"/>
-        </ui:GroupBox>
-        <Bindings>
-            <ui:DataBinding property="style.display" data-source-path="displaySelectedModelInfo" binding-mode="ToTarget"/>
-        </Bindings>
+        <ui:VisualElement style="flex-grow: 0; flex-shrink: 0;">
+            <ui:VisualElement style="flex-grow: 1; flex-direction: row; justify-content: flex-end;">
+                <ui:Button name="btnActivateModel" icon-image="project://database/Assets/Images/unsc-activation-white.png?fileID=21300000&amp;guid=18adbf0ac0183b14496ceb305fd33c94&amp;type=3#unsc-activation-white" style="width: 50px; height: 50px; flex-grow: 0; background-color: rgba(188, 188, 188, 0); border-left-color: rgba(0, 0, 0, 0); border-right-color: rgba(0, 0, 0, 0); border-top-color: rgba(0, 0, 0, 0); border-bottom-color: rgba(0, 0, 0, 0); margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; display: flex;"/>
+                <ui:Button name="btnDeactivateModel" icon-image="project://database/Assets/Images/unsc-activation.png?fileID=21300000&amp;guid=ad775b94df5c64a49b6c887e6782c737&amp;type=3#unsc-activation" style="width: 50px; height: 50px; flex-grow: 0; background-color: rgba(188, 188, 188, 0); border-left-color: rgba(0, 0, 0, 0); border-right-color: rgba(0, 0, 0, 0); border-top-color: rgba(0, 0, 0, 0); border-bottom-color: rgba(0, 0, 0, 0); margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; display: flex;"/>
+                <ui:Image source="project://database/Assets/Images/unsc-activation-white.png?fileID=21300000&amp;guid=18adbf0ac0183b14496ceb305fd33c94&amp;type=3#unsc-activation-white" tint-color="rgb(202, 22, 22)" name="imgActivated" style="width: 50px; height: 50px;"/>
+            </ui:VisualElement>
+            <ui:Instance template="ModelInformation" name="ModelCard" data-source="project://database/Assets/Data/Units/Spartan%20Zvezda.asset?fileID=11400000&amp;guid=26fba4c7bb49cfc43b13a2277cdf9975&amp;type=2#Spartan Zvezda" style="width: 600px; height: 400px;"/>
+        </ui:VisualElement>
+        <ui:VisualElement style="flex-grow: 1; flex-direction: row; justify-content: space-between; display: flex; opacity: 1;">
+            <ui:GroupBox style="width: 250px; flex-direction: row; flex-grow: 0; flex-shrink: 1;">
+                <ui:Button text="Shoot" name="btnShootModel" class="button button-primary rounded-10 border-5" style="width: 90px; height: 90px; flex-grow: 0;"/>
+                <ui:Button name="btnConfirmShoot" text="Confirm&#10;Shoot" class="border-5 rounded-10 button button-primary" style="width: 90px; height: 90px; background-image: none; display: flex; flex-grow: 0;"/>
+                <ui:Button name="btnMoveModel" text="Move" class="border-5 rounded-10 button button-primary" style="width: 90px; height: 90px; background-image: none; flex-grow: 0;"/>
+                <ui:Button name="btnConfirmMove" text="Confirm&#10;Move" class="border-5 rounded-10 button button-primary" style="width: 90px; height: 90px; background-image: none; display: flex; flex-grow: 0;"/>
+            </ui:GroupBox>
+            <ui:VisualElement style="flex-grow: 0; flex-direction: row-reverse; flex-shrink: 0;">
+                <ui:GroupBox name="Debug">
+                    <ui:Label text="Debug:"/>
+                    <ui:VisualElement name="SelectedUnit" style="flex-grow: 0; flex-direction: row;">
+                        <ui:Label text="Selected Unit:"/>
+                        <ui:Label text="XXXXXXXXXXXX" name="lblUnitName"/>
+                    </ui:VisualElement>
+                    <ui:VisualElement name="UnitPos" style="flex-grow: 0; flex-direction: row;">
+                        <ui:Label text="(X,Y,Z):"/>
+                        <ui:Label text="(0,0,0)" name="lblUnitPos"/>
+                    </ui:VisualElement>
+                    <ui:VisualElement name="APRemaining" style="flex-grow: 0; flex-direction: row;">
+                        <ui:Label text="AP Remaining:"/>
+                        <ui:Label text="0" name="lblActionPointsRemain"/>
+                    </ui:VisualElement>
+                    <ui:VisualElement name="UnitIsActivated" style="flex-grow: 0; flex-direction: row;">
+                        <ui:Label text="Unit Active:"/>
+                        <ui:Label text="0" name="lblUnitIsActivated"/>
+                    </ui:VisualElement>
+                    <ui:VisualElement name="UnitHasActivated" style="flex-grow: 0; flex-direction: row;">
+                        <ui:Label text="Unit Activated:"/>
+                        <ui:Label text="0" name="lblUnitHasActivated"/>
+                    </ui:VisualElement>
+                    <ui:VisualElement name="UnitMoved" style="flex-grow: 0; flex-direction: row;">
+                        <ui:Label text="Unit Moved:"/>
+                        <ui:Label text="0" name="lblUnitMoved"/>
+                    </ui:VisualElement>
+                    <ui:VisualElement name="UnitShot" style="flex-grow: 0; flex-direction: row;">
+                        <ui:Label text="Unit Shot:"/>
+                        <ui:Label text="0" name="lblUnitShot"/>
+                    </ui:VisualElement>
+                    <ui:VisualElement name="UnitCrouched" style="flex-grow: 0; flex-direction: row;">
+                        <ui:Label text="Unit Crouched:"/>
+                        <ui:Label text="0" name="lblUnitCrouched"/>
+                    </ui:VisualElement>
+                </ui:GroupBox>
+            </ui:VisualElement>
+        </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>

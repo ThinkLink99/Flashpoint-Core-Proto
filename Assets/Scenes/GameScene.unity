@@ -653,7 +653,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameInfoSO: {fileID: 11400000, guid: c6a48348a0c7a714a9c0aff53654df46, type: 2}
-  gameManager: {fileID: 0}
+  gameManager: {fileID: 1252523109}
   builder: {fileID: 1252523107}
   spawner: {fileID: 1252523100}
   mapBuilder: {fileID: 536174326}

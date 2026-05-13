@@ -11,6 +11,7 @@ public enum TurnState
 }
 public class GameActionContext
 {
+    public TurnState TurnState;
     public Map Map { get; set; }
     public Vector3 SelectedPoint { get; set; }
     public Cube OriginCube { get; set;  }
@@ -26,7 +27,7 @@ public class GameActionContext
     public bool CancelRequested { get; set; }
     public void RequestCancel() => CancelRequested = true;
 
-    public GameActionContext() { }
+    public GameActionContext() { }  
     public GameActionContext(PlayerController source)
     {
         InitiatingPlayer = source;

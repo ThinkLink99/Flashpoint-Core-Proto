@@ -3,6 +3,13 @@ using UnityEngine;
 
 public class AdvanceAction : IGameAction
 {
+    private readonly MovementPlanner planner = null;
+
+    public AdvanceAction(MovementPlanner planner)
+    {
+        this.planner = planner;
+    }
+
     public int Cost => 1;
     public bool CanExecute(GameActionContext ctx)
     {
@@ -25,10 +32,8 @@ public class AdvanceAction : IGameAction
             modelYOffset = ctx.SourceModel.transform.position.y - ctx.OriginCube.worldPosition.y;
         }
 
-        Vector3 clamped = planner.ClampPointToRange(ctx.OriginCube, ctx.SelectedPoint, ctx.SourceModel.ModelConfiguration.unitAdvanceSpeed, modelYOffset);
-
         //var point = ctx.SelectedPoint + (ctx.SourceModel.transform.up * 20);
-        ctx.SourceModel.MoveModelToPoint(clamped);
+        ctx.SourceModel.MoveModelToPoint(ctx.SelectedPoint);
         ctx.SourceModel.ActionController.HasMoved = true;
 
         yield return null;
