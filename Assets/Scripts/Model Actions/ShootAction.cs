@@ -1,4 +1,5 @@
 using System.Collections;
+using UnityEngine;
 
 public class ShootAction : IGameAction
 {
@@ -25,6 +26,9 @@ public class ShootAction : IGameAction
         // apply before damage effects and modifiers here
         foreach (var handler in ctx.GetBeforeDamageHandlers(ctx.TargetModel))
             handler.BeforeDamage(ctx);
+
+        // apply weapon armor piercing and model armor resist to damage
+        ctx.IncomingDamage -= Mathf.Max(0, ctx.TargetModel.ModelConfiguration.unitArmor - ctx.WeaponUsed.weaponArmorPiercing);
 
         ctx.TargetModel.Wound(ctx.IncomingDamage);
 
