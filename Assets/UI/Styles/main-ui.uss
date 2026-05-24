@@ -1,4 +1,8 @@
 :root {
+    --primary-color: rgb(44, 62, 80);
+    --secondary-color: rgb(236, 240, 241);
+    --accent-color: rgb(52, 152, 219);
+    --highlight-color: rgb(231, 76, 60);
 }
 
 .equipment-list {
@@ -7,7 +11,37 @@
 }
 
 .equipment-card {
-    width: 100%;
-    min-height: 80px;
+    margin-left: 5px;
+    margin-right: 5px;
+    min-height: 200px;
+    max-height: 200px;
+    min-width: 150px;
+    max-width: 150px;
     flex-shrink: 0;
+}
+
+.equipment-card:hover {
+    border: 1px solid var(--highlight-color);
+    transition-timing-function: ease-in;
+    border-top-width: 1px;
+    border-right-width: 1px;
+    border-bottom-width: 1px;
+    border-left-width: 1px;
+    border-left-color: rgb(255, 205, 121);
+    border-right-color: rgb(255, 205, 121);
+    border-top-color: rgb(255, 205, 121);
+    border-bottom-color: rgb(255, 205, 121);
+}
+
+.equipment-card-selected {
+    border: 1px solid var(--highlight-color);
+    transition-timing-function: ease-in;
+    border-top-width: 1px;
+    border-right-width: 1px;
+    border-bottom-width: 1px;
+    border-left-width: 1px;
+    border-left-color: rgb(154, 255, 121);
+    border-right-color: rgb(154, 255, 121);
+    border-top-color: rgb(154, 255, 121);
+    border-bottom-color: rgb(154, 255, 121);
 }

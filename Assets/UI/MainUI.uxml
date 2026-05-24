@@ -1,5 +1,6 @@
 <ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <ui:Template name="ModelInformation" src="project://database/Assets/UI/Templates/ModelInformation.uxml?fileID=9197481963319205126&amp;guid=2ae2736df0013784fa956a3df1e44edf&amp;type=3#ModelInformation"/>
+    <ui:Template name="ModelCard" src="project://database/Assets/UI/Templates/ModelCard.uxml?fileID=9197481963319205126&amp;guid=9cbd9fe98ab66a54aa1b7b878b374e34&amp;type=3#ModelCard"/>
+    <Style src="project://database/Assets/UI/Styles/model_card.uss?fileID=7433441132597879392&amp;guid=7166bad6d5d39f140be73d165381aa3c&amp;type=3#model_card"/>
     <Style src="project://database/Assets/UI/Styles/MainStyle.uss?fileID=7433441132597879392&amp;guid=79df6bfaaf9f179488ea8b4cef63958b&amp;type=3#MainStyle"/>
     <Style src="project://database/Assets/UI/Styles/ButtonStyles.uss?fileID=7433441132597879392&amp;guid=42628e6f5733c534ea5d2e23a0a89e59&amp;type=3#ButtonStyles"/>
     <Style src="project://database/Assets/UI/Styles/main-ui.uss?fileID=7433441132597879392&amp;guid=317c8361ab30c8a4c8f14b3d3a88a5e4&amp;type=3#main-ui"/>
@@ -33,21 +34,8 @@
             <ui:VisualElement style="flex-grow: 1;"/>
         </ui:VisualElement>
         <ui:VisualElement name="ModelActions" style="height: 25%; padding-top: 10px; padding-right: 10px; padding-bottom: 10px; padding-left: 10px; flex-direction: row;">
-            <ui:VisualElement style="flex-grow: 0; flex-shrink: 0;">
-                <ui:VisualElement style="flex-grow: 1; flex-direction: row; justify-content: flex-end;">
-                    <ui:Button name="btnActivateModel" icon-image="project://database/Assets/Images/unsc-activation-white.png?fileID=21300000&amp;guid=18adbf0ac0183b14496ceb305fd33c94&amp;type=3#unsc-activation-white" style="width: 50px; height: 50px; flex-grow: 0; background-color: rgba(188, 188, 188, 0); border-left-color: rgba(0, 0, 0, 0); border-right-color: rgba(0, 0, 0, 0); border-top-color: rgba(0, 0, 0, 0); border-bottom-color: rgba(0, 0, 0, 0); margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; display: flex;"/>
-                    <ui:Button name="btnDeactivateModel" icon-image="project://database/Assets/Images/unsc-activation.png?fileID=21300000&amp;guid=ad775b94df5c64a49b6c887e6782c737&amp;type=3#unsc-activation" style="width: 50px; height: 50px; flex-grow: 0; background-color: rgba(188, 188, 188, 0); border-left-color: rgba(0, 0, 0, 0); border-right-color: rgba(0, 0, 0, 0); border-top-color: rgba(0, 0, 0, 0); border-bottom-color: rgba(0, 0, 0, 0); margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; display: flex;"/>
-                    <ui:Image source="project://database/Assets/Images/unsc-activation-white.png?fileID=21300000&amp;guid=18adbf0ac0183b14496ceb305fd33c94&amp;type=3#unsc-activation-white" tint-color="rgb(202, 22, 22)" name="imgActivated" style="width: 50px; height: 50px;"/>
-                </ui:VisualElement>
-                <ui:Instance template="ModelInformation" name="ModelCard" data-source="project://database/Assets/Data/Units/Spartan%20Zvezda.asset?fileID=11400000&amp;guid=26fba4c7bb49cfc43b13a2277cdf9975&amp;type=2#Spartan Zvezda" style="width: 300px; height: 200px;"/>
-            </ui:VisualElement>
+            <ui:Instance template="ModelCard" name="ModelCard"/>
             <ui:VisualElement style="flex-grow: 1; flex-direction: row; justify-content: space-between; display: flex; opacity: 1;">
-                <ui:VisualElement style="flex-grow: 0;">
-                    <ui:Button text="Shoot" name="btnShootModel" class="button button-primary rounded-10 border-5" style="width: 75%; height: 25%; flex-grow: 0;"/>
-                    <ui:Button name="btnConfirmShoot" text="Confirm&#10;Shoot" class="border-5 rounded-10 button button-primary" style="width: 75%; height: 25%; background-image: none; display: flex; flex-grow: 0;"/>
-                    <ui:Button name="btnMoveModel" text="Move" class="border-5 rounded-10 button button-primary" style="width: 75%; height: 25%; background-image: none; flex-grow: 0;"/>
-                    <ui:Button name="btnConfirmMove" text="Confirm&#10;Move" class="border-5 rounded-10 button button-primary" style="width: 75%; height: 25%; background-image: none; display: flex; flex-grow: 0;"/>
-                </ui:VisualElement>
                 <ui:VisualElement style="flex-grow: 0; flex-direction: row-reverse; flex-shrink: 0;">
                     <ui:GroupBox name="Debug">
                         <ui:Label text="Debug:"/>
@@ -85,7 +73,11 @@
                         </ui:VisualElement>
                     </ui:GroupBox>
                 </ui:VisualElement>
-                <ui:ScrollView name="Weapons" class="equipment-list"/>
+                <ui:ScrollView name="Weapons" mode="Horizontal" class="equipment-list"/>
+                <ui:VisualElement style="flex-grow: 0;">
+                    <ui:Button name="btnMoveModel" text="Move" class="border-5 rounded-10 button button-primary" style="width: 75%; height: 25%; background-image: none; flex-grow: 0;"/>
+                    <ui:Button name="btnConfirmMove" text="Confirm&#10;Move" class="border-5 rounded-10 button button-primary" style="width: 75%; height: 25%; background-image: none; display: flex; flex-grow: 0;"/>
+                </ui:VisualElement>
             </ui:VisualElement>
         </ui:VisualElement>
     </ui:VisualElement>

@@ -1,11 +1,14 @@
 :root {
     --model-card-background-primary: rgb(0, 96, 96);
+    --shield-active: rgb(0, 255, 241);
+    --shield-inactive: rgb(255, 57, 57);
+    --model-card-background-secondary: rgb(139, 183, 179);
 }
 
 .model-card {
     flex-grow: 0;
-    width: 100%;
-    height: 100%;
+    width: 300px;
+    height: 200px;
     background-color: rgb(255, 255, 255);
     border-top-right-radius: 20px;
     border-top-left-radius: 20px;
@@ -13,37 +16,103 @@
     border-bottom-right-radius: 20px;
     flex-shrink: 0;
     flex-direction: row;
+    justify-content: space-evenly;
+    align-content: center;
+}
+
+.model-card-body {
+    flex-direction: column;
+    flex-grow: 0;
+    width: 70%;
+    height: auto;
 }
 
 .model-card-header {
     border-top-left-radius: 20px;
     border-top-right-radius: 20px;
-    padding-top: 10px;
-    padding-right: 10px;
-    padding-bottom: 10px;
-    padding-left: 10px;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
     -unity-background-image-tint-color: var(--model-card-background-primary);
-    flex-direction: row;
-    align-self: flex-end;
+    flex-direction: column;
+    flex-grow: 0;
+    width: 100%;
+    flex-shrink: 0;
+    align-items: auto;
 }
 
 .model-card-unit-name {
     -unity-font-definition: url("project://database/Assets/Scripts/Fonts/Industry%20Test/IndustryTest-Black.otf?fileID=12800000&guid=716b5177bb4c5c242ba61635341a5efb&type=3#IndustryTest-Black");
-}
-
-.model-card-body {
-    flex-direction: column;
-    flex-grow: 3;
+    -unity-text-align: upper-left;
+    color: rgb(255, 255, 255);
+    width: 85%;
 }
 
 .model-card-unit-image {
     background-size: 100% 100%;
     flex-grow: 1;
+    max-width: 150px;
+    position: absolute;
+    top: 0;
+    left: 0;
 }
 
 .model-card-unit-stat-block {
-    flex-grow: 2;
+    flex-grow: 0;
 }
 
 .model-card-unit-stat-header {
+    background-color: var(--model-card-background-primary);
+    -unity-font-definition: url("project://database/Assets/Scripts/Fonts/Industry%20Test/IndustryTest-Bold.otf?fileID=12800000&guid=ae202003555184244b7296479e710fa2&type=3#IndustryTest-Bold");
+    -unity-text-align: middle-center;
+    color: rgb(255, 255, 255);
+}
+
+.model-card-text {
+    -unity-font-definition: url("project://database/Assets/Scripts/Fonts/Metaphobic/Metrophobic-Regular.ttf?fileID=12800000&guid=0a6d60e934c7d7141944fd8bc4983c4b&type=3#Metrophobic-Regular");
+    font-size: 10px;
+    -unity-text-align: upper-center;
+    white-space: normal;
+}
+
+.model-card-shield-bar {
+    flex-direction: row-reverse;
+    max-height: 32px;
+    justify-content: space-evenly;
+    width: 50%;
+}
+
+.model-card-shield {
+    width: 24px;
+    height: 24px;
+    background-color: rgb(156, 156, 156);
+}
+
+.model-card-shield-active {
+    background-color: var(--shield-active);
+}
+
+.model-card-shield-inactive {
+    background-color: var(--shield-active);
+}
+
+.model-card-grid {
+    flex-direction: row;
+    margin-bottom: 0;
+    margin-top: 10px;
+    margin-right: 2px;
+    margin-left: 2px;
+}
+
+.model-card-grid-item {
+    margin-left: 2px;
+}
+
+.model-card-unit-stat-text {
+    -unity-font-definition: url("project://database/Assets/Scripts/Fonts/Metaphobic/Metrophobic-Regular.ttf?fileID=12800000&guid=0a6d60e934c7d7141944fd8bc4983c4b&type=3#Metrophobic-Regular");
+    font-size: 10px;
+    -unity-text-align: upper-center;
+    white-space: normal;
+    background-color: var(--model-card-background-secondary);
 }

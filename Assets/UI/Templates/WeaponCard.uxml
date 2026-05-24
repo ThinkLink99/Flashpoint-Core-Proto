@@ -1,6 +1,6 @@
 <ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/UI/Styles/weapon_card.uss?fileID=7433441132597879392&amp;guid=a142911b076541340a8de936551269d9&amp;type=3#weapon_card"/>
-    <ui:VisualElement data-source="" class="weapon-card">
+    <ui:VisualElement data-source="" name="card-body" class="weapon-card">
         <ui:VisualElement class="weapon-header weapon-card-header">
             <ui:Label text="VK78 Commando" double-click-selects-word="false" display-tooltip-when-elided="false" triple-click-selects-line="false" data-source="" name="lblWeaponName" class="weapon-card-name">
                 <Bindings>

@@ -12,6 +12,11 @@ public class ModelActionViewModel
     public bool HasShot => ActionController?.HasShot ?? false;
     public int RemainingAP => ActionController != null ? ActionController.RemainingAP : 0;
 
+    public int ShieldCount => Model?.GetKeywordValue("energy_shield") ?? 0;
+    public int ShieldUses => Model?.GetKeyword("energy_shield").CurrentUses ?? 0;
+
+    public Weapon SelectedWeapon { get; private set; }
+
     public event Action StateChanged;
 
     private bool lastIsActivated;
@@ -19,6 +24,7 @@ public class ModelActionViewModel
     private bool lastHasMoved;
     private bool lastHasShot;
     private int lastRemainingAP;
+    private Weapon lastSelectedWeapon;
 
     public ModelActionViewModel(Model model)
     {
@@ -51,11 +57,28 @@ public class ModelActionViewModel
     }
 
     // Convenience methods for local feedback. Authoritative changes should go through GameManager.
-    public void RequestActivate() => ActionController?.BeginActivation();
+    public void RequestActivate()
+    {
+        ActionController?.BeginActivation();
+        StateChanged?.Invoke();
+    }
+
     public void RequestDeactivate()
     {
         if (ActionController == null) return;
         ActionController.HasActivated = false;
         ActionController.IsActivated = false;
+        StateChanged?.Invoke();
+    }
+
+    public void RequestSelectWeapon(Weapon weapon)
+    {
+        if (ActionController == null) return;
+        if (SelectedWeapon == weapon) return; // No change
+
+        lastSelectedWeapon = SelectedWeapon;
+        SelectedWeapon = weapon;
+
+        StateChanged?.Invoke();
     }
 }

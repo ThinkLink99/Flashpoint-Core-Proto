@@ -1,0 +1,90 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/Styles/model_card.uss?fileID=7433441132597879392&amp;guid=7166bad6d5d39f140be73d165381aa3c&amp;type=3#model_card"/>
+    <ui:VisualElement name="ModelCard" data-source="project://database/Assets/Data/Units/Spartan%20Zvezda.asset?fileID=11400000&amp;guid=26fba4c7bb49cfc43b13a2277cdf9975&amp;type=2#Spartan Zvezda" template="ModelInformation" style="width: 300px; height: 200px;">
+        <Style src="project://database/Assets/UI/Styles/model_card.uss?fileID=7433441132597879392&amp;guid=7166bad6d5d39f140be73d165381aa3c&amp;type=3#model_card"/>
+        <ui:VisualElement name="Card" data-source="" class="model-card">
+            <ui:Image source="project://database/Assets/Images/spartan_mkvii.png?fileID=2800000&amp;guid=3d28e5c4e9db2d747a15c8d81e7c4f20&amp;type=3#spartan_mkvii" style="aspect-ratio: 1; position: absolute; top: -1px; left: -19px; height: 200px; width: 176px;">
+                <Bindings>
+                    <ui:DataBinding property="source" data-source-path="unitImage" binding-mode="ToTarget"/>
+                </Bindings>
+            </ui:Image>
+            <ui:VisualElement class="model-card-unit-image" style="position: relative;">
+                <ui:VisualElement name="ActivationStatus" style="flex-direction: row; position: absolute; top: 0; left: -75px;">
+                    <ui:Button name="btnActivateModel" icon-image="project://database/Assets/Images/unsc-activation-white.png?fileID=21300000&amp;guid=18adbf0ac0183b14496ceb305fd33c94&amp;type=3#unsc-activation-white" style="width: 50px; height: 50px; flex-grow: 0; background-color: rgba(188, 188, 188, 0); border-left-color: rgba(0, 0, 0, 0); border-right-color: rgba(0, 0, 0, 0); border-top-color: rgba(0, 0, 0, 0); border-bottom-color: rgba(0, 0, 0, 0); margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; display: flex; position: relative;"/>
+                    <ui:Button name="btnDeactivateModel" icon-image="project://database/Assets/Images/unsc-activation.png?fileID=21300000&amp;guid=ad775b94df5c64a49b6c887e6782c737&amp;type=3#unsc-activation" style="width: 50px; height: 50px; flex-grow: 0; background-color: rgba(188, 188, 188, 0); border-left-color: rgba(0, 0, 0, 0); border-right-color: rgba(0, 0, 0, 0); border-top-color: rgba(0, 0, 0, 0); border-bottom-color: rgba(0, 0, 0, 0); margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; display: flex;"/>
+                    <ui:Image source="project://database/Assets/Images/unsc-activation-white.png?fileID=21300000&amp;guid=18adbf0ac0183b14496ceb305fd33c94&amp;type=3#unsc-activation-white" tint-color="rgb(202, 22, 22)" name="imgActivated" style="width: 50px; height: 50px;"/>
+                </ui:VisualElement>
+            </ui:VisualElement>
+            <ui:VisualElement class="model-card-body" style="position: absolute; right: 0; bottom: auto; top: 0;">
+                <ui:VisualElement name="Header" class="model-card-header" style="background-image: url(&quot;project://database/Assets/Images/ModelCardHeader.png?fileID=21300000&amp;guid=200a4d0227513bc4392ef9e43b3fdfdd&amp;type=3#ModelCardHeader&quot;);">
+                    <ui:VisualElement name="Shields" class="model-card-shield-bar" style="flex-grow: 1;">
+                        <ui:Image name="Shield1" class="model-card-shield" style="visibility: visible;"/>
+                        <ui:Image name="Shield2" class="model-card-shield" style="visibility: visible;"/>
+                        <ui:Image name="Shield3" class="model-card-shield" style="visibility: visible;"/>
+                        <ui:Image name="Shield4" class="model-card-shield" style="display: flex; visibility: visible;"/>
+                    </ui:VisualElement>
+                    <ui:Label text="&lt;MODEL NAME&gt;" class="model-card-unit-name" style="margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0;">
+                        <Bindings>
+                            <ui:DataBinding property="text" data-source-path="unitName" binding-mode="ToTarget"/>
+                        </Bindings>
+                    </ui:Label>
+                </ui:VisualElement>
+                <ui:VisualElement name="Keywords" class="model-card-unit-stat-block">
+                    <ui:Label text="Label" class="model-card-text" style="margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0;">
+                        <Bindings>
+                            <ui:DataBinding property="text" data-source-path="KeywordStringList" binding-mode="ToTarget"/>
+                        </Bindings>
+                    </ui:Label>
+                </ui:VisualElement>
+                <ui:VisualElement name="StatGrid" class="model-card-unit-stat-block model-card-grid">
+                    <ui:VisualElement name="RA" class="model-card-grid-item" style="flex-grow: 1;">
+                        <ui:Label text="RA" class="model-card-unit-stat-header" style="margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0;"/>
+                        <ui:Label text="0+" class="model-card-unit-stat-text" style="padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0;">
+                            <Bindings>
+                                <ui:DataBinding property="text" data-source-path="RangeString" binding-mode="ToTarget"/>
+                            </Bindings>
+                        </ui:Label>
+                    </ui:VisualElement>
+                    <ui:VisualElement name="FI" class="model-card-grid-item" style="flex-grow: 1;">
+                        <ui:Label text="FI" class="model-card-unit-stat-header" style="margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0;"/>
+                        <ui:Label text="0+" class="model-card-unit-stat-text" style="padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0;">
+                            <Bindings>
+                                <ui:DataBinding property="text" data-source-path="FightString" binding-mode="ToTarget"/>
+                            </Bindings>
+                        </ui:Label>
+                    </ui:VisualElement>
+                    <ui:VisualElement name="SV" class="model-card-grid-item" style="flex-grow: 1; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0;">
+                        <ui:Label text="SV" class="model-card-unit-stat-header" style="padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0;"/>
+                        <ui:Label text="0+" class="model-card-unit-stat-text" style="margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0;">
+                            <Bindings>
+                                <ui:DataBinding property="text" data-source-path="SaveString" binding-mode="ToTarget"/>
+                            </Bindings>
+                        </ui:Label>
+                    </ui:VisualElement>
+                </ui:VisualElement>
+                <ui:VisualElement name="StatGrid2" class="model-card-unit-stat-block model-card-grid">
+                    <ui:VisualElement name="SP" class="model-card-grid-item" style="flex-grow: 1;">
+                        <ui:Label text="SP" class="model-card-unit-stat-header" style="margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0;"/>
+                        <ui:Label text="0+" class="model-card-unit-stat-text" style="padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0;">
+                            <Bindings>
+                                <ui:DataBinding property="text" data-source-path="SpeedString" binding-mode="ToTarget"/>
+                            </Bindings>
+                        </ui:Label>
+                    </ui:VisualElement>
+                    <ui:VisualElement name="AR" class="model-card-grid-item" style="flex-grow: 1;">
+                        <ui:Label text="AR" class="model-card-unit-stat-header" style="margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0;"/>
+                        <ui:Label text="0+" class="model-card-unit-stat-text" style="padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0;">
+                            <Bindings>
+                                <ui:DataBinding property="text" data-source-path="ArmorString" binding-mode="ToTarget"/>
+                            </Bindings>
+                        </ui:Label>
+                    </ui:VisualElement>
+                    <ui:VisualElement name="HP" class="model-card-grid-item" style="flex-grow: 1; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0;">
+                        <ui:Label text="HP" class="model-card-unit-stat-header" style="padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0;"/>
+                        <ui:Label text="0" name="lblCurrentHP" class="model-card-unit-stat-text" style="margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0;"/>
+                    </ui:VisualElement>
+                </ui:VisualElement>
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

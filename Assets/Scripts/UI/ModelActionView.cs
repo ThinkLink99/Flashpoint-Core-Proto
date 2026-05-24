@@ -34,6 +34,8 @@ public class ModelActionView : MonoBehaviour
     VisualElement modelWeapons;
     VisualElement modelActions;
 
+    Label lblCurrentHP;
+
     Button btnActivateModel;
     Button btnDeactivateModel;
     Image imgActivated;
@@ -67,6 +69,8 @@ public class ModelActionView : MonoBehaviour
         modelActions = root.Query("ModelActions");
         modelWeapons = root.Query("Weapons").First().Q("unity-content-container");
 
+        lblCurrentHP = modelCard.Q<Label>("lblCurrentHP");
+
         SetupActivationButtons(root);
         SetupMoveButton(root);
         SetupConfirmMoveButton(root);
@@ -76,14 +80,18 @@ public class ModelActionView : MonoBehaviour
         debugPanel = root.Q("Debug");
         lblUnitName = debugPanel.Q<Label>("lblUnitName");
         lblUnitPos = debugPanel.Q<Label>("lblUnitPos");
-        lblAPRemaining = debugPanel.Q<Label>("lblAPRemaining");
+        lblAPRemaining = debugPanel.Q<Label>("lblActionPointsRemain");
         lblUnitIsActivated = debugPanel.Q<Label>("lblUnitIsActivated");
         lblUnitHasActivated = debugPanel.Q<Label>("lblUnitHasActivated");
         lblUnitMoved = debugPanel.Q<Label>("lblUnitMoved");
         lblUnitShot = debugPanel.Q<Label>("lblUnitShot");
         lblUnitCrouched = debugPanel.Q<Label>("lblUnitCrouched");
     }
-
+    private void Update()
+    {
+        // keep viewModel in sync; it will raise StateChanged only when values actually change
+        viewModel?.Refresh();
+    }
     private void OnDestroy()
     {
         DetachViewModel();
@@ -103,7 +111,6 @@ public class ModelActionView : MonoBehaviour
         // authoritative selection unconditionally.
         OnModelSelected(null, e.Model);
     }
-
     private void OnWorldDestinationSelected(object sender, DestinationSelectedEventArgs e)
     {
         // Update view to reflect authoritative destination selection if relevant
@@ -111,16 +118,9 @@ public class ModelActionView : MonoBehaviour
         // For now, just update the internal context if the selected model belongs to the requester
         // or matches the current view's selected model.
     }
-
     private void OnWorldTargetSelected(object sender, TargetSelectedEventArgs e)
     {
         // Update target UI similarly
-    }
-
-    private void Update()
-    {
-        // keep viewModel in sync; it will raise StateChanged only when values actually change
-        viewModel?.Refresh();
     }
 
     // Configure the view with a new player controller. This is safer than assigning the
@@ -166,7 +166,6 @@ public class ModelActionView : MonoBehaviour
         if (header != null) header.visible = true;
         UpdateUI();
     }
-
     public void HideUI()
     {
         if (header != null) header.visible = false;
@@ -174,7 +173,6 @@ public class ModelActionView : MonoBehaviour
         if (modelActions != null) modelActions.visible = false;
         UpdateUI();
     }
-
     private void UpdateUI()
     {
         // show/hide model sections
@@ -188,13 +186,14 @@ public class ModelActionView : MonoBehaviour
             btnDeactivateModel.style.display = DisplayStyle.None;
             imgActivated.style.display = DisplayStyle.None;
         }
-        else if (viewModel.IsActivated)
+        else if (viewModel.IsActivated && playerController.IsLocalPlayer && selectedModel.playerControlling == playerController)
         {
+
             imgActivated.style.display = DisplayStyle.None;
             btnActivateModel.style.display = DisplayStyle.None;
             btnDeactivateModel.style.display = DisplayStyle.Flex;
         }
-        else
+        else if (playerController.IsLocalPlayer && selectedModel.playerControlling == playerController)
         {
             imgActivated.style.display = DisplayStyle.None;
             btnActivateModel.style.display = DisplayStyle.Flex;
@@ -203,14 +202,58 @@ public class ModelActionView : MonoBehaviour
 
         // move / shoot buttons
         ModelMoveButton.style.display = GetMoveButtonDisplay();
-        ModelShootButton.style.display = GetShootButtonDisplay();
 
         ConfirmMoveButton.style.display = moving ? DisplayStyle.Flex : DisplayStyle.None;
-        ConfirmShootButton.style.display = shooting ? DisplayStyle.Flex : DisplayStyle.None;
 
-        UpdateDebugInfo();
+        UpdateHealth();
+        UpdateShields();
+        UpdateSelectedWeapon();
+        //UpdateDebugInfo();
     }
+    private void UpdateSelectedWeapon()
+    {
+        for (int i = 0; i < modelWeapons.childCount; i++)
+        {
+            modelWeapons[i].RemoveFromClassList("equipment-card-selected");
 
+            var weapon = modelWeapons[i].dataSource as Weapon;
+            if (weapon != null && weapon == viewModel.SelectedWeapon)
+                modelWeapons[i].AddToClassList("equipment-card-selected");
+        }
+    }
+    private void UpdateHealth()
+    {
+        if (viewModel == null) return;
+
+        lblCurrentHP.text = selectedModel.CurrentHealth.ToString();
+    }
+    private void UpdateShields ()
+    {
+        if (viewModel == null) return;
+
+        modelCard.Q<Image>("Shield1").style.visibility = Visibility.Hidden;
+        modelCard.Q<Image>("Shield2").style.visibility = Visibility.Hidden;
+        modelCard.Q<Image>("Shield3").style.visibility = Visibility.Hidden;
+        modelCard.Q<Image>("Shield4").style.visibility = Visibility.Hidden;
+
+
+        // query model card for shields 1-4 depending on count in view model
+        for (int i = 0; i < viewModel.ShieldCount; i++)
+        {
+            var shield = modelCard.Q<Image>("Shield" + (i + 1));
+            shield.style.visibility = Visibility.Visible;
+            if (i < viewModel.ShieldUses)
+            {
+                shield.RemoveFromClassList("model-card-shield-inactive");
+                shield.AddToClassList("model-card-shield-active");
+            }
+            else
+            {
+                shield.RemoveFromClassList("model-card-shield-active");
+                shield.AddToClassList("model-card-shield-inactive");
+            }
+        }
+    }
     private void UpdateDebugInfo()
     {
         if (selectedModel == null)
@@ -270,7 +313,14 @@ public class ModelActionView : MonoBehaviour
             UpdateUI();
         });
     }
-
+    private DisplayStyle GetMoveButtonDisplay()
+    {
+        if (viewModel == null) return DisplayStyle.None;
+        if (viewModel.HasMoved) return DisplayStyle.None;
+        if (viewModel.RemainingAP < 1) return DisplayStyle.None;
+        if (viewModel.HasActivated || !viewModel.IsActivated) return DisplayStyle.None;
+        return DisplayStyle.Flex;
+    }
     private void SetupConfirmMoveButton(VisualElement root)
     {
         ConfirmMoveButton = root.Query<Button>("btnConfirmMove");
@@ -285,19 +335,8 @@ public class ModelActionView : MonoBehaviour
 
     private void SetupShootButton(VisualElement root)
     {
-        ModelShootButton = modelActions.Q<Button>("btnShootModel");
-        ModelShootButton.RegisterCallback<ClickEvent>((evt) =>
-        {
-            shooting = !shooting;
-            if (shooting)
-                onModelShootActivated?.Raise(this, selectedModel);
-            else
-                onModelShootDeactivated?.Raise(this, selectedModel);
 
-            UpdateUI();
-        });
     }
-
     private void SetupConfirmShootButton(VisualElement root)
     {
         ConfirmShootButton = root.Query<Button>("btnConfirmShoot");
@@ -310,31 +349,43 @@ public class ModelActionView : MonoBehaviour
         });
     }
 
-    private DisplayStyle GetMoveButtonDisplay()
-    {
-        if (viewModel == null) return DisplayStyle.None;
-        if (viewModel.HasMoved) return DisplayStyle.None;
-        if (viewModel.RemainingAP < 1) return DisplayStyle.None;
-        if (viewModel.HasActivated || !viewModel.IsActivated) return DisplayStyle.None;
-        return DisplayStyle.Flex;
-    }
-
-    private DisplayStyle GetShootButtonDisplay()
-    {
-        if (viewModel == null) return DisplayStyle.None;
-        if (viewModel.HasShot) return DisplayStyle.None;
-        if (viewModel.RemainingAP < 1) return DisplayStyle.None;
-        if (viewModel.HasActivated || !viewModel.IsActivated) return DisplayStyle.None;
-        return DisplayStyle.Flex;
-    }
-
-    private TemplateContainer BuildWeaponCard(WeaponConfiguration weapon)
+    private TemplateContainer BuildWeaponCard(Weapon weapon)
     {
         var card = weaponCardTemplate.CloneTree();
-        card.Q<Label>("lblWeaponName").text = weapon.weaponName;
-        card.Q<Image>("imgWeaponImage").sprite = weapon.weaponImage;
-        card.Q<Label>("lblRange").text = weapon.weaponRange.ToString();
-        card.Q<Label>("lblAP").text = weapon.weaponArmorPiercing.ToString();
+        card.AddToClassList ("equipment-card");
+        card.dataSource = weapon;
+
+        if (viewModel.SelectedWeapon == weapon) card.AddToClassList("equipment-card-selected");
+
+        card.Q<VisualElement>("card-body").AddToClassList("weapon-card-small");
+        card.Q<Label>("lblWeaponName").text = weapon.WeaponConfiguration.weaponName;
+        card.Q<Image>("imgWeaponImage").sprite = weapon.WeaponConfiguration.weaponImage;
+        card.Q<Label>("lblRange").text = weapon.WeaponConfiguration.weaponRange.ToString();
+        card.Q<Label>("lblAP").text = weapon.WeaponConfiguration.weaponArmorPiercing.ToString();
+
+        card.RegisterCallback<ClickEvent>((evt) =>
+        {
+            // TODO: this is a bit hacky; we should ideally have the view model track the selected weapon and update the card styles accordingly
+            // in UpdateUI, rather than relying on click events to manage UI state.
+            // This could lead to bugs if the view model changes the selected weapon for any reason other than a direct click (e.g., deselecting the current weapon when it's no longer valid).
+            // For now, this is a simple way to provide visual feedback on selection, but it may need to be refactored for robustness as the UI becomes more complex.
+
+            // Add the functionality of starting shoot mode and target selection when a weapon is clicked, if the weapon is not already selected. If the weapon is already selected, clicking it again should deselect it and exit shoot mode.
+             if (viewModel.SelectedWeapon == weapon)
+            {
+                // Deselect the weapon and exit shoot mode
+                viewModel.RequestSelectWeapon(null);
+                shooting = false;
+                onModelShootDeactivated?.Raise(this, selectedModel);
+            }
+            else
+            {
+                // Select the new weapon and enter shoot mode
+                viewModel.RequestSelectWeapon(weapon);
+                shooting = true;
+                onModelShootActivated?.Raise(this, selectedModel);
+            }
+        });
         return card;
     }
 
@@ -342,10 +393,11 @@ public class ModelActionView : MonoBehaviour
     {
         modelWeapons.Clear();
         if (selectedModel == null) return;
-        foreach (var weapon in selectedModel.ModelConfiguration.unitWeapons)
+        var weapons = selectedModel.GetComponentsInChildren<Weapon>(); // Get all weapons on the model. this allows us to have only runtime weapons if the player drops or picks up new ones
+
+        foreach (var weapon in weapons)
             modelWeapons.Add(BuildWeaponCard(weapon));
     }
-
     private void ClearWeaponList()
     {
         modelWeapons.Clear();
@@ -377,7 +429,6 @@ public class ModelActionView : MonoBehaviour
 
         UpdateUI();
     }
-
     public void OnModelDeselected(Component sender, object data)
     {
         DetachViewModel();

@@ -14,4 +14,5 @@ public class WeaponConfiguration : ScriptableObject
     [JsonProperty, CreateProperty] public int weaponArmorPiercing = 2;
 
     // keywords and special rules will be added in the future, but for now we will just have the basic stats
+    [JsonProperty, CreateProperty] public KeywordInstance[] Keywords;
 }

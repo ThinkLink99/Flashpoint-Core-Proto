@@ -39,7 +39,16 @@ public class InputManager : MonoBehaviour
             {
                 // Send the request to the authoritative GameManager. In networked mode this
                 // method can be converted to RPC forwarding to the server.
-                gameManager.RequestSelectModel(hitModel, localPlayer);
+                if (localPlayer != null && localPlayer.IsTargetingModel)
+                {
+                    gameManager.RequestSelectTarget(hitModel, localPlayer);
+
+                    gameManager.RequestShoot(localPlayer);
+                }
+                else
+                {
+                    gameManager.RequestSelectModel(hitModel, localPlayer);
+                }
             }
         }
     }

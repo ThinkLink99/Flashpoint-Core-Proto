@@ -50,6 +50,10 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private bool targettingModel = false;
     [SerializeField] private Model targettedModel;
 
+    // Public read-only view of whether this player is currently selecting a target
+    public bool IsTargetingModel => targettingModel;
+    public Model TargettedModel => targettedModel;
+
     [Header("Game Events")]
     [SerializeField] private GameEvent onModelSelected;
     [SerializeField] private GameEvent onModelDeselected;
@@ -338,12 +342,6 @@ public class PlayerController : MonoBehaviour
     public void OnModelShootingConfirmed(Component sender, object data)
     {
         Debug.Log($"Shoot Confirmed on {targettedModel.name}");
-
-        // Request authoritative shoot action
-        if (selectedModel != null && targettedModel != null)
-        {
-            gameManager.RequestShoot(selectedModel, targettedModel, this);
-        }
 
         targettingModel = false;
         targettedModel = null;

@@ -3,7 +3,7 @@ using System.Linq;
 using Unity.Properties;
 using UnityEngine;
 
-public class Model : MonoBehaviour
+public class Model : MonoBehaviour, IHasKeywords
 {
     [Header("Events")]
     public GameEvent onModelMoved;
@@ -29,6 +29,7 @@ public class Model : MonoBehaviour
 
     public Cube CurrentCube { get => currentCube; }
     public ModelActionController ActionController { get => actionController; }
+    public int CurrentHealth { get => currentHealth; }
 
     public void Initialize (ModelConfiguration modelConfiguration)
     {
@@ -38,6 +39,15 @@ public class Model : MonoBehaviour
 
         // set dynamic values based on configuration, such as health, action points, etc.
         currentHealth = modelConfiguration.unitHP;
+
+        // create weapons based on configuration
+        foreach (var weaponConfig in modelConfiguration.unitWeapons)
+        {
+            var weaponObj = new GameObject(weaponConfig.name);
+            weaponObj.transform.SetParent(this.transform);
+            var weapon = weaponObj.AddComponent<Weapon>();
+            weapon.Initialize(weaponConfig, this);
+        }
     }
 
     // Start is called before the first frame update
@@ -56,21 +66,6 @@ public class Model : MonoBehaviour
     {
         if (gameManager == null) return;
         if (ModelConfiguration == null) return;
-
-        if (lastPosition != this.transform.localPosition)
-        {
-            onModelMoved.Raise(this, this.transform.localPosition);
-            lastPosition = this.transform.localPosition;
-        }
-    }
-
-    private void Die()
-    {
-        // for now, just destroy the model. We can add death animations, ragdolls, etc. later.
-        Destroy(this.gameObject);
-
-        // Fire off a debug Log so we can see when a model dies. We can replace this with an event later if we want to trigger other things on death, such as checking for end of game conditions, triggering death animations, etc.
-        Debug.Log($"{this.gameObject.name} has died.");
     }
 
     public bool HasKeyword(string keywordId) => Keywords.HasKeyword(keywordId);
@@ -94,6 +89,14 @@ public class Model : MonoBehaviour
             // for now, just destroy the model. We can add death animations, ragdolls, etc. later.
             Die();
         }
+    }
+    private void Die()
+    {
+        // for now, just destroy the model. We can add death animations, ragdolls, etc. later.
+        Destroy(this.gameObject);
+
+        // Fire off a debug Log so we can see when a model dies. We can replace this with an event later if we want to trigger other things on death, such as checking for end of game conditions, triggering death animations, etc.
+        Debug.Log($"{this.gameObject.name} has died.");
     }
 
     // Helper: create a lightweight ghost clone (no Model, no physics, on IgnoreRaycast layer)

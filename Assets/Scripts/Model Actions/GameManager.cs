@@ -95,7 +95,6 @@ public class GameManager : MonoBehaviour {
             OnModelMoved?.Invoke(this, new ModelMovedEventArgs(model, destination, requester));
         }));
     }
-
     public void RequestShoot(Model source, Model target, PlayerController requester)
     {
         if (requester != null && !requester.AllowCommands)
@@ -118,6 +117,26 @@ public class GameManager : MonoBehaviour {
         StartCoroutine(ExecuteActionCoroutine(action, () =>
         {
             OnModelShot?.Invoke(this, new ModelShotEventArgs(source, target, requester));
+        }));
+    }
+    public void RequestShoot(PlayerController requester)
+    {
+        if (requester != null && !requester.AllowCommands)
+        {
+            Debug.Log($"Shoot request from {requester.name} rejected: no command permission");
+            return;
+        }
+
+        var action = new ShootAction();
+        if (!action.CanExecute(Context))
+        {
+            Debug.Log("Shoot action cannot execute");
+            return;
+        }
+
+        StartCoroutine(ExecuteActionCoroutine(action, () =>
+        {
+            OnModelShot?.Invoke(this, new ModelShotEventArgs(Context.SourceModel, Context.TargetModel, requester));
         }));
     }
 

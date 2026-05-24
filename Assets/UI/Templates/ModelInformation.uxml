@@ -1,27 +1,19 @@
 <ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/UI/Styles/model_card.uss?fileID=7433441132597879392&amp;guid=7166bad6d5d39f140be73d165381aa3c&amp;type=3#model_card"/>
-
-    <ui:VisualElement 
-        name="Card" 
-        data-source="project://database/Assets/Data/Units/Spartan%20MK%20VII.asset?fileID=11400000&amp;guid=e32cb81dfd8912948ac75ddb1ec9b77a&amp;type=2#Spartan MK VII"
-        class="model-card">
-
-        <ui:VisualElement 
-            class="model-card-unit-image">
-
-            <ui:Image
-                source="project://database/Assets/Images/spartan_mkvii.png?fileID=2800000&amp;guid=3d28e5c4e9db2d747a15c8d81e7c4f20&amp;type=3#spartan_mkvii" 
-                style="aspect-ratio: 1;">
-
+    <ui:VisualElement name="Card" data-source="project://database/Assets/Data/Units/Spartan%20MK%20VII.asset?fileID=11400000&amp;guid=e32cb81dfd8912948ac75ddb1ec9b77a&amp;type=2#Spartan MK VII" class="model-card">
+        <ui:VisualElement class="model-card-unit-image">
+            <ui:VisualElement name="Shields" class="model-card-shield-bar" style="flex-grow: 1;">
+                <ui:Image name="Shield1" class="model-card-shield" style="visibility: hidden;"/>
+                <ui:Image name="Shield2" class="model-card-shield" style="visibility: hidden;"/>
+                <ui:Image name="Shield3" class="model-card-shield" style="visibility: hidden;"/>
+                <ui:Image name="Shield4" class="model-card-shield" style="display: flex; visibility: hidden;"/>
+            </ui:VisualElement>
+            <ui:Image source="project://database/Assets/Images/spartan_mkvii.png?fileID=2800000&amp;guid=3d28e5c4e9db2d747a15c8d81e7c4f20&amp;type=3#spartan_mkvii" style="aspect-ratio: 1;">
                 <Bindings>
-                    <ui:DataBinding 
-                        property="source" 
-                        data-source-path="unitImage" 
-                        binding-mode="ToTarget"/>
+                    <ui:DataBinding property="source" data-source-path="unitImage" binding-mode="ToTarget"/>
                 </Bindings>
             </ui:Image>
         </ui:VisualElement>
-
         <ui:VisualElement class="model-card-body" style="flex-grow: 1;">
             <ui:VisualElement class="model-card-header" style="flex-grow: 1; background-image: url(&quot;project://database/Assets/Images/ModelCardHeader.png?fileID=21300000&amp;guid=200a4d0227513bc4392ef9e43b3fdfdd&amp;type=3#ModelCardHeader&quot;);">
                 <ui:Label text="&lt;MODEL NAME&gt;" class="model-card-unit-name" style="margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0;">
@@ -31,9 +23,13 @@
                 </ui:Label>
             </ui:VisualElement>
             <ui:VisualElement class="model-card-unit-stat-block">
-                <ui:VisualElement style="flex-grow: 1;">
-                    <ui:Label text="Label" class="model-card-unit-stat-header"/>
-                </ui:VisualElement>
+                <ui:Label text="Label" class="model-card-unit-stat-header"/>
+            </ui:VisualElement>
+            <ui:VisualElement class="model-card-unit-stat-block">
+                <ui:Label text="Label" class="model-card-unit-stat-header"/>
+            </ui:VisualElement>
+            <ui:VisualElement class="model-card-unit-stat-block">
+                <ui:Label text="Label" class="model-card-unit-stat-header"/>
             </ui:VisualElement>
         </ui:VisualElement>
     </ui:VisualElement>

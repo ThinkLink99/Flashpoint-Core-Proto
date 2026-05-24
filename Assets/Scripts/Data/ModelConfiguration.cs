@@ -1,4 +1,5 @@
 using Newtonsoft.Json;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Properties;
@@ -31,4 +32,11 @@ public class ModelConfiguration : ScriptableObject
 
     // TODO: Add Weapon loadout functionality
     [JsonProperty, CreateProperty] public List<WeaponConfiguration> unitWeapons = new List<WeaponConfiguration>();
+
+    [CreateProperty] public string KeywordStringList => string.Join(", ", keywords);
+    [CreateProperty] public string RangeString => $"{unitRange}+";
+    [CreateProperty] public string FightString => $"{unitFight}+";
+    [CreateProperty] public string SaveString => $"{unitSave}+";
+    [CreateProperty] public string SpeedString => $"{unitAdvanceSpeed}-{unitSprintSpeed}";
+    [CreateProperty] public string ArmorString => $"{unitArmor}";
 }

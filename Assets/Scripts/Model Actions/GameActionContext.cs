@@ -22,6 +22,7 @@ public class GameActionContext
     public PlayerController InitiatingPlayer { get; set; }
     public int RemainingAP { get; set; }
 
+    public WeaponConfiguration WeaponUsed { get; set; }
     public int IncomingDamage { get; set; } = 0;
 
     // Extensible metadata bag for special cases

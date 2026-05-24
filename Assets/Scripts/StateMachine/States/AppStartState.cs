@@ -60,6 +60,7 @@ public class AppStartState : BaseGameState
             else builder.IsHuman(false);
 
             PlayerController player = builder.Build();
+            if (player.isHumanControlled) player.IsLocalPlayer = true;
             playersCreated.Add(player);
         }
 
