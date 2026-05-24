@@ -245,6 +245,10 @@ public class ModelActionView : MonoBehaviour
         modelCard.visible = selectedModel != null;
         modelActions.visible = selectedModel != null;
 
+        btnActivateModel.style.display = DisplayStyle.None;
+        btnDeactivateModel.style.display = DisplayStyle.None;
+        imgActivated.style.display = DisplayStyle.None;
+
         // activation buttons
         if (viewModel == null)
         {
@@ -432,6 +436,7 @@ public class ModelActionView : MonoBehaviour
         card.Q<Image>("imgWeaponImage").sprite = weapon.WeaponConfiguration.weaponImage;
         card.Q<Label>("lblRange").text = weapon.WeaponConfiguration.weaponRange.ToString();
         card.Q<Label>("lblAP").text = weapon.WeaponConfiguration.weaponArmorPiercing.ToString();
+        card.Q<Label>("lblKeywords").text = weapon.WeaponConfiguration.KeywordStringList;
 
         card.RegisterCallback<ClickEvent>((evt) =>
         {
@@ -445,6 +450,7 @@ public class ModelActionView : MonoBehaviour
             {
                 // Deselect the weapon and exit shoot mode
                 viewModel.RequestSelectWeapon(null);
+                playerController.ChangeSelectedWeapon(null);
                 shooting = false;
                 onModelShootDeactivated?.Raise(this, selectedModel);
             }
@@ -452,6 +458,7 @@ public class ModelActionView : MonoBehaviour
             {
                 // Select the new weapon and enter shoot mode
                 viewModel.RequestSelectWeapon(weapon);
+                playerController.ChangeSelectedWeapon(weapon);
                 shooting = true;
                 onModelShootActivated?.Raise(this, selectedModel);
             }

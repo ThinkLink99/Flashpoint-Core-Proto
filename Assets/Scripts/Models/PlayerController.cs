@@ -28,6 +28,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private List<Model> activationsRemaining;
     [SerializeField] private Model activatedModel = null;
     [SerializeField] private ModelActionController activatedModelActionController = null;
+    [SerializeField] private Weapon selectedWeapon = null;
+    public Weapon SelectedWeapon => selectedWeapon;
 
     [SerializeField] private GameInfoSO gameInfo;
 
@@ -134,7 +136,10 @@ public class PlayerController : MonoBehaviour
         foreach (var model in spawnedModels)
             activationsRemaining.Add(model);
     }
-
+    public void ChangeSelectedWeapon (Weapon weapon)
+    {
+        selectedWeapon = weapon;
+    }
     private bool PointerOverUI()
     {
         return false; // temporarily disable to allow clicking through UI for testing, re-enable when implementing UI

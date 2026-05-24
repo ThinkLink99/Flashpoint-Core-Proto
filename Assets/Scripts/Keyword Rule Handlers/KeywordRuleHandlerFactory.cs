@@ -5,6 +5,7 @@ public class KeywordRuleHandlerFactory {
         return keywordId switch
         {
             "energy_shield" => new EnergyShieldHandler(),
+            "lethal" => new LethalHandler(),
             _ => null
         };
     }

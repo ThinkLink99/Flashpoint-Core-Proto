@@ -36,7 +36,7 @@
         <ui:VisualElement name="ModelActions" style="height: 25%; padding-top: 10px; padding-right: 10px; padding-bottom: 10px; padding-left: 10px; flex-direction: row;">
             <ui:Instance template="ModelCard" name="ModelCard"/>
             <ui:VisualElement style="flex-grow: 1; flex-direction: row; justify-content: space-between; display: flex; opacity: 1;">
-                <ui:VisualElement style="flex-grow: 0; flex-direction: row-reverse; flex-shrink: 0;">
+                <ui:VisualElement style="flex-grow: 0; flex-direction: row-reverse; flex-shrink: 0; display: none;">
                     <ui:GroupBox name="Debug">
                         <ui:Label text="Debug:"/>
                         <ui:VisualElement name="SelectedUnit" style="flex-grow: 0; flex-direction: row;">

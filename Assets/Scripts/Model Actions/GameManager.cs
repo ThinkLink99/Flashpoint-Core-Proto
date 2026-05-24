@@ -95,7 +95,7 @@ public class GameManager : MonoBehaviour {
             OnModelMoved?.Invoke(this, new ModelMovedEventArgs(model, destination, requester));
         }));
     }
-    public void RequestShoot(Model source, Model target, PlayerController requester)
+    public void RequestShoot(Model source, Model target, Weapon weapon, PlayerController requester)
     {
         if (requester != null && !requester.AllowCommands)
         {
@@ -106,6 +106,7 @@ public class GameManager : MonoBehaviour {
         // Authoritative: select source and target
         Context.SourceModel = source;
         Context.TargetModel = target;
+        Context.WeaponUsed = weapon;
 
         var action = new ShootAction();
         if (!action.CanExecute(Context))

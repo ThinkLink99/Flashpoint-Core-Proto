@@ -38,9 +38,9 @@
                         <ui:Label text="Keywords"/>
                     </ui:VisualElement>
                     <ui:VisualElement name="Body" class="weapon-card-stats-text">
-                        <ui:Label text="Range" name="lblKeywords" class="weapon-card-stats-text">
+                        <ui:Label name="lblKeywords" class="weapon-card-stats-text">
                             <Bindings>
-                                <ui:DataBinding property="text" data-source-path="KeywordStringList" data-source="project://database/Assets/Data/Weapons/VK78%20Commando.asset?fileID=11400000&amp;guid=d1e8b40b5de3bbb47b3b004fe5982599&amp;type=2#VK78 Commando" binding-mode="ToTarget"/>
+                                <ui:DataBinding property="text" data-source-path="KeywordStringList" data-source="" binding-mode="ToTarget"/>
                             </Bindings>
                         </ui:Label>
                     </ui:VisualElement>

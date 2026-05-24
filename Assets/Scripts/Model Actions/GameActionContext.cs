@@ -22,7 +22,7 @@ public class GameActionContext
     public PlayerController InitiatingPlayer { get; set; }
     public int RemainingAP { get; set; }
 
-    public WeaponConfiguration WeaponUsed { get; set; }
+    public Weapon WeaponUsed { get; set; }
     public int IncomingDamage { get; set; } = 0;
 
     // Extensible metadata bag for special cases
@@ -68,13 +68,13 @@ public class GameActionContext
         return this;
     }
 
-    public List<IBeforeDamageHandler> GetBeforeDamageHandlers (Model model)
+    public List<THandlerType> GetHandlers <THandlerType> (IHasKeywords kwObject)
     {
-        List<IBeforeDamageHandler> handlers = new List<IBeforeDamageHandler>();
-        foreach (var keyword in model.Keywords.All)
+        List<THandlerType> handlers = new List<THandlerType>();
+        foreach (var keyword in kwObject.Keywords.All)
         {
             var handler = KeywordRuleHandlerFactory.GetHandlerForKeyword(keyword.Definition.Id);
-            if (handler != null && handler is IBeforeDamageHandler damageHandler)
+            if (handler != null && handler is THandlerType damageHandler)
             {
                 handlers.Add(damageHandler);
             }

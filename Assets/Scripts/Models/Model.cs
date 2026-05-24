@@ -84,6 +84,8 @@ public class Model : MonoBehaviour, IHasKeywords
     public void Wound (int damage)
     {
         currentHealth -= damage;
+        Debug.Log($"{name} wounded for {damage} damage.");
+
         if (currentHealth <= 0)
         {
             // for now, just destroy the model. We can add death animations, ragdolls, etc. later.

@@ -48,7 +48,7 @@ public class InputManager : MonoBehaviour
                     // the GameManager has an explicit SourceModel when executing the action.
                     var source = localPlayer.SelectedModel ?? gameManager.Context.SourceModel;
                     if (source != null)
-                        gameManager.RequestShoot(source, hitModel, localPlayer);
+                        gameManager.RequestShoot(source, hitModel, localPlayer.SelectedWeapon, localPlayer);
                     else
                         // fallback: try the parameterless overload which uses Context.SourceModel
                         gameManager.RequestShoot(localPlayer);
