@@ -74,6 +74,10 @@ public class PlayerController : MonoBehaviour
         activationsRemaining = new List<Model>();
         spawnedModels = new List<Model>();
         gameManager = FindAnyObjectByType <GameManager>();
+        if (gameManager != null)
+        {
+            gameManager.OnModelShot += OnWorldModelShot;
+        }
     }
     public void Start() { }
     public void Update() { }
@@ -86,6 +90,30 @@ public class PlayerController : MonoBehaviour
             rangeIndicator.GetComponent<SpriteRenderer>().color = color;
             rangeIndicator.gameObject.SetActive(true);
         });
+    }
+
+    private void OnDestroy()
+    {
+        if (gameManager != null)
+        {
+            gameManager.OnModelShot -= OnWorldModelShot;
+        }
+    }
+
+    private void OnWorldModelShot(object sender, ModelShotEventArgs e)
+    {
+        // If this player was the requester of the shot, exit targeting mode and clear local target
+        if (e?.Requester == this)
+        {
+            targettingModel = false;
+            targettedModel = null;
+            // also clear any local ghost
+            if (ghostInstance != null)
+            {
+                Destroy(ghostInstance);
+                ghostInstance = null;
+            }
+        }
     }
 
     public void BeginTurn ()

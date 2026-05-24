@@ -13,7 +13,7 @@ public class ModelActionViewModel
     public int RemainingAP => ActionController != null ? ActionController.RemainingAP : 0;
 
     public int ShieldCount => Model?.GetKeywordValue("energy_shield") ?? 0;
-    public int ShieldUses => Model?.GetKeyword("energy_shield").CurrentUses ?? 0;
+    public int ShieldUses => Model?.GetKeyword("energy_shield")?.CurrentUses ?? 0;
 
     public Weapon SelectedWeapon { get; private set; }
 

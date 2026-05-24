@@ -86,15 +86,14 @@
 .model-card-shield {
     width: 24px;
     height: 24px;
-    background-color: rgb(156, 156, 156);
 }
 
 .model-card-shield-active {
-    background-color: var(--shield-active);
+    background-color: var(--shield-active) !important;
 }
 
 .model-card-shield-inactive {
-    background-color: var(--shield-active);
+    background-color: var(--shield-inactive) !important;
 }
 
 .model-card-grid {

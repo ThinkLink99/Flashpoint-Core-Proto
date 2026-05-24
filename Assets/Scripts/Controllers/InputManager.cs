@@ -41,9 +41,17 @@ public class InputManager : MonoBehaviour
                 // method can be converted to RPC forwarding to the server.
                 if (localPlayer != null && localPlayer.IsTargetingModel)
                 {
+                    // Tell authoritative manager which target was selected
                     gameManager.RequestSelectTarget(hitModel, localPlayer);
 
-                    gameManager.RequestShoot(localPlayer);
+                    // Prefer calling the overload that supplies both source and target so
+                    // the GameManager has an explicit SourceModel when executing the action.
+                    var source = localPlayer.SelectedModel ?? gameManager.Context.SourceModel;
+                    if (source != null)
+                        gameManager.RequestShoot(source, hitModel, localPlayer);
+                    else
+                        // fallback: try the parameterless overload which uses Context.SourceModel
+                        gameManager.RequestShoot(localPlayer);
                 }
                 else
                 {

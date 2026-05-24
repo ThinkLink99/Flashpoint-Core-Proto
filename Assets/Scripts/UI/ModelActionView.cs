@@ -87,6 +87,35 @@ public class ModelActionView : MonoBehaviour
         lblUnitShot = debugPanel.Q<Label>("lblUnitShot");
         lblUnitCrouched = debugPanel.Q<Label>("lblUnitCrouched");
     }
+    private void Start()
+    {
+        // subscribe to authoritative world events so the view can reconcile when the
+        // GameManager applies authoritative selections
+        var gm = FindAnyObjectByType<GameManager>();
+        if (gm != null)
+        {
+            gm.OnWorldModelSelected += OnWorldModelSelected;
+            gm.OnWorldDestinationSelected += OnWorldDestinationSelected;
+            gm.OnWorldTargetSelected += OnWorldTargetSelected;
+            gm.OnModelMoved += OnWorldModelMoved;
+            gm.OnModelShot += OnWorldModelShot;
+        }
+
+        // Ensure we know which player controller is the local player so the view can
+        // reconcile actions that originated from this client.
+        if (playerController == null)
+        {
+            var allPlayers = FindObjectsOfType<PlayerController>();
+            foreach (var p in allPlayers)
+            {
+                if (p.IsLocalPlayer)
+                {
+                    playerController = p;
+                    break;
+                }
+            }
+        }
+    }
     private void Update()
     {
         // keep viewModel in sync; it will raise StateChanged only when values actually change
@@ -101,6 +130,8 @@ public class ModelActionView : MonoBehaviour
             gm.OnWorldModelSelected -= OnWorldModelSelected;
             gm.OnWorldDestinationSelected -= OnWorldDestinationSelected;
             gm.OnWorldTargetSelected -= OnWorldTargetSelected;
+            gm.OnModelMoved -= OnWorldModelMoved;
+            gm.OnModelShot -= OnWorldModelShot;
         }
     }
 
@@ -121,6 +152,41 @@ public class ModelActionView : MonoBehaviour
     private void OnWorldTargetSelected(object sender, TargetSelectedEventArgs e)
     {
         // Update target UI similarly
+    }
+
+    private void OnWorldModelMoved(object sender, ModelMovedEventArgs e)
+    {
+        // If the moved model is our selected model, update its position in the view
+        if (selectedModel == null) return;
+        if (e.Model == selectedModel)
+        {
+            // Update model transform to authoritative destination
+            selectedModel.MoveModelToPoint(e.Destination);
+            viewModel?.Refresh();
+            UpdateUI();
+        }
+    }
+
+    private void OnWorldModelShot(object sender, ModelShotEventArgs e)
+    {
+        // If either source or target relates to our selected model, refresh UI to show new HP/shields
+        if (selectedModel == null) return;
+
+        // If this client initiated the shot, exit local shoot mode
+        if (e.Requester == playerController)
+        {
+            shooting = false;
+            // clear selected weapon locally
+            viewModel?.RequestSelectWeapon(null);
+            onModelShootDeactivated?.Raise(this, selectedModel);
+        }
+
+        if (e.Source == selectedModel || e.Target == selectedModel)
+        {
+            // refresh view to show updated HP/shields
+            viewModel?.Refresh();
+            UpdateUI();
+        }
     }
 
     // Configure the view with a new player controller. This is safer than assigning the
@@ -205,6 +271,10 @@ public class ModelActionView : MonoBehaviour
 
         ConfirmMoveButton.style.display = moving ? DisplayStyle.Flex : DisplayStyle.None;
 
+        // show/hide shoot confirm button based on local shooting state
+        if (ConfirmShootButton != null)
+            ConfirmShootButton.style.display = shooting ? DisplayStyle.Flex : DisplayStyle.None;
+
         UpdateHealth();
         UpdateShields();
         UpdateSelectedWeapon();
@@ -223,13 +293,13 @@ public class ModelActionView : MonoBehaviour
     }
     private void UpdateHealth()
     {
-        if (viewModel == null) return;
-
+        // Update health display from authoritative model state. Only require a selected model.
+        if (selectedModel == null) return;
         lblCurrentHP.text = selectedModel.CurrentHealth.ToString();
     }
     private void UpdateShields ()
     {
-        if (viewModel == null) return;
+        if (selectedModel == null) return;
 
         modelCard.Q<Image>("Shield1").style.visibility = Visibility.Hidden;
         modelCard.Q<Image>("Shield2").style.visibility = Visibility.Hidden;
