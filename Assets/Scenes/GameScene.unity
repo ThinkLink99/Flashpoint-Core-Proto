@@ -593,6 +593,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1252523101}
+  - component: {fileID: 1252523110}
   - component: {fileID: 1252523109}
   - component: {fileID: 1252523102}
   - component: {fileID: 1252523107}
@@ -850,6 +851,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 1252523110}
+        m_TargetAssemblyTypeName: InputManager, Assembly-CSharp
+        m_MethodName: OnAllPlayersDeployed
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1252523109
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -873,6 +886,21 @@ MonoBehaviour:
       z: 0
     cubeSize: 76.2
     deploymentZones: []
+--- !u!114 &1252523110
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1252523099}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 70fa99ae77efcda41b42872ffd76ce69, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InputManager
+  gameManager: {fileID: 1252523109}
+  localPlayer: {fileID: 0}
+  allowPreview: 1
 --- !u!1 &1501779057
 GameObject:
   m_ObjectHideFlags: 0
@@ -1006,7 +1034,7 @@ GameObject:
   - component: {fileID: 2082343390}
   - component: {fileID: 2082343389}
   m_Layer: 0
-  m_Name: Game Header
+  m_Name: Main UI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1065,7 +1093,17 @@ MonoBehaviour:
   _document: {fileID: 2082343387}
   playerController: {fileID: 0}
   selectedModel: {fileID: 0}
+  actionController: {fileID: 0}
   activationsRemaining: []
+  weaponCardTemplate: {fileID: 9197481963319205126, guid: 540cdcc6fa52f3342a660811fca18efa, type: 3}
+  onModelActivated: {fileID: 11400000, guid: b5ed7b4604f9a9a42b5dc5ceed226707, type: 2}
+  onModelDeactivated: {fileID: 11400000, guid: 06e492e4379f1504c848c7e6b495f284, type: 2}
+  onModelMoveActivated: {fileID: 11400000, guid: c50d5d4cea043a748912fd42e51a09c3, type: 2}
+  onModelMoveDeactivated: {fileID: 11400000, guid: d4821896293a85345805254a62697b61, type: 2}
+  onModelMoveConfirmed: {fileID: 11400000, guid: d99a74a19b87a5146bf0609a063d2147, type: 2}
+  onModelShootActivated: {fileID: 11400000, guid: d46486e69dee9d6449573f3c0820ad05, type: 2}
+  onModelShootDeactivated: {fileID: 11400000, guid: d930428f1903a7f428fe0bd1b0ba5a85, type: 2}
+  onModelShootConfirmed: {fileID: 11400000, guid: 65e02185fb43942488d941ecfe226fd4, type: 2}
 --- !u!114 &2082343389
 MonoBehaviour:
   m_ObjectHideFlags: 0

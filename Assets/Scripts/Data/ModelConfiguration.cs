@@ -18,6 +18,7 @@ public class ModelConfiguration : ScriptableObject
     [JsonProperty, CreateProperty] public Sprite unitImage;
 
     // TODO: Add Keyword functionality
+    [JsonProperty, CreateProperty] public List<KeywordInstance> keywords = new List<KeywordInstance>();
 
     [JsonProperty, CreateProperty] public int unitCost = 40;
     [JsonProperty, CreateProperty] public int unitHP = 4;
@@ -29,4 +30,5 @@ public class ModelConfiguration : ScriptableObject
     [JsonProperty, CreateProperty] public int unitSave = 4;
 
     // TODO: Add Weapon loadout functionality
+    [JsonProperty, CreateProperty] public List<WeaponConfiguration> unitWeapons = new List<WeaponConfiguration>();
 }

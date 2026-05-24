@@ -11,6 +11,8 @@ public enum TurnState
 }
 public class GameActionContext
 {
+    public KeywordRuleHandlerFactory KeywordRuleHandlerFactory = new KeywordRuleHandlerFactory();
+
     public TurnState TurnState;
     public Map Map { get; set; }
     public Vector3 SelectedPoint { get; set; }
@@ -19,6 +21,8 @@ public class GameActionContext
     public Model TargetModel { get; set; }
     public PlayerController InitiatingPlayer { get; set; }
     public int RemainingAP { get; set; }
+
+    public int IncomingDamage { get; set; } = 0;
 
     // Extensible metadata bag for special cases
     public Dictionary<string, object> Meta { get; set; } = new Dictionary<string, object>();
@@ -61,5 +65,19 @@ public class GameActionContext
     {
         TargetModel = model;
         return this;
+    }
+
+    public List<IBeforeDamageHandler> GetBeforeDamageHandlers (Model model)
+    {
+        List<IBeforeDamageHandler> handlers = new List<IBeforeDamageHandler>();
+        foreach (var keyword in model.Keywords.All)
+        {
+            var handler = KeywordRuleHandlerFactory.GetHandlerForKeyword(keyword.Definition.Id);
+            if (handler != null && handler is IBeforeDamageHandler damageHandler)
+            {
+                handlers.Add(damageHandler);
+            }
+        }
+        return handlers;
     }
 }

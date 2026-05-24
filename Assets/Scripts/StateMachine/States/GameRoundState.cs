@@ -8,11 +8,11 @@ public class GameRoundState : BaseGameState
 
     private bool turnChanged = false;
 
-    private ModelInformationController modelInformationController;
+    private ModelActionView modelInformationController;
     private GameEvent onTurnStarted;
     private GameEventListener onTurnEndedListener;
 
-    public GameRoundState(GameManager gameManager, ModelInformationController modelInformationController) : base(gameManager)
+    public GameRoundState(GameManager gameManager, ModelActionView modelInformationController) : base(gameManager)
     {
         this.modelInformationController = modelInformationController;
     }
@@ -37,11 +37,14 @@ public class GameRoundState : BaseGameState
 
                 if (currentPlayer.isHumanControlled)
                 {
+                    // hide while we reconfigure
                     modelInformationController.HideUI();
 
-                    // show UI
-                    modelInformationController.playerController = currentPlayer;
-                    modelInformationController.ControllerChanged();
+                    // Configure the view through its public API instead of setting fields directly.
+                    // This keeps the view responsible for handling any internal updates when the
+                    // controller changes and avoids tightly coupling the state implementation to
+                    // the view's internal fields.
+                    modelInformationController.SetPlayerController(currentPlayer);
 
                     modelInformationController.ShowUI();
                 }

@@ -23,6 +23,9 @@ MonoBehaviour:
     lorem lacinia consectetur. Donec ut libero sed arcu vehicula ultricies a non
     tortor. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
   unitImage: {fileID: 21300000, guid: 3d569fc5826de554ca0203caae1db565, type: 3}
+  keywords:
+  - Definition: {fileID: 11400000, guid: 604ae20eb825d4349bb7eb133e3341ad, type: 2}
+    Value: 2
   unitCost: 40
   unitHP: 4
   unitArmor: 2
@@ -31,3 +34,6 @@ MonoBehaviour:
   unitRange: 4
   unitFight: 4
   unitSave: 4
+  unitWeapons:
+  - {fileID: 11400000, guid: 483b7ea340103f24bb31de81dc10fcbc, type: 2}
+  - {fileID: 11400000, guid: a4c609fc31c8449428df7ff511dfd30c, type: 2}

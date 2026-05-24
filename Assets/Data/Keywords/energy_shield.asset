@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6fa76155b63e77145a5183860a2dcf8d, type: 3}
+  m_Name: energy_shield
+  m_EditorClassIdentifier: Assembly-CSharp::KeywordConfiguration
+  Id: energy_shield
+  DisplayName: Energy Shield (n)
+  RulesText: "Energy Shields are designed to absorb the energy of incoming attacks,
+    whether this is from energy weapons or ballistic projectiles, melee combat or
+    falling off a building. \nEnergy Shields take effect whenever the model takes
+    Hits, but before any Armour or Armour Piercing is taken into account.\nModels
+    with the Energy Shield keyword start the game with (n) Energy Shields (fully
+    charged). When a model with this keyword takes Hits from losing an opposed dice
+    test, they lose one shield for each Hit they need to block, until all Hits have
+    been negated or they have run out of energy shields. If there are Hits remaining
+    after all energy shields have gone, adjust this by any Armour and Armour Piercing
+    that apply to calculate if the model will actually suffer Wounds. Refer to Damage
+    and Death.\nIf a model is protected by more than one Energy Shield source, they
+    are all used before moving on to armour.\nAt the beginning of each Round, every
+    model with the Energy Shield keyword regains 1 depleted Energy Shield on their
+    Profile Card (up to a maximum of n) to represent their Energy Shield regenerating.
+    Flip one Energy Shield token back to its blue side."
+  HasValue: 1
+  ValueLabel: n
+  Timings: 
+  IsWeaponKeyword: 0
+  IsModelKeyword: 1
+  IsStatusKeyword: 0

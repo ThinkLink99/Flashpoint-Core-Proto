@@ -1,0 +1,95 @@
+.weapon-card {
+    width: 100%;
+    height: 100%;
+    flex-direction: column;
+    padding: 0 5% 0 5%;
+    border-radius: 6%;
+    background-color: var(--weapon-card-background);
+    --weapon-card-background: rgb(202, 202, 202);
+    --weapon-card-primary-text: rgb(255, 255, 255);
+    --weapon-card-secondary-text: rgb(0, 0, 0);
+    --weapon-card-background-color: rgb(70, 0, 2);
+    --weapon-title-font-size: 20px;
+    --weapon-stats-header-font-size: 14px;
+    --weapon-stats-text-font-size: 11px;
+}
+
+.weapon-card-small {
+    --weapon-title-font-size: 10px;
+    --weapon-stats-header-font-size: 8px;
+    --weapon-stats-text-font-size: 8px;
+}
+.weapon-card-medium {
+    --weapon-title-font-size: 20px;
+    --weapon-stats-header-font-size: 14px;
+    --weapon-stats-text-font-size: 11px;
+}
+.weapon-card-large {
+    --weapon-title-font-size: 40px;
+    --weapon-stats-header-font-size: 28px;
+    --weapon-stats-text-font-size: 22px;
+}
+
+.weapon-card-header {
+    height: 18%;
+    width: 100%;
+    flex-direction: row;
+    align-items: center;
+    border-bottom-left-radius: 65px;
+    border-bottom-right-radius: 65px;
+    background-color: var(--weapon-card-background-color);
+}
+
+.weapon-card-name {
+    flex-grow: 1;
+    font-size: var(--weapon-title-font-size);
+    color: var(--weapon-card-primary-text);
+    -unity-text-align: middle-center;
+    -unity-font-style: bold;
+    white-space: normal;
+    padding: 0 5% 0 5%;
+}
+
+.weapon-card-body {
+    flex-grow: 1;
+    flex-direction: column;
+}
+
+.weapon-card-image {
+    width: 100%;
+    height: 40%;
+}
+
+.weapon-card-stats-block {
+    flex-grow: 1;
+    flex-shrink: 0;
+}
+
+.weapon-card-stats-header {
+    font-size: var(--weapon-stats-header-font-size);
+    color: var(--weapon-card-primary-text);
+    background-color: var(--weapon-card-background-color);
+    height: auto;
+    align-items: center;
+    justify-content: space-around;
+    flex-direction: row;
+}
+
+.weapon-card-stats-text {
+    text-align: center; 
+    font-size: var(--weapon-stats-text-font-size);
+    color: var(--weapon-card-secondary-text);
+    align-items: center;
+    justify-content: space-around;
+    flex-direction: row;
+    height: auto;
+}
+
+.weapon-card-rules {
+    flex-grow: 1;
+}
+
+.weapon-card-footer {
+    height: 16%;
+    flex-direction: row;
+}

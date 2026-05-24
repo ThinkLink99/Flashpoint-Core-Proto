@@ -17,6 +17,115 @@ public class GameManager : MonoBehaviour {
     {
         Context = new GameActionContext();
     }
+    // World-level events raised by the authoritative GameManager. Other systems (UI, network)
+    // can subscribe to these to be notified when the game state changes.
+    public event System.EventHandler<ModelSelectedEventArgs> OnWorldModelSelected;
+    public event System.EventHandler<DestinationSelectedEventArgs> OnWorldDestinationSelected;
+    public event System.EventHandler<TargetSelectedEventArgs> OnWorldTargetSelected;
+    public event System.EventHandler<ModelMovedEventArgs> OnModelMoved;
+    public event System.EventHandler<ModelShotEventArgs> OnModelShot;
+
+    // Request APIs: clients send intent through Request* methods. GameManager validates
+    // and if accepted applies the change and raises world events so all clients see
+    // the authoritative result.
+    public void RequestSelectModel(Model model, PlayerController requester)
+    {
+        // basic validation: only allow if requester has command permission (or requester null for server)
+        if (requester != null && !requester.AllowCommands)
+        {
+            Debug.Log($"Select request from {requester.name} rejected: no command permission");
+            return;
+        }
+
+        // apply selection (mutates authoritative context)
+        SelectModel(model);
+
+        // raise world event for listeners
+        OnWorldModelSelected?.Invoke(this, new ModelSelectedEventArgs(model, requester));
+    }
+
+    public void RequestSelectDestination(Vector3 destination, PlayerController requester)
+    {
+        if (requester != null && !requester.AllowCommands)
+        {
+            Debug.Log($"Select destination request from {requester.name} rejected: no command permission");
+            return;
+        }
+
+        SelectDestination(destination);
+        OnWorldDestinationSelected?.Invoke(this, new DestinationSelectedEventArgs(destination, requester));
+    }
+
+    public void RequestSelectTarget(Model target, PlayerController requester)
+    {
+        if (requester != null && !requester.AllowCommands)
+        {
+            Debug.Log($"Select target request from {requester.name} rejected: no command permission");
+            return;
+        }
+
+        SelectTarget(target);
+        OnWorldTargetSelected?.Invoke(this, new TargetSelectedEventArgs(target, requester));
+    }
+
+    public void RequestMove(Model model, Vector3 destination, PlayerController requester)
+    {
+        if (requester != null && !requester.AllowCommands)
+        {
+            Debug.Log($"Move request from {requester.name} rejected: no command permission");
+            return;
+        }
+
+        // Authoritative: select source and destination
+        Context.SourceModel = model;
+        Context.OriginCube = model.CurrentCube;
+        Context.SelectedPoint = destination;
+
+        // Attempt to execute AdvanceAction
+        var action = new AdvanceAction(new MovementPlanner(Context));
+        if (!action.CanExecute(Context))
+        {
+            Debug.Log("Move action cannot execute");
+            return;
+        }
+
+        // Start coroutine to perform the action and raise event when done
+        StartCoroutine(ExecuteActionCoroutine(action, () =>
+        {
+            OnModelMoved?.Invoke(this, new ModelMovedEventArgs(model, destination, requester));
+        }));
+    }
+
+    public void RequestShoot(Model source, Model target, PlayerController requester)
+    {
+        if (requester != null && !requester.AllowCommands)
+        {
+            Debug.Log($"Shoot request from {requester.name} rejected: no command permission");
+            return;
+        }
+
+        // Authoritative: select source and target
+        Context.SourceModel = source;
+        Context.TargetModel = target;
+
+        var action = new ShootAction();
+        if (!action.CanExecute(Context))
+        {
+            Debug.Log("Shoot action cannot execute");
+            return;
+        }
+
+        StartCoroutine(ExecuteActionCoroutine(action, () =>
+        {
+            OnModelShot?.Invoke(this, new ModelShotEventArgs(source, target, requester));
+        }));
+    }
+
+    private System.Collections.IEnumerator ExecuteActionCoroutine(IGameAction action, System.Action onComplete)
+    {
+        yield return action.Execute(Context);
+        onComplete?.Invoke();
+    }
     void Start()
     {
         if (tabletopCameraController == null) mainCamera.TryGetComponent<TabletopCamera>(out tabletopCameraController);
@@ -80,7 +189,24 @@ public class GameManager : MonoBehaviour {
         Context.SourceModel = null;
         Context.Map = currentMap;
 
+        // Grant/revoke command permission:
+        foreach (var p in players)
+        {
+            p.AllowCommands = false;
+        }
+        player.AllowCommands = player.isHumanControlled; // true for human player; false for AI
+
         Debug.Log ($"Starting turn for player: {player.name}");
+
+        // If player is AI, find its AI controller and start it
+        if (!player.isHumanControlled)
+        {
+            var ai = player.GetComponent<AIPlayerController>();
+            if (ai != null)
+            {
+                ai.BeginTurn();
+            }
+        }
     }
     public void SelectModel (Model model)
     {

@@ -7,6 +7,11 @@ using UnityEngine.EventSystems;
 
 public class PlayerController : MonoBehaviour
 {
+    // add near top of class
+    public bool IsLocalPlayer { get; set; } = false;    // set by client bootstrap
+    public bool AllowCommands { get; set; } = false;    // set when it's this player's turn (or server-authorized)
+    public bool AllowPreview { get; set; } = true;      // allow local read-only selection
+
     [SerializeField] private GameManager gameManager;
 
     [Header("Fireteam Details")]
@@ -66,18 +71,8 @@ public class PlayerController : MonoBehaviour
         spawnedModels = new List<Model>();
         gameManager = FindAnyObjectByType <GameManager>();
     }
-    public void Start()
-    {
-        
-    }
-    public void Update()
-    {
-        var mousePos = Input.mousePosition;
-        Ray ray = Camera.main.ScreenPointToRay(mousePos);
-
-        DoModelSelect(mousePos, ray);
-        DoModelPointAndClickMove(mousePos, ray);
-    }
+    public void Start() { }
+    public void Update() { }
     public void FixedUpdate()
     {
         DrawCubeRange((cube, color) =>
@@ -110,6 +105,8 @@ public class PlayerController : MonoBehaviour
 
     private bool PointerOverUI()
     {
+        return false; // temporarily disable to allow clicking through UI for testing, re-enable when implementing UI
+
         // Prevent world interaction when clicking/pressing UI
         if (EventSystem.current == null) return false;
 
@@ -124,76 +121,7 @@ public class PlayerController : MonoBehaviour
 
         return false;
     }
-    private void DoModelSelect(Vector3 mousePos, Ray ray)
-    {
-        if (PointerOverUI()) return;
-        if (movingModel) return;
 
-        if (Input.GetMouseButtonDown(0))
-        {
-            if (Physics.Raycast(ray, out RaycastHit hitInfo))
-            {
-                Model hitModel = null;
-                var go = hitInfo.collider.gameObject;
-                if (!go.TryGetComponent(out hitModel))
-                {
-                    hitModel = go.GetComponentInParent<Model>();
-                }
-                if (hitModel != null)
-                {
-                    if (targettingModel)
-                    {
-                        targettedModel = hitModel;
-                        gameManager.SelectTarget(targettedModel);
-                    }
-                    else 
-                    {
-                        selectedModel = hitModel;
-                        //tabletopCameraController.target = selectedModel.transform;
-                        gameManager.SelectModel(selectedModel);
-                        onModelSelected?.Raise(this, selectedModel);
-                    }
-                }
-            }
-            return;
-        }
-    }
-
-    private void DoModelPointAndClickMove(Vector3 mousePos, Ray ray)
-    {
-        if (selectedModel != null && Input.GetAxis("Cancel") == 1)
-        {
-            var prev = selectedModel;
-            selectedPoint = Vector3.zero;
-            selectedModel = null;
-
-            onModelDeselected?.Raise(this, prev);
-            onModelMoveDeactivated?.Raise(this, prev);
-            DisableModelMovementMode();
-        }
-
-        if (PointerOverUI()) return;
-
-        if (movingModel && selectedModel != null && Input.GetMouseButtonDown(0))
-        {
-            if (Physics.Raycast(ray, out RaycastHit hitInfo))
-            {
-                // check if this point falls withing our movement range
-                var potentialPoint = hitInfo.point;
-                if (potentialPoint == null) return; // shouldnt even happen but we'll check it JIC
-
-                var cubeIn = movePlanner.GetCubeContainingPoint(potentialPoint);
-                if (cubeIn == null) return; // there is no cube in the world for this point, don't update the selected point
-                
-                var p = movePlanner.ClampPointToRange(selectedModel.CurrentCube, potentialPoint, selectedModel.ModelConfiguration.unitSprintSpeed, pickUpHeightFromCube);
-                if (advanceHighlightedCubes.Contains(cubeIn))
-                    // if our cube is in this list, we can update our selected point
-                    selectedPoint = p;
-            }
-        }
-
-        ShowModelAsGhost();
-    }
     public void EnableModelMovementMode()
     {
         var mac = gameManager.Context;
@@ -353,6 +281,13 @@ public class PlayerController : MonoBehaviour
         onPlayerTurnEnded?.Raise(this, null);
     }
 
+    public void OnModelSelected(Component sender, object data)
+    {
+        if (data is not Model model) return;
+        if (selectedModel == model) return;
+
+        selectedModel = model;
+    }
     public void OnModelDeselected(Component sender, object data)
     {
         if (data is not Model model) return;
@@ -361,21 +296,8 @@ public class PlayerController : MonoBehaviour
         selectedModel = null;
     }
 
-    public void OnModelActivated(Component sender, object data)
-    {
-        activatedModel = selectedModel;
-        activatedModelActionController = selectedModel.ActionController;
-
-        activatedModelActionController.BeginActivation();
-    }
-    public void OnModelActivationCancelled (Component sender, object data)
-    {
-        activatedModelActionController.HasActivated = false;
-        activatedModelActionController.IsActivated = false;
-
-        activatedModel = null;
-        activatedModelActionController = null;
-    }
+    public void OnModelActivated(Component sender, object data) { }
+    public void OnModelActivationCancelled(Component sender, object data) { }
 
     public void OnModelMoveActivated(Component sender, object data)
     {
@@ -395,9 +317,11 @@ public class PlayerController : MonoBehaviour
             Destroy(ghostInstance.gameObject);
 
         // move the model
-        gameManager.SelectDestination(selectedPoint);
-        gameManager.TryExecuteAction(
-                new AdvanceAction(movePlanner));
+        // Request the authoritative GameManager to perform the move for this player's selected model
+        if (selectedModel != null)
+        {
+            gameManager.RequestMove(selectedModel, selectedPoint, this);
+        }
 
         DisableModelMovementMode();
     }
@@ -413,8 +337,13 @@ public class PlayerController : MonoBehaviour
     }
     public void OnModelShootingConfirmed(Component sender, object data)
     {
-        gameManager.TryExecuteAction (
-            new ShootAction());
+        Debug.Log($"Shoot Confirmed on {targettedModel.name}");
+
+        // Request authoritative shoot action
+        if (selectedModel != null && targettedModel != null)
+        {
+            gameManager.RequestShoot(selectedModel, targettedModel, this);
+        }
 
         targettingModel = false;
         targettedModel = null;

@@ -19,7 +19,7 @@ public class Director : MonoBehaviour
     [SerializeField] private GameEvent onAllPlayersDeployed;
 
     [SerializeField] private GameObject loadingScreen;
-    [SerializeField] private ModelInformationController playerUI;
+    [SerializeField] private ModelActionView playerUI;
 
     [Header("Debug State Change Flags")]
     [SerializeField] private string currentStateName = string.Empty;

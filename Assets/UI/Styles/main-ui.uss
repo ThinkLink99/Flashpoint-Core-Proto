@@ -1,0 +1,13 @@
+:root {
+}
+
+.equipment-list {
+    flex-direction: row;
+    gap: 8px;
+}
+
+.equipment-card {
+    width: 100%;
+    min-height: 80px;
+    flex-shrink: 0;
+}

@@ -54,7 +54,7 @@ public class DeploymentRoundState : BaseGameState
             hasDeplopyed[i] = true;
             if (i == players.Count - 1) 
                 // raise an event to say we are done deploying
-                onAllPlayersDeployed.Raise(null, null);
+                onAllPlayersDeployed.Raise(null, players);
         }
     }
 }

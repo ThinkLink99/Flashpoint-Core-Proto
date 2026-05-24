@@ -19,7 +19,14 @@ public class ShootAction : IGameAction
         // TODO: add line of sight check and other checks for keywords that force the weapon into a long shoot action
         // TODO: add checks for cover and other modifiers to hit chance
         // TODO: Add Dice Roll mechanic for calculating total hits vs target's total saves
-        ctx.TargetModel.Wound(4);
+        ctx.IncomingDamage = 2;
+
+
+        // apply before damage effects and modifiers here
+        foreach (var handler in ctx.GetBeforeDamageHandlers(ctx.TargetModel))
+            handler.BeforeDamage(ctx);
+
+        ctx.TargetModel.Wound(ctx.IncomingDamage);
 
         yield return null;
     }
