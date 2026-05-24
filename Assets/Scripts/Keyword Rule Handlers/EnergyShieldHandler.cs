@@ -19,14 +19,12 @@ public class EnergyShieldHandler : IBeforeDamageHandler
     }
 }
 
-public class KeywordRuleHandlerFactory {
-    public static IKeywordRuleHandler GetHandlerForKeyword(string keywordId)
+public class LethalHandler : IAfterDamageHandler
+{
+    public string KeywordId => "lethal";
+    public void AfterDamage(GameActionContext context)
     {
-        // In a real implementation, this could be more dynamic, perhaps using reflection or a registration system.
-        return keywordId switch
-        {
-            "energy_shield" => new EnergyShieldHandler(),
-            _ => null
-        };
+        // need to add weapon used to the context for this to work properly, but for now we'll just assume it has the keyword
+
     }
 }

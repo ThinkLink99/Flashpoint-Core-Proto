@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6fa76155b63e77145a5183860a2dcf8d, type: 3}
+  m_Name: lethal
+  m_EditorClassIdentifier: Assembly-CSharp::KeywordConfiguration
+  Id: lethal
+  DisplayName: Lethal (n)
+  RulesText: "This weapon burns flesh or splinters into fragments, causing hideous
+    internal injuries. \nA model that suffers wounds from a weapon with the Lethal
+    keyword (after applying shields and armour) takes (n) additional wounds (in total,
+    not per wound suffered).\nLethal is cumulative. If more than one Lethal modifier
+    applies to the attack, add together the (n) values.\n"
+  HasValue: 1
+  ValueLabel: n
+  Timings: 04000000
+  IsWeaponKeyword: 1
+  IsModelKeyword: 0
+  IsStatusKeyword: 0

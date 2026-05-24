@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Text;
 using UnityEngine;
 
 [CreateAssetMenu (fileName = "New Keyword", menuName = "Keyword")]
@@ -20,25 +21,23 @@ public class KeywordConfiguration : ScriptableObject
     public bool IsStatusKeyword;
 }
 
-public enum KeywordTiming
-{
-    Passive,
-    BeforeAction,
-    DuringAttack,
-    AfterAttack,
-    OnDamageTaken,
-    OnActivationStart,
-    OnActivationEnd,
-    GrantsAction,
-    ModifiesTargeting,
-    ModifiesMovement,
-    Consumable
-}
 [System.Serializable]
 public class KeywordInstance
 {
     public KeywordConfiguration Definition;
     public int Value;
+
+    public override string ToString()
+    {
+        StringBuilder sb = new StringBuilder();
+        sb.Append(Definition.DisplayName);
+        if (Definition.HasValue)
+        {
+            sb.Replace("(n)", $"({Value})");
+        }
+
+        return sb.ToString();
+    }
 }
 public class RuntimeKeyword
 {
