@@ -1,4 +1,5 @@
 using Newtonsoft.Json;
+using System.Collections.Generic;
 using Unity.Properties;
 using UnityEngine;
 
@@ -14,5 +15,7 @@ public class WeaponConfiguration : ScriptableObject
     [JsonProperty, CreateProperty] public int weaponArmorPiercing = 2;
 
     // keywords and special rules will be added in the future, but for now we will just have the basic stats
-    [JsonProperty, CreateProperty] public KeywordInstance[] Keywords;
+    [JsonProperty, CreateProperty] public List<KeywordInstance> keywords;
+
+    [CreateProperty] public string KeywordStringList => string.Join(", ", keywords);
 }

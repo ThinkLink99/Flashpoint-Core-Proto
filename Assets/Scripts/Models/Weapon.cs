@@ -12,6 +12,6 @@ public class Weapon : MonoBehaviour, IHasKeywords
         WeaponConfiguration = config;
         ParentModel = parent;
 
-        Keywords.Initialize(config.Keywords);
+        Keywords.Initialize(config.keywords);
     }
 }
