@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6fa76155b63e77145a5183860a2dcf8d, type: 3}
+  m_Name: continuous_fire
+  m_EditorClassIdentifier: Assembly-CSharp::KeywordConfiguration
+  Id: continuous_fire
+  DisplayName: Continuous Fire
+  RulesText: "This weapon has an increased chance of damaging the enemy, but may
+    overheat if fired for a prolonged period. \nWhen a weapon with this keyword is
+    used in a Ranged test, it benefits from Weight of Fire (2). At the end of the
+    current Shoot action, the model that used the weapon must make a 3 dice Survive
+    test (2). If the test is failed it takes 1 wound. Armour and Energy Shields do
+    not protect against this damage. If this kills the model, the kill is awarded
+    to the opposing player.\n"
+  HasValue: 0
+  ValueLabel: 
+  Timings: 0200000003000000
+  IsWeaponKeyword: 1
+  IsModelKeyword: 0
+  IsStatusKeyword: 0

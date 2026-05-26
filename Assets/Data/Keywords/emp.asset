@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6fa76155b63e77145a5183860a2dcf8d, type: 3}
-  m_Name: optics
+  m_Name: emp
   m_EditorClassIdentifier: Assembly-CSharp::KeywordConfiguration
-  Id: optics
-  DisplayName: Optics
-  RulesText: "Specialised range finder and targeting optical equipment. \nA weapon
-    with the Optics keyword adds a +1 die modifier to Shoot actions. Headshots occur
-    on rolls of 7 and 8.\nThis keyword may not be used when using the Rapid Fire
-    keyword to make a Blaze Away Shoot action.\n"
+  Id: emp
+  DisplayName: EMP
+  RulesText: At the start of the game, if any enemy model in the opposing Fireteam
+    makes a Scout move, all friendly models with Counter Intelligence (CI) can make
+    a 1 cube Advance action. CI moves are always done after the opposing Fireteam
+    has completed all its Scout moves.
   HasValue: 0
   ValueLabel: 
   Timings: 02000000

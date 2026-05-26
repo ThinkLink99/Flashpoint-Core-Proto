@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6fa76155b63e77145a5183860a2dcf8d, type: 3}
+  m_Name: acrobatic
+  m_EditorClassIdentifier: Assembly-CSharp::KeywordConfiguration
+  Id: acrobatic
+  DisplayName: Acrobatic
+  RulesText: "This fighter displays great skill and flair when dealing death to their
+    enemies, such that it is doubly demoralising to the teammates of the dead. \nFor
+    scenarios in which Kills count towards the victory conditions (e.g. Slayer) each
+    enemy killed by a model with this keyword rewards +1 VP.\nBalance Update October
+    2025*\n"
+  HasValue: 0
+  ValueLabel: 
+  Timings: 00000000
+  IsWeaponKeyword: 0
+  IsModelKeyword: 1
+  IsStatusKeyword: 0

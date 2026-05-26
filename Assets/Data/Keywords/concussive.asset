@@ -10,17 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6fa76155b63e77145a5183860a2dcf8d, type: 3}
-  m_Name: optics
+  m_Name: concussive
   m_EditorClassIdentifier: Assembly-CSharp::KeywordConfiguration
-  Id: optics
-  DisplayName: Optics
-  RulesText: "Specialised range finder and targeting optical equipment. \nA weapon
-    with the Optics keyword adds a +1 die modifier to Shoot actions. Headshots occur
-    on rolls of 7 and 8.\nThis keyword may not be used when using the Rapid Fire
-    keyword to make a Blaze Away Shoot action.\n"
+  Id: concussive
+  DisplayName: Concussive
+  RulesText: "The impact of this weapon can leave the target shocked and disorientated.
+    \nIf a model is attacked with this weapon as part of a Shoot or Assault action,
+    and the attacker rolls more successes than the target, then the target is pinned
+    in addition to any damage caused. This includes all models in the cube if it
+    is a ranged weapon which targets a cube.\n"
   HasValue: 0
   ValueLabel: 
-  Timings: 02000000
+  Timings: 03000000
   IsWeaponKeyword: 1
   IsModelKeyword: 0
   IsStatusKeyword: 0

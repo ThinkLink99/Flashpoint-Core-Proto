@@ -23,3 +23,8 @@ MonoBehaviour:
   weaponCost: 7
   weaponRange: 6
   weaponArmorPiercing: 0
+  keywords:
+  - Definition: {fileID: 11400000, guid: 24fe27306a9beac4986941a65741def3, type: 2}
+    Value: 1
+  - Definition: {fileID: 11400000, guid: 04cb2d85d8c021043be3f9dc8a3510cd, type: 2}
+    Value: 1
