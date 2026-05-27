@@ -38,7 +38,7 @@
             <ui:VisualElement style="flex-grow: 1; flex-direction: row; justify-content: space-between; display: flex; opacity: 1;">
                 <ui:VisualElement style="flex-grow: 0; flex-direction: row-reverse; flex-shrink: 0; display: none;">
                     <ui:GroupBox name="Debug">
-                        <ui:Label text="Debug:"/>
+                        <ui:Label text="Debug:" name="Label"/>
                         <ui:VisualElement name="SelectedUnit" style="flex-grow: 0; flex-direction: row;">
                             <ui:Label text="Selected Unit:"/>
                             <ui:Label text="XXXXXXXXXXXX" name="lblUnitName"/>
@@ -74,10 +74,6 @@
                     </ui:GroupBox>
                 </ui:VisualElement>
                 <ui:ScrollView name="Weapons" mode="Horizontal" class="equipment-list"/>
-                <ui:VisualElement style="flex-grow: 0;">
-                    <ui:Button name="btnMoveModel" text="Move" class="border-5 rounded-10 button button-primary" style="width: 75%; height: 25%; background-image: none; flex-grow: 0;"/>
-                    <ui:Button name="btnConfirmMove" text="Confirm&#10;Move" class="border-5 rounded-10 button button-primary" style="width: 75%; height: 25%; background-image: none; display: flex; flex-grow: 0;"/>
-                </ui:VisualElement>
             </ui:VisualElement>
         </ui:VisualElement>
     </ui:VisualElement>

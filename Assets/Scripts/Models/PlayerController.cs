@@ -36,6 +36,7 @@ public class PlayerController : MonoBehaviour
     // UI Elements that will need to check against the Models activation status and remaining AP to determine visibility
     [Header("Player UI")]
     [SerializeField] private bool movingModel = false;
+    public bool IsMovingModel => movingModel;
 
     [Header("Model Moving")]
     [SerializeField] private float pickUpHeightFromCube = 1f; // default height above cube when placed
@@ -47,6 +48,7 @@ public class PlayerController : MonoBehaviour
     private List<Cube> advanceHighlightedCubes = new List<Cube>(); // cubes that should be highlighted when movement mode is active
     private List<Cube> sprintHighlightedCubes = new List<Cube>();
     private GameObject ghostInstance;
+    public MovementPlanner MovePlanner { get { return movePlanner; } } 
 
     [Header("Model Targetting")]
     [SerializeField] private bool targettingModel = false;
@@ -78,6 +80,8 @@ public class PlayerController : MonoBehaviour
         gameManager = FindAnyObjectByType <GameManager>();
         if (gameManager != null)
         {
+            gameManager.OnWorldModelSelected += OnWorldModelSelected;
+            gameManager.OnWorldDestinationSelected += OnWorldDestinationSelected;
             gameManager.OnModelShot += OnWorldModelShot;
         }
     }
@@ -85,6 +89,8 @@ public class PlayerController : MonoBehaviour
     public void Update() { }
     public void FixedUpdate()
     {
+        if (IsMovingModel) ShowModelAsGhost();
+
         DrawCubeRange((cube, color) =>
         {
             var rangeIndicator = cube.transform.GetChild(0);
@@ -98,10 +104,26 @@ public class PlayerController : MonoBehaviour
     {
         if (gameManager != null)
         {
+            gameManager.OnWorldModelSelected -= OnWorldModelSelected;
+            gameManager.OnWorldDestinationSelected -= OnWorldDestinationSelected;
             gameManager.OnModelShot -= OnWorldModelShot;
         }
     }
 
+    private void OnWorldModelSelected(object sender, ModelSelectedEventArgs e)
+    {
+        if (e?.Requester == this)
+        {
+            selectedModel = e.Model;
+        }
+    }
+    private void OnWorldDestinationSelected(object sender, DestinationSelectedEventArgs e)
+    {
+        if (e?.Requester == this)
+        {
+            selectedPoint = e.Destination;
+        }
+    }
     private void OnWorldModelShot(object sender, ModelShotEventArgs e)
     {
         // If this player was the requester of the shot, exit targeting mode and clear local target
@@ -140,28 +162,12 @@ public class PlayerController : MonoBehaviour
     {
         selectedWeapon = weapon;
     }
-    private bool PointerOverUI()
-    {
-        return false; // temporarily disable to allow clicking through UI for testing, re-enable when implementing UI
-
-        // Prevent world interaction when clicking/pressing UI
-        if (EventSystem.current == null) return false;
-
-        // Mouse (editor / standalone)
-        if (EventSystem.current.IsPointerOverGameObject()) return true;
-
-        // Touch (mobile): check all touches
-        for (int i = 0; i < Input.touchCount; i++)
-        {
-            if (EventSystem.current.IsPointerOverGameObject(Input.GetTouch(i).fingerId)) return true;
-        }
-
-        return false;
-    }
 
     public void EnableModelMovementMode()
     {
         var mac = gameManager.Context;
+        mac.OriginCube = selectedModel.CurrentCube;
+
         movePlanner = new MovementPlanner(mac);
         movingModel = true;
         // compute reachable cubes and cache for visualization
@@ -193,6 +199,12 @@ public class PlayerController : MonoBehaviour
         }
 
         sprintHighlightedCubes.Clear();
+
+        if (ghostInstance != null)
+        {
+            Destroy(ghostInstance);
+            ghostInstance = null;
+        }
     }
     private void DrawCubeRange (Action<Cube, Color> drawFunc)
     {
@@ -203,12 +215,28 @@ public class PlayerController : MonoBehaviour
             foreach (var cube in sprintHighlightedCubes)
             {
                 if (cube == null) continue;
-                drawFunc(cube, Color.yellow);
+                if (!cube.hasTerrainBelow) continue;
+                if (cube.PositionIsInCube (selectedPoint))
+                {
+                    drawFunc(cube, Color.green);
+                }
+                else
+                {
+                    drawFunc(cube, Color.yellow);
+                }
             }
             foreach (var cube in remaining)
             {
                 if (cube == null) continue;
-                drawFunc(cube, Color.red);
+                if (!cube.hasTerrainBelow) continue;
+                if (cube.PositionIsInCube(selectedPoint))
+                {
+                    drawFunc(cube, Color.green);
+                }
+                else
+                {
+                    drawFunc(cube, Color.orange);
+                }
             }
         }
     }
@@ -316,51 +344,6 @@ public class PlayerController : MonoBehaviour
         // Handle turn end logic, such as disabling input, notifying turn manager, etc.
         isPlayerTurn = false;
         onPlayerTurnEnded?.Raise(this, null);
-    }
-
-    public void OnModelSelected(Component sender, object data)
-    {
-        if (data is not Model model) return;
-        if (selectedModel == model) return;
-
-        selectedModel = model;
-    }
-    public void OnModelDeselected(Component sender, object data)
-    {
-        if (data is not Model model) return;
-        if (selectedModel != model) return;
-
-        selectedModel = null;
-    }
-
-    public void OnModelActivated(Component sender, object data) { }
-    public void OnModelActivationCancelled(Component sender, object data) { }
-
-    public void OnModelMoveActivated(Component sender, object data)
-    {
-        EnableModelMovementMode ();
-    }
-    public void OnModelMoveDeactivated(Component sender, object data)
-    {
-        DisableModelMovementMode ();
-        if (ghostInstance != null)
-            Destroy(ghostInstance.gameObject);
-    }
-    public void OnModelMoveConfirmed(Component component, object data)
-    {
-        Debug.Log($"Move Confirmed to {selectedPoint}");
-
-        if (ghostInstance != null)
-            Destroy(ghostInstance.gameObject);
-
-        // move the model
-        // Request the authoritative GameManager to perform the move for this player's selected model
-        if (selectedModel != null)
-        {
-            gameManager.RequestMove(selectedModel, selectedPoint, this);
-        }
-
-        DisableModelMovementMode();
     }
 
     public void OnModelShootingActivated(Component sender, object data)

@@ -81,13 +81,29 @@ public class GameManager : MonoBehaviour {
         Context.OriginCube = model.CurrentCube;
         Context.SelectedPoint = destination;
 
-        // Attempt to execute AdvanceAction
-        var action = new AdvanceAction(new MovementPlanner(Context));
-        if (!action.CanExecute(Context))
+        IGameAction action = null;
+        // we need to determine if the move is within advance range or sprint range to call the right move function
+        if (requester.MovePlanner.IsSprintMove (Context.OriginCube, Context.SelectedPoint))
         {
-            Debug.Log("Move action cannot execute");
-            return;
+            // Attempt to execute SprintAction
+            action = new SprintMoveAction(new MovementPlanner(Context));
+            if (!action.CanExecute(Context))
+            {
+                Debug.Log("Sprint action cannot execute");
+                return;
+            }
         }
+        else
+        {
+            // Attempt to execute AdvanceAction
+            action = new AdvanceMoveAction(new MovementPlanner(Context));
+            if (!action.CanExecute(Context))
+            {
+                Debug.Log("Advance action cannot execute");
+                return;
+            }
+        }
+
 
         // Start coroutine to perform the action and raise event when done
         StartCoroutine(ExecuteActionCoroutine(action, () =>

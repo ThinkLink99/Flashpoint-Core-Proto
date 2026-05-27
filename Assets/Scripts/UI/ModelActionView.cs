@@ -271,13 +271,13 @@ public class ModelActionView : MonoBehaviour
         }
 
         // move / shoot buttons
-        ModelMoveButton.style.display = GetMoveButtonDisplay();
+        //ModelMoveButton.style.display = GetMoveButtonDisplay();
 
-        ConfirmMoveButton.style.display = moving ? DisplayStyle.Flex : DisplayStyle.None;
+        //ConfirmMoveButton.style.display = moving ? DisplayStyle.Flex : DisplayStyle.None;
 
         // show/hide shoot confirm button based on local shooting state
-        if (ConfirmShootButton != null)
-            ConfirmShootButton.style.display = shooting ? DisplayStyle.Flex : DisplayStyle.None;
+        //if (ConfirmShootButton != null)
+        //    ConfirmShootButton.style.display = shooting ? DisplayStyle.Flex : DisplayStyle.None;
 
         UpdateHealth();
         UpdateShields();

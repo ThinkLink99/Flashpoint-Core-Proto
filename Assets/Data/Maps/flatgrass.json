@@ -52,15 +52,28 @@
   ],
   "terrain": [
     {
-      "id": "terrain_tower_2x1",
+      "id": "terrain_cube",
       "world_position": {
-        "x": 18.9,
-        "y": 0.0,
-        "z": 24.3
+        "x": 15.24,
+        "y": 3.81,
+        "z": 15.24
       },
       "world_rotation": {
         "x": 0.0,
-        "y": 311.995178,
+        "y": 0.0,
+        "z": 0.0
+      }
+    },
+    {
+      "id": "terrain_cube",
+      "world_position": {
+        "x": 26.6699982,
+        "y": 3.81,
+        "z": 30.48
+      },
+      "world_rotation": {
+        "x": 0.0,
+        "y": 0.0,
         "z": 0.0
       }
     }

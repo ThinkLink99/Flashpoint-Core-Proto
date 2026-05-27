@@ -74,6 +74,27 @@ public class Model : MonoBehaviour, IHasKeywords
 
     public void ChangeCube (Cube cube)
     {
+        // Only set the cube if it is passable and has enough ground coverage
+        if (cube == null)
+        {
+            currentCube = null;
+            return;
+        }
+
+        // respect explicit passability flag first
+        if (!cube.isPassable)
+        {
+            Debug.LogWarning($"Cube at {cube.worldPosition} is marked not passable.");
+            return;
+        }
+
+        // require sufficient terrain under the cube before allowing a model to occupy it
+        //if (!cube.HasSufficientGround())
+        //{
+        //    Debug.LogWarning($"Cube at {cube.worldPosition} does not have sufficient ground below.");
+        //    return;
+        //}
+
         currentCube = cube;
     }
     public void MoveModelToPoint (Vector3 point)

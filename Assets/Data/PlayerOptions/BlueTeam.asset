@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerOptions
   playerName: Blue
   teamId: 1
-  isHuman: 1
+  isHuman: 0

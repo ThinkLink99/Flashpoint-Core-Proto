@@ -38,7 +38,7 @@ public class AIPlayerController : MonoBehaviour
 
             // Try to execute an AdvanceAction or ShootAction depending on logic. Here we create a simple AdvanceAction.
             // The AI must use the same action classes you use for players.
-            var action = new AdvanceAction(new MovementPlanner(gameManager.Context)); // adapt as needed
+            var action = new AdvanceMoveAction(new MovementPlanner(gameManager.Context)); // adapt as needed
             if (gameManager.TryExecuteAction(action))
             {
                 // wait a bit for animation / action to progress

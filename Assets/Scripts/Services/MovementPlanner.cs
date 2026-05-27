@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 // Simple movement planner tied to Map/Grid3<Cube>
@@ -165,5 +166,17 @@ public class MovementPlanner
             }
         }
         return null;
+    }
+
+    public bool IsSprintMove (Cube origin, Vector3 worldPoint)
+    {
+        var cube = GetCubeContainingPoint(worldPoint);
+        if (cube == null) return false;
+
+        var sprintRangeCubes = GetReachableCubes(origin, sprintRange);
+        var advanceRangeCubes = GetReachableCubes(origin, advanceRange);
+        var onlySprint = sprintRangeCubes.Except (advanceRangeCubes);
+
+        return onlySprint.Contains(cube);
     }
 }

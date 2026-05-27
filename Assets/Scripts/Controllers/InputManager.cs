@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
+using static UnityEngine.UI.Image;
 
 public class InputManager : MonoBehaviour
 {
@@ -9,6 +10,11 @@ public class InputManager : MonoBehaviour
     [SerializeField] private PlayerController localPlayer; // the PlayerController this client owns
     [SerializeField] private bool allowPreview = true;     // can always preview any model locally
     private bool allowCommands => localPlayer != null && localPlayer.AllowCommands;
+
+    // Right-drag tracking for Civ V style movement
+    private bool isRightDragging = false;
+    private Vector3 lastPreviewPoint = Vector3.zero;
+    [SerializeField] private float pickUpHeightFromCube = 1f; // default height above cube when placed
 
     void Awake()
     {
@@ -18,6 +24,7 @@ public class InputManager : MonoBehaviour
 
     void Update()
     {
+        // Left Click (Unit Selection, Target Selection, etc)
         if (Input.GetMouseButtonDown(0))
         {
             var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -57,6 +64,73 @@ public class InputManager : MonoBehaviour
                 {
                     gameManager.RequestSelectModel(hitModel, localPlayer);
                 }
+            }
+        }
+
+        // Start Movement Mode if a unit is selected
+        if (Input.GetMouseButtonDown(1))
+        {
+            if (allowCommands && localPlayer != null && localPlayer.SelectedModel != null)
+            {
+
+                localPlayer.EnableModelMovementMode();
+
+                isRightDragging = true;
+                lastPreviewPoint = Vector3.zero;
+
+                // initial destination preview (if pointing at world)
+                var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                if (Physics.Raycast(ray, out RaycastHit hit))
+                {
+                    lastPreviewPoint = hit.point;
+                    gameManager.RequestSelectDestination(lastPreviewPoint, localPlayer);
+                }
+
+            }
+        }
+
+        // Are we holding right click and in move mode?
+        if (isRightDragging && Input.GetMouseButton(1))
+        {
+            var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            if (Physics.Raycast(ray, out RaycastHit hit))
+            {
+                var point = hit.point;
+                // throttle updates by comparing to last preview point to avoid spamming events
+                if ((point - lastPreviewPoint).sqrMagnitude > 0.001f)
+                {
+                    lastPreviewPoint = point;
+                    gameManager.RequestSelectDestination(point, localPlayer);
+                }
+            }
+            Debug.DrawLine(localPlayer.SelectedModel.transform.position, hit.point, Color.green, 1f);
+        }
+
+        // If the player releases right click we need to check if they are 
+        // 1. moused over a new cube
+        // 2. moused over a valid cube
+        // If both of these are true, make a request to game manager to move our unit.
+        // Otherwise, cancel the move and disable the movement mode in the player UI.
+        if (Input.GetMouseButtonUp(1))
+        {
+            if (allowCommands && localPlayer.IsMovingModel)
+            {
+                // finalize destination (use lastPreviewPoint if we have one, otherwise raycast now)
+                var finalPoint = lastPreviewPoint;
+                var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                if (finalPoint == Vector3.zero && Physics.Raycast(ray, out RaycastHit hit)) finalPoint = hit.point;
+
+                // request authoritative move if possible
+                var source = localPlayer?.SelectedModel ?? gameManager.Context.SourceModel;
+                if (allowCommands && source != null)
+                {
+                    gameManager.RequestMove(source, finalPoint, localPlayer);
+                }
+
+                // exit preview mode locally
+                localPlayer.DisableModelMovementMode();
+                isRightDragging = false;
+                lastPreviewPoint = Vector3.zero;
             }
         }
     }
