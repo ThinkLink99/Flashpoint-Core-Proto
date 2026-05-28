@@ -28,7 +28,8 @@ public class InputManager : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            if (!Physics.Raycast(ray, out RaycastHit hit)) return;
+            var layerMask = LayerMask.GetMask("Model");
+            if (!Physics.Raycast(ray, out RaycastHit hit, 100000000, layerMask)) return;
 
             var go = hit.collider.gameObject;
             Model hitModel = go.TryGetComponent<Model>(out var m) ? m : go.GetComponentInParent<Model>();
@@ -93,7 +94,8 @@ public class InputManager : MonoBehaviour
         if (isRightDragging && Input.GetMouseButton(1))
         {
             var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            if (Physics.Raycast(ray, out RaycastHit hit))
+            var layerMask = LayerMask.GetMask("Default", "Terrain");
+            if (Physics.Raycast(ray, out RaycastHit hit, 100000000, layerMask))
             {
                 var point = hit.point;
                 // throttle updates by comparing to last preview point to avoid spamming events
@@ -115,16 +117,27 @@ public class InputManager : MonoBehaviour
         {
             if (allowCommands && localPlayer.IsMovingModel)
             {
+                
+
                 // finalize destination (use lastPreviewPoint if we have one, otherwise raycast now)
                 var finalPoint = lastPreviewPoint;
                 var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-                if (finalPoint == Vector3.zero && Physics.Raycast(ray, out RaycastHit hit)) finalPoint = hit.point;
+                var layerMask = LayerMask.GetMask("Default", "Terrain");
+                if (finalPoint == Vector3.zero && Physics.Raycast(ray, out RaycastHit hit, 100000000, layerMask)) finalPoint = hit.point;
 
-                // request authoritative move if possible
-                var source = localPlayer?.SelectedModel ?? gameManager.Context.SourceModel;
-                if (allowCommands && source != null)
+                // check if the point is in the same cube we started in
+                if (localPlayer.MovePlanner.GetCubeContainingPoint(finalPoint) == localPlayer.SelectedModel.CurrentCube)
                 {
-                    gameManager.RequestMove(source, finalPoint, localPlayer);
+
+                }
+                else
+                {
+                    // request authoritative move if possible
+                    var source = localPlayer?.SelectedModel ?? gameManager.Context.SourceModel;
+                    if (allowCommands && source != null)
+                    {
+                        gameManager.RequestMove(source, finalPoint, localPlayer);
+                    }
                 }
 
                 // exit preview mode locally
