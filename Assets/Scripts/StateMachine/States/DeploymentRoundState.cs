@@ -45,7 +45,7 @@ public class DeploymentRoundState : BaseGameState
             {
                 if (playerDeploying.fireteam.Models[z] != null)
                 {
-                    var worldPos = new Vector3(zone.squares[z].x, 1, zone.squares[z].y) * currentMap.CubeSize;
+                    var worldPos = new Vector3(zone.squares[z].x, 1f, zone.squares[z].y) * currentMap.CubeSize;
                     var spawnedModel = spawner.SpawnForPlayer(playerDeploying.fireteam.Models[z].name, playerDeploying, worldPos);
                     playerDeploying.spawnedModels.Add(spawnedModel);
                 }

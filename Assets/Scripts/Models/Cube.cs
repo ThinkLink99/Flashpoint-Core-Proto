@@ -25,13 +25,6 @@ public class Cube : MonoBehaviour
     [Tooltip("When enabled, draws sampling points and hit/miss gizmos in the scene view.")]
     public bool showSamplingDebug = false;
 
-    public void Start()
-    {
-        boxCollider = GetComponent<BoxCollider>();
-        // Use trigger so that OnTriggerEnter/Exit fire reliably when the Model (with Rigidbody) moves through
-        boxCollider.isTrigger = true;
-    }
-
     public void OnEnable()
     {
         //// Lets get our initial values here
@@ -124,6 +117,7 @@ public class Cube : MonoBehaviour
     /// </summary>
     public bool HasSufficientGround()
     {
+        return true;
         return HasSufficientGround(requiredGroundCoverage, sampleGrid);
     }
 
@@ -141,29 +135,29 @@ public class Cube : MonoBehaviour
             // only clear if this cube is currently set on the model
             if (model.CurrentCube == this)
             {
-                //model.ChangeCube(null);
+                model.ChangeCube(null);
             }
         }
     }
 
     private void OnDrawGizmos()
     {
-        if (IsDeploymentZone)
-        {
-            switch (deploymentZoneTeam)
-            {
-                case TeamId.Red:
-                    Gizmos.color = new Color(1f, 0f, 0f, 0.5f);
-                    break;
-                case TeamId.Blue:
-                    Gizmos.color = new Color(0f, 0f, 1f, 0.5f);
-                    break;
-                default:
-                    Gizmos.color = new Color(1f, 1f, 1f, 0.5f);
-                    break;
-            }
-            Gizmos.DrawWireCube(worldPosition, worldSize);
-        }
+        //if (IsDeploymentZone)
+        //{
+        //    switch (deploymentZoneTeam)
+        //    {
+        //        case TeamId.Red:
+        //            Gizmos.color = new Color(1f, 0f, 0f, 0.5f);
+        //            break;
+        //        case TeamId.Blue:
+        //            Gizmos.color = new Color(0f, 0f, 1f, 0.5f);
+        //            break;
+        //        default:
+        //            Gizmos.color = new Color(1f, 1f, 1f, 0.5f);
+        //            break;
+        //    }
+        //    Gizmos.DrawWireCube(worldPosition, worldSize);
+        //}
 
         if (isPassable == false)
         {

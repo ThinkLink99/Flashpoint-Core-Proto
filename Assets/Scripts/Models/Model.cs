@@ -142,12 +142,6 @@ public class Model : MonoBehaviour, IHasKeywords
 
     private void OnDrawGizmos()
     {
-        if (ModelConfiguration != null && basePrefab != null)
-        {
-            Gizmos.color = Color.blue;
-            Gizmos.DrawWireSphere(this.transform.position, ModelConfiguration.baseSizeMM / 2);
-        }
-
         if (currentCube != null)
         {
             Gizmos.color = Color.yellow;
