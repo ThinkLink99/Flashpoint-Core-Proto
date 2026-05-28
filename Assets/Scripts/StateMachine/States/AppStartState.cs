@@ -42,7 +42,7 @@ public class AppStartState : BaseGameState
         // do any loading that needs done here
         currentMap = mapBuilder.Start()
           .RaiseMapCreatingEvent()
-          .SpawnGroundPlane()
+          //.SpawnGroundPlane()
           .SpawnGridLines()
           .SpawnTerrain()
           .DrawDeploymentZones()
@@ -63,8 +63,6 @@ public class AppStartState : BaseGameState
             if (player.isHumanControlled) player.IsLocalPlayer = true;
             playersCreated.Add(player);
         }
-
-        //Game.Instance.Players = playersCreated;
 
         // Raise the game start event to trigger the next state transition
         onGameStart.Raise(null, new AppStartReturnData { Map = currentMap, Players = playersCreated });

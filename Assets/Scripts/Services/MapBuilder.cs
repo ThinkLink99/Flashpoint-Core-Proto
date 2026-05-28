@@ -21,7 +21,7 @@ namespace Assets.Scripts
         {
             Start()
             .RaiseMapCreatingEvent()
-            .SpawnGroundPlane()
+            //.SpawnGroundPlane()
             .SpawnGridLines()
             .SpawnTerrain()
             .DrawDeploymentZones()
