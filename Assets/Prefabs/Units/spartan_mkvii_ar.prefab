@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1998382819444993636}
   - component: {fileID: 3480169880072844645}
   - component: {fileID: 8487212262690357830}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Z
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -194,7 +194,7 @@ GameObject:
   - component: {fileID: 4198068335449380018}
   - component: {fileID: 5369424130071332483}
   - component: {fileID: 4699418206699452310}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: spartan_mkvii_ar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -281,7 +281,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   onModelMoved: {fileID: 11400000, guid: 65821837496be4c4187a07c7148683a4, type: 2}
-  tabletop: {fileID: 0}
+  gameManager: {fileID: 0}
+  ModelConfiguration: {fileID: 0}
+  currentHealth: 0
   actionController: {fileID: 0}
   playerControlling: {fileID: 0}
 --- !u!114 &4699418206699452310
@@ -316,7 +318,7 @@ GameObject:
   - component: {fileID: 3353570800772439587}
   - component: {fileID: 8700188459306839246}
   - component: {fileID: 6564369252206862652}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Debug
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -400,7 +402,7 @@ GameObject:
   - component: {fileID: 4463049294867269626}
   - component: {fileID: 3296537460284856500}
   - component: {fileID: 2755481414997007126}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Base
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -513,7 +515,7 @@ GameObject:
   - component: {fileID: 2862388419446913594}
   - component: {fileID: 1629323653666578094}
   - component: {fileID: 7872997834661866118}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -607,11 +609,11 @@ MeshCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 5
-  m_Convex: 1
+  m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: -2432090755550338912, guid: c7963957119f9ca479b8ba07cbe496dc, type: 3}
 --- !u!1 &8269795541248329819
@@ -625,7 +627,7 @@ GameObject:
   - component: {fileID: 7772794678921705978}
   - component: {fileID: 5080660175036931225}
   - component: {fileID: 2472804536327255110}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Y
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -806,7 +808,7 @@ GameObject:
   - component: {fileID: 1019203491791015749}
   - component: {fileID: 653913343470177106}
   - component: {fileID: 1036287554586375204}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: X
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -985,7 +987,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1273552367703783678}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Eyes
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6951744958533856934}
   - component: {fileID: 6751580542569734034}
   - component: {fileID: 4927770912625513341}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Z
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -194,7 +194,7 @@ GameObject:
   - component: {fileID: 866652522240744390}
   - component: {fileID: 866652522240744389}
   - component: {fileID: 866652522240744388}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: spartan_brawler_bulldog
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -302,7 +302,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   onModelMoved: {fileID: 11400000, guid: 65821837496be4c4187a07c7148683a4, type: 2}
-  tabletop: {fileID: 0}
+  gameManager: {fileID: 0}
+  ModelConfiguration: {fileID: 0}
+  currentHealth: 0
   actionController: {fileID: 0}
   playerControlling: {fileID: 0}
 --- !u!1 &3612982076285903892
@@ -317,7 +319,7 @@ GameObject:
   - component: {fileID: 8464845154995248686}
   - component: {fileID: 1898855793039693437}
   - component: {fileID: 4848509782587832156}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Base
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -429,7 +431,7 @@ GameObject:
   - component: {fileID: 8771257321361939809}
   - component: {fileID: 8529121637429492293}
   - component: {fileID: 1313656173053814247}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: X
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -608,7 +610,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6605337087220502187}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Eyes
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -641,7 +643,7 @@ GameObject:
   - component: {fileID: 4017324417032384384}
   - component: {fileID: 4483188843247512248}
   - component: {fileID: 5372091124304424276}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Debug
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -724,7 +726,7 @@ GameObject:
   - component: {fileID: 1391435107340497224}
   - component: {fileID: 760718096161787669}
   - component: {fileID: 2179582470323965899}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Y
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -905,7 +907,7 @@ GameObject:
   - component: {fileID: 1904813910055777361}
   - component: {fileID: 3654791446407073051}
   - component: {fileID: 260601117650053519}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Model
   m_TagString: Untagged
   m_Icon: {fileID: 0}

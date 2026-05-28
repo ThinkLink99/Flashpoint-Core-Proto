@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3895664290144292881}
   - component: {fileID: 1448502267574247591}
   - component: {fileID: 8992395026769959218}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Debug
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -94,7 +94,7 @@ GameObject:
   - component: {fileID: 8671231971530203433}
   - component: {fileID: 5800997876560779363}
   - component: {fileID: 7036015649685011703}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -184,7 +184,7 @@ GameObject:
   - component: {fileID: 8888615745773889906}
   - component: {fileID: 2333154462570921531}
   - component: {fileID: 7888925008475710427}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Z
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -363,7 +363,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6839503076980127070}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Eyes
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -396,7 +396,7 @@ GameObject:
   - component: {fileID: 6470538499721981753}
   - component: {fileID: 2460283464287559025}
   - component: {fileID: 697676267612766709}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: X
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -578,7 +578,7 @@ GameObject:
   - component: {fileID: 653076223225354172}
   - component: {fileID: 7077800180855329016}
   - component: {fileID: 5440782787634495973}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Base
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -690,7 +690,7 @@ GameObject:
   - component: {fileID: 227097889554407915}
   - component: {fileID: 3083663653563505200}
   - component: {fileID: 8106055494135822235}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Y
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -873,7 +873,7 @@ GameObject:
   - component: {fileID: 1965722776726469953}
   - component: {fileID: 1965722776726469952}
   - component: {fileID: 1965722776726469951}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: spartan_deadeye_dmr
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -981,6 +981,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   onModelMoved: {fileID: 11400000, guid: 65821837496be4c4187a07c7148683a4, type: 2}
-  tabletop: {fileID: 0}
+  gameManager: {fileID: 0}
+  ModelConfiguration: {fileID: 0}
+  currentHealth: 0
   actionController: {fileID: 0}
   playerControlling: {fileID: 0}

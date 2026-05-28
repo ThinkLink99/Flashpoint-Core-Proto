@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 9171619607922086328}
   - component: {fileID: 6313778589776357618}
   - component: {fileID: 7402429108324732006}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -102,7 +102,7 @@ GameObject:
   - component: {fileID: 3484219858193049525}
   - component: {fileID: 1237999195086308786}
   - component: {fileID: 870181778428954447}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Base
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -214,7 +214,7 @@ GameObject:
   - component: {fileID: 8664552106333177064}
   - component: {fileID: 8719474278239295574}
   - component: {fileID: 849460464546433823}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: X
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -395,7 +395,7 @@ GameObject:
   - component: {fileID: 5998466481483101104}
   - component: {fileID: 8808257862107501024}
   - component: {fileID: 2721609625705369651}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Y
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -576,7 +576,7 @@ GameObject:
   - component: {fileID: 4590373442582913239}
   - component: {fileID: 31339780184082813}
   - component: {fileID: 3196757321526782108}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Debug
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -657,7 +657,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4299333897418951075}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Eyes
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -692,7 +692,7 @@ GameObject:
   - component: {fileID: 2025222176967390117}
   - component: {fileID: 2025222176967390116}
   - component: {fileID: 2025222176967390115}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: spartan_zvezda_commando_variant
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -800,7 +800,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   onModelMoved: {fileID: 11400000, guid: 65821837496be4c4187a07c7148683a4, type: 2}
-  tabletop: {fileID: 0}
+  gameManager: {fileID: 0}
+  ModelConfiguration: {fileID: 0}
+  currentHealth: 0
   actionController: {fileID: 0}
   playerControlling: {fileID: 0}
 --- !u!1 &9107300620074042644
@@ -814,7 +816,7 @@ GameObject:
   - component: {fileID: 6859298355712929310}
   - component: {fileID: 5745797940175756750}
   - component: {fileID: 6936108170480423913}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Z
   m_TagString: Untagged
   m_Icon: {fileID: 0}
