@@ -67,9 +67,139 @@
     {
       "id": "terrain_cube",
       "world_position": {
-        "x": 26.6699982,
+        "x": 15.24,
+        "y": 3.81,
+        "z": 7.62
+      },
+      "world_rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      }
+    },
+    {
+      "id": "terrain_cube",
+      "world_position": {
+        "x": 15.24,
+        "y": 3.81,
+        "z": 22.86
+      },
+      "world_rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      }
+    },
+    {
+      "id": "terrain_cube",
+      "world_position": {
+        "x": 15.24,
+        "y": 11.43,
+        "z": 15.24
+      },
+      "world_rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      }
+    },
+    {
+      "id": "terrain_cube",
+      "world_position": {
+        "x": 22.86,
+        "y": 11.43,
+        "z": 15.24
+      },
+      "world_rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      }
+    },
+    {
+      "id": "terrain_cube",
+      "world_position": {
+        "x": 30.48,
+        "y": 11.43,
+        "z": 15.24
+      },
+      "world_rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      }
+    },
+    {
+      "id": "terrain_cube",
+      "world_position": {
+        "x": 30.48,
+        "y": 3.81000042,
+        "z": 15.24
+      },
+      "world_rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      }
+    },
+    {
+      "id": "terrain_cube",
+      "world_position": {
+        "x": 15.24,
+        "y": 11.43,
+        "z": 22.86
+      },
+      "world_rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      }
+    },
+    {
+      "id": "terrain_cube",
+      "world_position": {
+        "x": 34.2899971,
         "y": 3.81,
         "z": 30.48
+      },
+      "world_rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      }
+    },
+    {
+      "id": "terrain_cube",
+      "world_position": {
+        "x": 38.1,
+        "y": 3.81,
+        "z": -4.76837158E-07
+      },
+      "world_rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      }
+    },
+    {
+      "id": "terrain_cube",
+      "world_position": {
+        "x": 34.2899971,
+        "y": 3.81,
+        "z": 38.1
+      },
+      "world_rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      }
+    },
+    {
+      "id": "terrain_cube",
+      "world_position": {
+        "x": 22.8599968,
+        "y": 3.81,
+        "z": 53.3399963
       },
       "world_rotation": {
         "x": 0.0,

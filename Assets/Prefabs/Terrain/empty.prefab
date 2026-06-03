@@ -148,7 +148,8 @@ MonoBehaviour:
   HasDetectedEnter: 0
   HasDetectedExit: 0
   requiredGroundCoverage: 0.5
-  sampleGrid: 5
+  requiredSpaceCoverage: 0.5
+  sampleGrid: 8
   showSamplingDebug: 0
 --- !u!65 &5605645711304708520
 BoxCollider:

@@ -13,7 +13,12 @@ public class CubeEditor : Editor
             Cube cube = (Cube)target;
             bool hasGround = cube.HasSufficientGround();
             Debug.Log($"Cube at {cube.mapPosition} has sufficient ground below: {hasGround}");
-            Time.timeScale = 0.1f; // Slow down time to better observe the results
+        }
+        if (GUILayout.Button("Check Space Inside"))
+        {
+            Cube cube = (Cube)target;
+            bool hasSpace = cube.HasSufficientSpace();
+            Debug.Log($"Cube at {cube.mapPosition} has sufficient space inside: {hasSpace}");
         }
     }
 }

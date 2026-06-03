@@ -23,6 +23,9 @@ public class Cube : MonoBehaviour
     [Tooltip("Fraction of sample rays that must hit terrain for the cube to be considered grounded (0..1).")]
     [Range(0f, 1f)]
     public float requiredGroundCoverage = 0.5f;
+    [Range(0f, 1f)]
+    [Tooltip("Fraction of sample rays that must hit terrain for the cube to be considered unpassable (0..1).")]
+    public float requiredSpaceCoverage = 0.5f;
     [Tooltip("Number of samples per axis (sampleGrid x sampleGrid total rays).")]
     public int sampleGrid = 3;
     [Tooltip("When enabled, draws sampling points and hit/miss gizmos in the scene view.")]
@@ -133,11 +136,75 @@ public class Cube : MonoBehaviour
     }
 
     /// <summary>
+    /// Perform a quick sampling check to determine if there is "sufficient" open space inside of this cube. 
+    /// This casts a grid of short upward rays from the cube bottom and returns true when the
+    /// fraction of rays that do not hit any obstacles meets or exceeds requiredCoverage.
+    /// </summary>
+    /// <param name="requiredCoverage"></param>
+    /// <param name="sampleGrid"></param>
+    /// <returns></returns>
+    public bool HasSufficientSpace (float requiredCoverage = 0.5f, int sampleGrid = 3)
+    {
+        if (sampleGrid <= 0) sampleGrid = 1;
+        requiredCoverage = Mathf.Clamp01(requiredCoverage);
+
+        int hits = 0;
+        int total = sampleGrid * sampleGrid;
+
+        // bottom of the cube in world space
+        float bottomY = worldPosition.y - worldSize.y / 2f;
+        // length to cast up through the cube volume
+        float rayLength = worldSize.y - 0.5f;
+
+        for (int ix = 0; ix < sampleGrid; ix++)
+        {
+            for (int iz = 0; iz < sampleGrid; iz++)
+            {
+                // normalized offsets across [-0.5, 0.5] for X and Z
+                float u = ((ix + 0.5f) / sampleGrid) - 0.5f;
+                float v = ((iz + 0.5f) / sampleGrid) - 0.5f;
+
+                Vector3 origin = new Vector3(
+                    worldPosition.x + u * worldSize.x,
+                    bottomY - 0.01f,
+                    worldPosition.z + v * worldSize.z);
+
+                if (Physics.Raycast(origin, Vector3.up, out RaycastHit hit, rayLength))
+                {
+                    if (hit.collider != null && hit.collider.TryGetComponent<Terrain>(out Terrain _))
+                    {
+                        hits++;
+                    }
+                    if (showSamplingDebug)
+                    {
+                        Debug.DrawLine(origin, hit.point, Color.green, 0.1f);
+                    }
+                }
+                else
+                {
+                    if (showSamplingDebug)
+                    {
+                        Debug.DrawLine(origin, origin + Vector3.up * rayLength, Color.red, 0.1f);
+                    }
+                }
+            }
+        }
+
+
+        float coverage = (float)hits / (float)total;
+        return coverage <= requiredCoverage;
+    }
+
+    /// <summary>
     /// Convenience overload that uses the inspector-configured values.
     /// </summary>
     public bool HasSufficientGround()
     {
         return HasSufficientGround(requiredGroundCoverage, sampleGrid);
+    }
+    public bool HasSufficientSpace()
+    {
+        return HasSufficientSpace(requiredSpaceCoverage, sampleGrid);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -192,10 +259,10 @@ public class Cube : MonoBehaviour
             Gizmos.color = Color.red;
             Gizmos.DrawWireCube(worldPosition, worldSize);
         }
-        if (hasTerrainBelow)
-        {
-            Gizmos.color = Color.green;
-            Gizmos.DrawWireCube(worldPosition, worldSize);
-        }
+        //if (hasTerrainBelow)
+        //{
+        //    Gizmos.color = Color.green;
+        //    Gizmos.DrawWireCube(worldPosition, worldSize);
+        //}
     }
 }

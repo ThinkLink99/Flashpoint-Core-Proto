@@ -19,6 +19,8 @@ public class GameManager : MonoBehaviour {
     private TurnManager turnManager;
     public Map currentMap;
 
+    bool terrainChecked = false;
+
 
     private void Awake()
     {
@@ -185,11 +187,12 @@ public class GameManager : MonoBehaviour {
     }
     void Update()
     {
+        
+
     }
 
     private void FixedUpdate()
     {
-        currentMap.MarkCubesWithTerrainBelow(); // this isn't killing frames yet but we need to better poll this. Checking adjacent cubes when a model moves into a new cube would be good.
     }
 
     public void BuildMap ()
@@ -202,6 +205,11 @@ public class GameManager : MonoBehaviour {
           .DrawDeploymentZones()
           .Build();
 
+        InvokeRepeating (nameof(MarkTerrainInCubes), 2f, 1f);
+    }
+    private void MarkTerrainInCubes ()
+    {
+        currentMap.MarkCubesWithTerrainBelow();
     }
     public void CreatePlayerObjects (params PlayerOptions[] playerOptions)
     {

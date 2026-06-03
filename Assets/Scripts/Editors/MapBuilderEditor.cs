@@ -45,7 +45,6 @@ public class MapBuilderEditor : Editor
             //add everthing the button would do.
             ((MapBuilder)target)
                 .Start()
-                .SpawnGroundPlane()
                 .SpawnGridLines()
                 .SpawnTerrain()
                 .DrawDeploymentZones();
@@ -55,6 +54,10 @@ public class MapBuilderEditor : Editor
                 .SpawnGroundPlane ();
         }
 
+        if (GUILayout.Toggle(false, GUIContent.none))
+        {
+
+        }
         if (GUILayout.Button("Save Map"))
         {
             // clear current terrain from the map to avoid dupes

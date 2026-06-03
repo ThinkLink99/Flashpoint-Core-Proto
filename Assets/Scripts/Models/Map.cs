@@ -110,6 +110,10 @@ public class Map
                     if (cube.HasSufficientGround())
                         cube.hasTerrainBelow = true;
                     else cube.hasTerrainBelow = false;
+
+                    if (cube.HasSufficientSpace())
+                        cube.isPassable = true;
+                    else cube.isPassable = false;
                 }
             }
         }

@@ -80,12 +80,6 @@ namespace Assets.Scripts
                         cube.worldPosition = terrain.transform.position;
                         cube.worldSize = terrain.transform.lossyScale;
 
-                        if (y == 0)
-                        {
-                            //Utils.CreateWorldText("test", cube.transform, Vector3.zero * 0.5f, 40, Color.black, TextAnchor.MiddleCenter, TextAlignment.Center);
-                            cube.hasTerrainBelow = true;
-                        }
-
                         map.MapGrid.Add(cube, x, y, z);
                     }
                 }
