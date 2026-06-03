@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Assets.Scripts;
+using Newtonsoft.Json;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -93,6 +94,25 @@ public class Map
         }
         teamIdOfZone = default;
         return false;
+    }
+
+    public void MarkCubesWithTerrainBelow()
+    {
+        for (int y = 0; y < MapSize.y; y++)
+        {
+            for (int x = 0; x < MapSize.x; x++)
+            {
+                for (int z = 0; z < MapSize.z; z++)
+                {
+                    var cube = MapGrid.Get(x, y, z);
+                    if (cube == null) continue;
+
+                    if (cube.HasSufficientGround())
+                        cube.hasTerrainBelow = true;
+                    else cube.hasTerrainBelow = false;
+                }
+            }
+        }
     }
 
     public void Save(string path)

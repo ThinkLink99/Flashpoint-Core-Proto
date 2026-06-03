@@ -16,6 +16,9 @@ public class Cube : MonoBehaviour
     public bool isPassable = true;
     public bool hasTerrainBelow = false;
 
+    public bool HasDetectedEnter = false;
+    public bool HasDetectedExit = false;
+
     [Header("Ground Check")]
     [Tooltip("Fraction of sample rays that must hit terrain for the cube to be considered grounded (0..1).")]
     [Range(0f, 1f)]
@@ -25,6 +28,21 @@ public class Cube : MonoBehaviour
     [Tooltip("When enabled, draws sampling points and hit/miss gizmos in the scene view.")]
     public bool showSamplingDebug = false;
 
+    private void Awake()
+    {
+        if (boxCollider == null) boxCollider = GetComponent<BoxCollider>();
+        if (boxCollider != null)
+        {
+            // Ensure cube collider is a trigger so OnTriggerEnter/Exit runs.
+            boxCollider.isTrigger = true;
+        }
+    }
+    private void OnValidate()
+    {
+        // keep inspector-friendly: ensure reference and set trigger in editor
+        if (boxCollider == null) boxCollider = GetComponent<BoxCollider>();
+        if (boxCollider != null) boxCollider.isTrigger = true;
+    }
     public void OnEnable()
     {
         //// Lets get our initial values here
@@ -72,7 +90,7 @@ public class Cube : MonoBehaviour
         // top of the cube in world space
         float topY = worldPosition.y + worldSize.y / 2f;
         // length to cast down through the cube volume
-        float rayLength = worldSize.y + 0.01f;
+        float rayLength = worldSize.y + 0.5f;
 
         for (int ix = 0; ix < sampleGrid; ix++)
         {
@@ -102,11 +120,13 @@ public class Cube : MonoBehaviour
                 {
                     if (showSamplingDebug)
                     {
+                        //Debug.DrawRay(origin, Vector3.down * rayLength, Color.red, 0.1f);
                         Debug.DrawLine(origin, origin + Vector3.down * rayLength, Color.red, 0.1f);
                     }
                 }
             }
         }
+
 
         float coverage = (float)hits / (float)total;
         return coverage >= requiredCoverage;
@@ -117,12 +137,16 @@ public class Cube : MonoBehaviour
     /// </summary>
     public bool HasSufficientGround()
     {
-        return true;
         return HasSufficientGround(requiredGroundCoverage, sampleGrid);
     }
 
     private void OnTriggerEnter(Collider other)
     {
+        //Debug.LogAssertion ($"Cube at {mapPosition} detected trigger enter with {other.gameObject.name}");
+        HasDetectedEnter = true;
+        HasDetectedExit = false;
+
+
         if (other.gameObject.TryGetComponent<Model>(out Model model))
         {
             model.ChangeCube(this);
@@ -130,6 +154,10 @@ public class Cube : MonoBehaviour
     }
     private void OnTriggerExit(Collider other)
     {
+        //Debug.LogAssertion ($"Cube at {mapPosition} detected trigger exit with {other.gameObject.name}");
+        HasDetectedEnter = false;
+        HasDetectedExit = true;
+
         if (other.gameObject.TryGetComponent<Model>(out Model model))
         {
             // only clear if this cube is currently set on the model
@@ -162,6 +190,11 @@ public class Cube : MonoBehaviour
         if (isPassable == false)
         {
             Gizmos.color = Color.red;
+            Gizmos.DrawWireCube(worldPosition, worldSize);
+        }
+        if (hasTerrainBelow)
+        {
+            Gizmos.color = Color.green;
             Gizmos.DrawWireCube(worldPosition, worldSize);
         }
     }

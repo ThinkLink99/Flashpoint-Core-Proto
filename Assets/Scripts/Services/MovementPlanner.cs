@@ -31,16 +31,16 @@ public class MovementPlanner
         var result = new List<Cube>();
         if (map == null || origin == null || range < 0) return result;
 
-        int ox = (int)origin.mapPosition.x;
-        int oy = (int)origin.mapPosition.y;
-        int oz = (int)origin.mapPosition.z;
+        int origin_x = (int)origin.mapPosition.x;
+        int origin_y = (int)origin.mapPosition.y;
+        int origin_z = (int)origin.mapPosition.z;
 
         var visited = new HashSet<(int x, int y, int z)>();  
         var q = new Queue<(int x, int y, int z, int dist)>();
 
         // origin always starts in queue/result (so unit can stay in place even if origin flagged not passable)
-        q.Enqueue((ox, oy, oz, 0));
-        visited.Add((ox, oy, oz));
+        q.Enqueue((origin_x, origin_y, origin_z, 0));
+        visited.Add((origin_x, origin_y, origin_z));
         result.Add(origin);
 
         while (q.Count > 0)
@@ -48,42 +48,42 @@ public class MovementPlanner
             var node = q.Dequeue();
             if (node.dist >= range) continue;
 
-            for (int dy = -1; dy <= 1; dy++)
+            for (int delta_y = -1; delta_y <= 1; delta_y++)
             {
-                for (int dx = -1; dx <= 1; dx++)
+                for (int delta_x = -1; delta_x <= 1; delta_x++)
                 {
-                    for (int dz = -1; dz <= 1; dz++)
+                    for (int delta_z = -1; delta_z <= 1; delta_z++)
                     {
-                        if (dx == 0 && dz == 0) continue;
+                        if (delta_x == 0 && delta_y == 0 && delta_z == 0) continue; // skip the "no movement" case only
 
-                        int nx = node.x + dx;
-                        int ny = node.y + dy;
-                        int nz = node.z + dz;
+                        int neighbor_x = node.x + delta_x;
+                        int neighbor_y = node.y + delta_y;
+                        int neighbor_z = node.z + delta_z;
 
-                        if (visited.Contains((nx, ny, nz))) continue;
+                        // we have already checked this cube, skip it.
+                        if (visited.Contains((neighbor_x, neighbor_y, neighbor_z))) continue;
 
-                        var neighbor = map.MapGrid.Get(nx, ny, nz);
+                        var neighbor = map.MapGrid.Get(neighbor_x, neighbor_y, neighbor_z);
                         if (neighbor == null) continue; // out of bounds
 
                         // Skip impassable cubes
                         if (!neighbor.isPassable) continue;
+                        if (!neighbor.hasTerrainBelow) continue;
 
-                        // Prevent diagonal corner cutting:
-                        // if movement is diagonal, ensure both orthogonal neighbors are passable.
-                        if (dx != 0 && dz != 0)
+                        // Prevent diagonal corner cutting in XZ plane:
+                        // if movement is diagonal in XZ, ensure the two orthogonal steps at the target Y are passable.
+                        if (delta_x != 0 && delta_z != 0)
                         {
-                            var sideA = map.MapGrid.Get(node.x + dx, node.y, node.z);     // step in X
-                            var sideB = map.MapGrid.Get(node.x, node.y, node.z + dz);     // step in Z
-                            var sideC = map.MapGrid.Get(node.x, node.y + dy, node.z);     // step in Z
+                            var orthX = map.MapGrid.Get(node.x + delta_x, node.y + delta_y, node.z);   // step in X at target Y
+                            var orthZ = map.MapGrid.Get(node.x, node.y + delta_y, node.z + delta_z);   // step in Z at target Y
 
-                            // if either orthogonal neighbor is missing or not passable, block diagonal move
-                            if (sideA == null || sideB == null || sideC == null) continue;
-                            if (!sideA.isPassable || !sideB.isPassable || !sideC.isPassable) continue;
+                            if (orthX == null || orthZ == null) continue;
+                            if (!orthX.isPassable || !orthZ.isPassable) continue;
                         }
 
-                        visited.Add((nx, ny, nz));
+                        visited.Add((neighbor_x, neighbor_y, neighbor_z));
                         result.Add(neighbor);
-                        q.Enqueue((nx, ny, nz, node.dist + 1));
+                        q.Enqueue((neighbor_x, neighbor_y, neighbor_z, node.dist + 1));
                     }
                 }
             }

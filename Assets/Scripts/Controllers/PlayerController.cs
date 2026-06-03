@@ -13,9 +13,9 @@ public class PlayerController : MonoBehaviour
     public bool AllowPreview { get; set; } = true;      // allow local read-only selection
 
     [SerializeField] private GameManager gameManager;
+    [SerializeField] public TeamId team;
 
     [Header("Fireteam Details")]
-    [SerializeField] public TeamId team;
     [SerializeField] public Fireteam fireteam;
     [SerializeField] public List<Model> spawnedModels;
     [SerializeField] public ModelSpawner modelSpawner;
@@ -30,8 +30,6 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private ModelActionController activatedModelActionController = null;
     [SerializeField] private Weapon selectedWeapon = null;
     public Weapon SelectedWeapon => selectedWeapon;
-
-    [SerializeField] private GameInfoSO gameInfo;
 
     // UI Elements that will need to check against the Models activation status and remaining AP to determine visibility
     [Header("Player UI")]
@@ -68,7 +66,6 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private bool showDebugLogs = true;
 
     [Header("Player States")]
-    StateMachine stateMachine;
     [SerializeField] private bool isPlayerTurn = false;
 
     public List<Model> ActivationsRemaining => activationsRemaining;

@@ -20,10 +20,14 @@ public class InputManager : MonoBehaviour
     {
         if (gameManager == null) gameManager = FindAnyObjectByType<GameManager>();
         if (localPlayer == null) localPlayer = FindAnyObjectByType<PlayerController>(); // set properly in game init
+
+        gameManager.OnPlayersCreated += OnAllPlayersCreated; // example of subscribing to GameManager events to know when to allow commands, etc.
     }
 
     void Update()
     {
+
+
         // Left Click (Unit Selection, Target Selection, etc)
         if (Input.GetMouseButtonDown(0))
         {
@@ -71,9 +75,10 @@ public class InputManager : MonoBehaviour
         // Start Movement Mode if a unit is selected
         if (Input.GetMouseButtonDown(1))
         {
-            if (allowCommands && localPlayer != null && localPlayer.SelectedModel != null)
+            if (allowCommands && localPlayer != null && 
+                localPlayer.SelectedModel != null && 
+                localPlayer.SelectedModel.ActionController.HasMoved == false)
             {
-
                 localPlayer.EnableModelMovementMode();
 
                 isRightDragging = true;
@@ -105,7 +110,7 @@ public class InputManager : MonoBehaviour
                     gameManager.RequestSelectDestination(point, localPlayer);
                 }
             }
-            Debug.DrawLine(localPlayer.SelectedModel.transform.position, hit.point, Color.green, 1f);
+            //Debug.DrawLine(localPlayer.SelectedModel.transform.position, hit.point, Color.green, 1f);
         }
 
         // If the player releases right click we need to check if they are 
@@ -148,13 +153,10 @@ public class InputManager : MonoBehaviour
         }
     }
 
-    public void OnAllPlayersDeployed (Component sender , object data )
+    public void OnAllPlayersCreated (object sender, PlayersCreatedEventArgs e)
     {
         // Example of subscribing to GameManager events to know when to allow commands, etc.
-        if (data is List<PlayerController> players)
-        {
-            localPlayer = players[0];
-            localPlayer.AllowCommands = true;
-        }
+        localPlayer = e.Players[0];
+        localPlayer.AllowCommands = true;
     }
 }

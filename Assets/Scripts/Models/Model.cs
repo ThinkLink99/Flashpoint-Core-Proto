@@ -59,6 +59,21 @@ public class Model : MonoBehaviour, IHasKeywords
         gameManager = FindAnyObjectByType<GameManager>();
         actionController = GetComponent<ModelActionController>();
         playerControlling = GetComponentInParent<PlayerController>();
+
+        // Ensure a Rigidbody exists so physics callbacks (triggers) work.
+        if (GetComponent<Rigidbody>() == null)
+        {
+            var rb = gameObject.AddComponent<Rigidbody>();
+            rb.interpolation = RigidbodyInterpolation.Interpolate;
+            // Freeze rotations so physics doesn't spin the model unexpectedly
+            rb.constraints = RigidbodyConstraints.FreezeRotation;
+        }
+
+        // Optional: warn if no Collider found on model or children
+        if (GetComponentInChildren<Collider>() == null)
+        {
+            Debug.LogWarning($"{name} has no Collider; triggers/collisions won't fire.");
+        }
     }
 
     // Update is called once per frame
@@ -81,17 +96,17 @@ public class Model : MonoBehaviour, IHasKeywords
             return;
         }
 
-        // respect explicit passability flag first
-        if (!cube.isPassable)
-        {
-            Debug.LogWarning($"Cube at {cube.worldPosition} is marked not passable.");
-            return;
-        }
+        //// respect explicit passability flag first
+        //if (!cube.isPassable)
+        //{
+        //    Debug.LogWarning($"Cube at {cube.worldPosition} is marked not passable.");
+        //    return;
+        //}
 
-        // require sufficient terrain under the cube before allowing a model to occupy it
+        //// require sufficient terrain under the cube before allowing a model to occupy it
         //if (!cube.HasSufficientGround())
         //{
-        //    Debug.LogWarning($"Cube at {cube.worldPosition} does not have sufficient ground below.");
+        //    //Debug.LogWarning($"Cube at {cube.worldPosition} does not have sufficient ground below.");
         //    return;
         //}
 

@@ -37,7 +37,7 @@ RenderSettings:
   m_ReflectionBounces: 1
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
-  m_Sun: {fileID: 705507994}
+  m_Sun: {fileID: 0}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -180,8 +180,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 232995363}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -11.13914, y: 0, z: -35.50105}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -212,7 +212,7 @@ Transform:
   m_GameObject: {fileID: 463432123}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 11.13914, y: 0, z: 35.50105}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -280,7 +280,7 @@ MonoBehaviour:
   terrainSet: {fileID: 11400000, guid: 8b67c788b58ddf44f80c08a9c3cd1150, type: 2}
   onMapCreating: {fileID: 11400000, guid: 6e252d87e6b30a04094b715fca5c7ac6, type: 2}
   onMapCreated: {fileID: 11400000, guid: ae3509c80e9921149990d74e057f696b, type: 2}
-  showDebugLogs: 1
+  showDebugLogs: 0
 --- !u!1 &612791363
 GameObject:
   m_ObjectHideFlags: 0
@@ -293,6 +293,7 @@ GameObject:
   - component: {fileID: 612791367}
   - component: {fileID: 612791366}
   - component: {fileID: 612791365}
+  - component: {fileID: 612791368}
   m_Layer: 0
   m_Name: Ground
   m_TagString: Untagged
@@ -309,7 +310,7 @@ Transform:
   m_GameObject: {fileID: 612791363}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 26.67, y: -0.5, z: 30.48}
+  m_LocalPosition: {x: 26.67, y: -0.5, z: 26.67}
   m_LocalScale: {x: 60.96, y: 1, z: 60.96}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -361,7 +362,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 2fcfc2ab7ef6296459cfe748745c50e5, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -393,6 +394,19 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 612791363}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &612791368
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 612791363}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b06a7c4f17f65c488457088326a0f2e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Terrain
+  id: terrain_ground
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -483,13 +497,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 705507993}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.40821788, y: -0.23456968, z: 0.10938163, w: 0.8754261}
-  m_LocalPosition: {x: -11.13914, y: 3, z: -35.50105}
+  m_LocalRotation: {x: 0.3619785, y: -0, z: -0, w: 0.9321865}
+  m_LocalPosition: {x: 0, y: 30.48, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 463432124}
-  m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+  m_LocalEulerAnglesHint: {x: 42.444, y: 0, z: 0}
 --- !u!1 &725855537
 GameObject:
   m_ObjectHideFlags: 0
@@ -708,14 +722,8 @@ GameObject:
   - component: {fileID: 1252523101}
   - component: {fileID: 1252523110}
   - component: {fileID: 1252523109}
-  - component: {fileID: 1252523102}
   - component: {fileID: 1252523107}
   - component: {fileID: 1252523100}
-  - component: {fileID: 1252523103}
-  - component: {fileID: 1252523104}
-  - component: {fileID: 1252523106}
-  - component: {fileID: 1252523105}
-  - component: {fileID: 1252523108}
   m_Layer: 0
   m_Name: Game Manager
   m_TagString: Untagged
@@ -747,180 +755,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1252523099}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -11.13914, y: 0, z: -35.50105}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 463432124}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1252523102
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1252523099}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e00b3f46caf68d645a3858c8a0a90811, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  gameInfoSO: {fileID: 11400000, guid: c6a48348a0c7a714a9c0aff53654df46, type: 2}
-  gameManager: {fileID: 1252523109}
-  builder: {fileID: 1252523107}
-  spawner: {fileID: 1252523100}
-  mapBuilder: {fileID: 536174326}
-  playerControllers: []
-  onGameStart: {fileID: 11400000, guid: 44199c0b8e846354cabfed937b4ec396, type: 2}
-  onMapSelected: {fileID: 11400000, guid: a1c5db729535dd44fac25e798c7679dc, type: 2}
-  onPlayersCreated: {fileID: 11400000, guid: 09e1cd3694a6ca6409b5bbd629f508ee, type: 2}
-  onAllPlayersDeployed: {fileID: 11400000, guid: 701390af420ed0b498a112206250a0ae, type: 2}
-  loadingScreen: {fileID: 725855537}
-  playerUI: {fileID: 2082343388}
-  currentStateName: 
-  startApp: 1
-  gameStarted: 0
-  mapSelected: 0
-  mapBuilt: 0
-  playersDeployed: 0
-  round: 0
---- !u!114 &1252523103
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1252523099}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5a9433f5e30db324682acd75aac39209, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  gameEvent: {fileID: 11400000, guid: 44199c0b8e846354cabfed937b4ec396, type: 2}
-  response:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1252523102}
-        m_TargetAssemblyTypeName: Director, Assembly-CSharp
-        m_MethodName: OnGameStart
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
---- !u!114 &1252523104
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1252523099}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5a9433f5e30db324682acd75aac39209, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  gameEvent: {fileID: 11400000, guid: a1c5db729535dd44fac25e798c7679dc, type: 2}
-  response:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1252523102}
-        m_TargetAssemblyTypeName: Director, Assembly-CSharp
-        m_MethodName: OnMapSelected
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
---- !u!114 &1252523105
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1252523099}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5a9433f5e30db324682acd75aac39209, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  gameEvent: {fileID: 11400000, guid: ae3509c80e9921149990d74e057f696b, type: 2}
-  response:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1252523102}
-        m_TargetAssemblyTypeName: Director, Assembly-CSharp
-        m_MethodName: OnMapCreated
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 1252523109}
-        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
-        m_MethodName: OnMapCreated
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
---- !u!114 &1252523106
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1252523099}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5a9433f5e30db324682acd75aac39209, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  gameEvent: {fileID: 11400000, guid: 09e1cd3694a6ca6409b5bbd629f508ee, type: 2}
-  response:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1252523102}
-        m_TargetAssemblyTypeName: Director, Assembly-CSharp
-        m_MethodName: OnPlayersCreated
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 1252523109}
-        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
-        m_MethodName: OnPlayersCreated
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
 --- !u!114 &1252523107
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -936,46 +777,6 @@ MonoBehaviour:
   tabletop: {fileID: 1033910159}
   modelSpawner: {fileID: 1252523100}
   playerPrefab: {fileID: 5157984894270404262, guid: c3c3e9b19ca5ab0439cc51382db2b28f, type: 3}
---- !u!114 &1252523108
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1252523099}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5a9433f5e30db324682acd75aac39209, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::GameEventListener
-  gameEvent: {fileID: 11400000, guid: 701390af420ed0b498a112206250a0ae, type: 2}
-  response:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1252523102}
-        m_TargetAssemblyTypeName: Director, Assembly-CSharp
-        m_MethodName: OnAllPlayersDeployed
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 1252523110}
-        m_TargetAssemblyTypeName: InputManager, Assembly-CSharp
-        m_MethodName: OnAllPlayersDeployed
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
 --- !u!114 &1252523109
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -990,7 +791,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
   mainCamera: {fileID: 963194227}
   tabletopCameraController: {fileID: 0}
+  playerOptions:
+  - {fileID: 11400000, guid: 4ef2650965f48c845a7a1e7ce3eab1f8, type: 2}
+  - {fileID: 11400000, guid: 535291d54b12f354c8096d169744588b, type: 2}
   players: []
+  testModelsToSpawn:
+  - {fileID: 11400000, guid: ecc059817118747439990c5ab2b5d860, type: 2}
+  - {fileID: 11400000, guid: 785ea8fffe4dce64e8e8ae9cc41596b2, type: 2}
+  - {fileID: 11400000, guid: e32cb81dfd8912948ac75ddb1ec9b77a, type: 2}
+  - {fileID: 11400000, guid: 26fba4c7bb49cfc43b13a2277cdf9975, type: 2}
   currentMap:
     mapName: 
     mapSize:
@@ -1073,8 +882,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1741205168}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: 0.7253742, z: -0, w: 0.68835473}
-  m_LocalPosition: {x: -10.03301, y: 0, z: -11.5778885}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:

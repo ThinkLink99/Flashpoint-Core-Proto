@@ -1,3 +1,4 @@
+using Assets.Scripts;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,17 +6,26 @@ using UnityEngine;
 public class GameManager : MonoBehaviour {
     public GameActionContext Context { get; private set; }
 
+    private MapBuilder mapBuilder;
+    private PlayerBuilder playerBuilder;
     public Camera mainCamera;
     [SerializeField] private TabletopCamera tabletopCameraController;
 
     [Header("Players")]
+    [SerializeField] private PlayerOptions[] playerOptions;
     [SerializeField] public List<PlayerController> players;
+    [SerializeField] private ModelConfiguration[] testModelsToSpawn;
 
+    private TurnManager turnManager;
     public Map currentMap;
+
 
     private void Awake()
     {
         Context = new GameActionContext();
+
+        playerBuilder = GetComponent<PlayerBuilder>();
+        mapBuilder = FindAnyObjectByType<MapBuilder>();
     }
     // World-level events raised by the authoritative GameManager. Other systems (UI, network)
     // can subscribe to these to be notified when the game state changes.
@@ -24,6 +34,7 @@ public class GameManager : MonoBehaviour {
     public event System.EventHandler<TargetSelectedEventArgs> OnWorldTargetSelected;
     public event System.EventHandler<ModelMovedEventArgs> OnModelMoved;
     public event System.EventHandler<ModelShotEventArgs> OnModelShot;
+    public event System.EventHandler<PlayersCreatedEventArgs> OnPlayersCreated;
 
     // Request APIs: clients send intent through Request* methods. GameManager validates
     // and if accepted applies the change and raises world events so all clients see
@@ -43,7 +54,6 @@ public class GameManager : MonoBehaviour {
         // raise world event for listeners
         OnWorldModelSelected?.Invoke(this, new ModelSelectedEventArgs(model, requester));
     }
-
     public void RequestSelectDestination(Vector3 destination, PlayerController requester)
     {
         if (requester != null && !requester.AllowCommands)
@@ -55,7 +65,6 @@ public class GameManager : MonoBehaviour {
         SelectDestination(destination);
         OnWorldDestinationSelected?.Invoke(this, new DestinationSelectedEventArgs(destination, requester));
     }
-
     public void RequestSelectTarget(Model target, PlayerController requester)
     {
         if (requester != null && !requester.AllowCommands)
@@ -67,7 +76,6 @@ public class GameManager : MonoBehaviour {
         SelectTarget(target);
         OnWorldTargetSelected?.Invoke(this, new TargetSelectedEventArgs(target, requester));
     }
-
     public void RequestMove(Model model, Vector3 destination, PlayerController requester)
     {
         if (requester != null && !requester.AllowCommands)
@@ -157,37 +165,68 @@ public class GameManager : MonoBehaviour {
         }));
     }
 
+ 
     private System.Collections.IEnumerator ExecuteActionCoroutine(IGameAction action, System.Action onComplete)
     {
         yield return action.Execute(Context);
         onComplete?.Invoke();
     }
+
     void Start()
     {
         if (tabletopCameraController == null) mainCamera.TryGetComponent<TabletopCamera>(out tabletopCameraController);
+
+        BuildMap();
+        CreatePlayerObjects(this.playerOptions);
+        DeployModels();
+
+        players[0].IsLocalPlayer = true;
+        StartTurn(players[0]);
     }
     void Update()
     {
-
     }
 
-    public void OnMapCreated(Component sender, object data)
+    private void FixedUpdate()
     {
-        if (data is Map map)
-        {
-            currentMap = map;
-        }
+        currentMap.MarkCubesWithTerrainBelow(); // this isn't killing frames yet but we need to better poll this. Checking adjacent cubes when a model moves into a new cube would be good.
     }
-    public void OnPlayersCreated(Component sender, object data)
+
+    public void BuildMap ()
     {
-        Debug.Log("Hit");
-        if (data is List<PlayerController> players)
+        currentMap = mapBuilder.Start()
+          .RaiseMapCreatingEvent()
+          //.SpawnGroundPlane()
+          .SpawnGridLines()
+          .SpawnTerrain()
+          .DrawDeploymentZones()
+          .Build();
+
+    }
+    public void CreatePlayerObjects (params PlayerOptions[] playerOptions)
+    {
+        var playersCreated = new List<PlayerController>();
+        foreach (var playerOption in playerOptions)
         {
-            this.players = players;
+            var builder = playerBuilder.Start()
+                                  .AddFireteam(testModelsToSpawn)
+                                  .SetName(playerOption.playerName)
+                                  .SetTeam(playerOption.teamId);
+            if (playerOption.isHuman)
+                builder.IsHuman();
+            else builder.IsHuman(false);
+
+            PlayerController player = builder.Build();
+            if (player.isHumanControlled) player.IsLocalPlayer = true;
+            playersCreated.Add(player);
         }
+
+        players.AddRange(playersCreated);
+        OnPlayersCreated?.Invoke(this, new PlayersCreatedEventArgs(playersCreated.ToArray()));
     }
     private void DeployModels()
     {
+
         for (int i = 0; i < players.Count; i++)
         {
             // otherwise we need to let the player deploy.
@@ -207,16 +246,23 @@ public class GameManager : MonoBehaviour {
             {
                 if (playerDeploying.fireteam.Models[z] != null)
                 {
-                    var worldPos = new Vector3(zone.squares[z].x, 1, zone.squares[z].y) * currentMap.CubeSize;
+                    var worldPos = new Vector3(zone.squares[z].x, 2f, zone.squares[z].y) * currentMap.CubeSize;
                     var spawnedModel = spawner.SpawnForPlayer(playerDeploying.fireteam.Models[z].name, playerDeploying, worldPos);
                     playerDeploying.spawnedModels.Add(spawnedModel);
                 }
             }
 
+            //Time.timeScale = 0f; // pause the game to allow for deployment
+
             //if (i == players.Count - 1)
             // raise an event to say we are done deploying
             //onAllPlayersDeployed.Raise(null, null);
         }
+    }
+
+    private void StartRound ()
+    {
+
     }
 
     public void StartTurn (PlayerController player)

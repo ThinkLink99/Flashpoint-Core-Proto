@@ -6,12 +6,14 @@ using UnityEngine;
 public class ModelSpawner : MonoBehaviour
 {
     [SerializeField] private IModelFactory factory;
+    public HashSet<Model> spawnableModels;
     public List<Material> teamColorMaterials;
     public ModelSetScriptableObject configurations;
 
     private void Awake()
     {
         factory = new ModelFactory();
+        spawnableModels = new HashSet<Model>();
     }
 
     public Model SpawnForPlayer (string unitName, PlayerController player, Vector3 worldPosition)

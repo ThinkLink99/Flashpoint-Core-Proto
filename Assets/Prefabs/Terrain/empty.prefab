@@ -145,9 +145,11 @@ MonoBehaviour:
   IsDeploymentZone: 0
   isPassable: 1
   hasTerrainBelow: 0
+  HasDetectedEnter: 0
+  HasDetectedExit: 0
   requiredGroundCoverage: 0.5
-  sampleGrid: 3
-  showSamplingDebug: 1
+  sampleGrid: 5
+  showSamplingDebug: 0
 --- !u!65 &5605645711304708520
 BoxCollider:
   m_ObjectHideFlags: 0

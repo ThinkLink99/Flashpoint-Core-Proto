@@ -19,4 +19,4 @@ MonoBehaviour:
     - Key: terrain_shipping_container
       Value: {fileID: 6271982589333905314, guid: 1b9b5e1c1a6fd4348a2348033f3d6406, type: 3}
     - Key: terrain_cube
-      Value: {fileID: 280423871487618563, guid: b035de6f52b87c947ac4e9c0a6f5c392, type: 3}
+      Value: {fileID: 5186619151126967646, guid: f20c24e2ae0a0d344a62b0a3c2964f4f, type: 3}
